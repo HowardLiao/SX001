@@ -3103,20 +3103,19 @@
                 </div>
             </div>
 
-            <!-- 未啟動前的鎖定提示框 -->
-            <div class="quiz-locked-box" id="quizLockedNotice">
-                <div style="font-size: 38px; margin-bottom: 8px;">🔒</div>
-                <div style="font-size: 18px; color: var(--rust); font-weight: 900; margin-bottom: 6px;">試卷目前處於鎖定狀態</div>
-                <p style="font-size: 14px; color: var(--text-light); margin: 0;">請先詳閱上方應試說明、填妥考生報到資料，並點擊【開始 10 分鐘測驗】按鈕以啟動計時並解鎖試卷！</p>
-            </div>
-
-            <form id="quizForm" class="quiz-container" style="display: none;">
+            <!-- 考題作答表單（直接展開 10 題隨機抽測題目） -->
+            <form id="quizForm" class="quiz-container" style="display: block;">
                 <!-- 題庫動態渲染容器 -->
+                <div id="questionsContainer"></div>
                 <div id="questionsWrapper"></div>
 
-                <div class="quiz-actions">
-                    <button type="button" class="btn-action" onclick="gradeQuiz()">送出試卷結算成績</button>
-                    <button type="button" class="btn-secondary" onclick="refreshRandomQuiz()">清空答案並換一組題目</button>
+                <div class="quiz-actions" style="margin-top: 30px; text-align: center; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap;">
+                    <button type="button" class="btn-action" style="padding: 14px 36px; font-size: 16.5px; font-weight: 900;" onclick="gradeQuiz()">
+                        📝 送出試卷結算成績
+                    </button>
+                    <button type="button" class="btn-secondary" style="padding: 14px 28px; font-size: 15px;" onclick="refreshRandomQuiz()">
+                        🔄 重新抽取 10 題新試卷
+                    </button>
                 </div>
             </form>
         </section>
@@ -3356,8 +3355,6 @@
                     pctText.style.color = 'var(--rust)';
                     pctText.innerText = '0%';
                 }
-            }
-        }
             }
         }
 
@@ -3660,7 +3657,7 @@
         }
 
         function renderQuiz() {
-            const container = document.getElementById('questionsContainer');
+            const container = document.getElementById('questionsContainer') || document.getElementById('questionsWrapper');
             if (!container) return;
             container.innerHTML = '';
             currentAnswers = {};
