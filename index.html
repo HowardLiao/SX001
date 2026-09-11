@@ -1952,25 +1952,18 @@
                 </div>
             </div>
 
-                        <!-- 自主學習進度與修習里程碑 (SDL Milestone Tracker) -->
+                        <!-- 自主學習進度儀表板 (簡潔進度條) -->
             <div class="sdl-dashboard-card">
-                <div class="sdl-progress-info">
-                    <span style="font-size: 14px; font-weight: 900; color: var(--rust); white-space: nowrap;">
+                <div class="sdl-progress-info" style="width: 100%;">
+                    <span style="font-size: 14.5px; font-weight: 900; color: var(--rust); white-space: nowrap;">
                         📊 自主學習進度：
                     </span>
                     <div class="sdl-progress-track">
                         <div class="sdl-progress-fill" id="sdlProgressFill" style="width: 0%;"></div>
                     </div>
-                    <span id="sdlProgressPercent" style="font-size: 14.5px; font-weight: 950; color: var(--tangerine); min-width: 48px;">
+                    <span id="sdlProgressPercent" style="font-size: 15px; font-weight: 950; color: var(--tangerine); min-width: 50px; text-align: right;">
                         0%
                     </span>
-                </div>
-                <div class="sdl-badges-row">
-                    <span class="sdl-badge" id="badgeM1" onclick="switchTab('overview')" style="cursor: pointer;" title="點擊跳轉至模組一">1. 現狀趨勢</span>
-                    <span class="sdl-badge" id="badgeM2" onclick="switchTab('scenarios')" style="cursor: pointer;" title="點擊跳轉至模組二">2. 情境模擬</span>
-                    <span class="sdl-badge" id="badgeM3" onclick="switchTab('deepcase')" style="cursor: pointer;" title="點擊跳轉至模組三">3. 退休個案</span>
-                    <span class="sdl-badge" id="badgeM4" onclick="switchTab('framework')" style="cursor: pointer;" title="點擊跳轉至模組四">4. 防詐承諾</span>
-                    <span class="sdl-badge" id="badgeM5" onclick="switchTab('quiz')" style="cursor: pointer;" title="點擊跳轉至模組五">5. 綜合評量</span>
                 </div>
             </div>
         </div>
@@ -3353,34 +3346,18 @@
                 fillBar.style.width = pct + '%';
             }
             if (pctText) {
-                pctText.innerText = pct + '%';
                 if (pct === 100) {
                     pctText.style.color = '#2E7D32';
                     pctText.innerText = '100% 🏆';
                 } else if (pct > 0) {
                     pctText.style.color = 'var(--tangerine)';
+                    pctText.innerText = pct + '%';
+                } else {
+                    pctText.style.color = 'var(--rust)';
+                    pctText.innerText = '0%';
                 }
             }
-
-            for (let i = 1; i <= 5; i++) {
-                const badge = document.getElementById('badgeM' + i);
-                if (badge) {
-                    if (sdlState['m' + i]) {
-                        badge.classList.add('done');
-                        badge.classList.add('completed');
-                        badge.style.background = '#2E7D32';
-                        badge.style.color = '#FFFFFF';
-                        badge.style.borderColor = '#1B5E20';
-                        badge.style.fontWeight = '900';
-                    } else {
-                        badge.classList.remove('done');
-                        badge.classList.remove('completed');
-                        badge.style.background = '';
-                        badge.style.color = '';
-                        badge.style.borderColor = '';
-                        badge.style.fontWeight = '';
-                    }
-                }
+        }
             }
         }
 
