@@ -1,6 +1,5 @@
 # AI 金融進階與詐騙情境模擬 - 數位教育訓練與互動評量系統
 
-> **課程報告人**：Howard Liao Ph.D.  
 > **線上即時學習與評量網址 (GitHub Pages)**：[https://howardliao.github.io/SX001/](https://howardliao.github.io/SX001/)
 
 ---
