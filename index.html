@@ -1796,7 +1796,108 @@
         }
 
     
-        </style>
+        
+        /* 5.課後評量即時完賽跑馬燈專用樣式 (100% 真實數據) */
+        .live-score-ticker-card {
+            background: linear-gradient(90deg, #1E1E1E 0%, #2E2822 50%, #1E1E1E 100%);
+            border: 1.8px solid var(--amber);
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            position: relative;
+        }
+
+        .ticker-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 900;
+            color: #FFE680;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border-right: 1.5px solid #555;
+            padding-right: 12px;
+        }
+
+        .live-pulse-dot {
+            width: 9px;
+            height: 9px;
+            background: #00E676;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #00E676;
+            animation: pulseGlow 1.2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { opacity: 0.5; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        .ticker-content-track {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+        }
+
+        .ticker-scroll-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            white-space: nowrap;
+            animation: marqueeScroll 35s linear infinite;
+            width: max-content;
+        }
+
+        .ticker-scroll-items:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(242, 169, 59, 0.45);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #FDFBF7;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease;
+        }
+
+        .ticker-pill:hover {
+            transform: scale(1.04);
+            border-color: #FFD700;
+        }
+
+        .ticker-pill.perfect {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.18);
+            color: #FFE680;
+        }
+
+        .ticker-score {
+            font-weight: 900;
+            color: var(--yellow);
+        }
+
+    </style>
 </head>
 <body>
 
@@ -2731,6 +2832,21 @@
                 <p class="lead">本系統建立百題深度案例題庫。請先詳閱測驗說明並於下方完成報到登記，確認開始後才會正式啟動 10 分鐘計時與試卷作答。</p>
             </div>
 
+            <!-- 即時完賽同仁榮譽跑馬燈 (100% 真實數據連線，絕無假造) -->
+            <div class="live-score-ticker-card" id="realTickerContainer">
+                <div class="ticker-label">
+                    <span class="live-pulse-dot"></span>
+                    <span>📢 即時完賽榮譽榜：</span>
+                </div>
+                <div class="ticker-content-track">
+                    <div class="ticker-scroll-items" id="realTickerTrack">
+                        <span style="color: #DDD; font-size: 13px; font-weight: 700; padding: 2px 10px;">
+                            📌 尚無交卷紀錄。歡迎同仁完成自主學習後率先挑戰測驗，成績合格將即時於此榜聯播！
+                        </span>
+                    </div>
+                </div>
+            </div>
+
             
 
             <!-- 測驗前重要須知與研讀指引卡 -->
@@ -3342,7 +3458,8 @@
                 const valEl = document.getElementById('riskScoreVal');
                 const adviceEl = document.getElementById('riskScoreAdvice');
 
-                board.style.display = 'block';
+                recordRealSubmission(finalUserDept, finalUserName, score);
+            board.style.display = 'block';
                 valEl.innerText = total + ' 分';
 
                 if (total === 100) {
@@ -3427,6 +3544,7 @@
             if (dateEl) dateEl.value = dateStr;
 
             initRandomQuiz();
+            loadRealSubmissions();
             
             initSDL();
             updateDeadlineBanner();
@@ -3703,6 +3821,7 @@
                 }
             }
 
+            recordRealSubmission(finalUserDept, finalUserName, score);
             board.style.display = 'block';
             scoreValEl.innerText = score;
 
