@@ -1616,6 +1616,26 @@
             .timer-main-layout { gap: 10px; }
             .timer-controls-row { width: 100%; justify-content: flex-start; }
         }
+    
+        /* 未滿 70 分重考提醒卡樣式 */
+        .unpassed-retake-card {
+            background: linear-gradient(135deg, #FFF8F8 0%, #FFF0F0 100%);
+            border: 2.5px dashed #D32F2F;
+            border-radius: 16px;
+            padding: clamp(18px, 4vw, 26px);
+            margin: 20px auto;
+            max-width: 720px;
+            text-align: center;
+            box-shadow: 0 6px 18px rgba(211, 47, 47, 0.14);
+            animation: fadeIn 0.4s ease;
+        }
+
+        .retake-score-highlight {
+            color: #D32F2F;
+            font-size: 22px;
+            font-weight: 950;
+        }
+
     </style>
 </head>
 <body>
@@ -2686,6 +2706,20 @@
                 <div id="scoreStatus" class="score-status">評估中...</div>
 
                 <!-- 正式自主學習電子結業證書 -->
+                                <!-- 未滿 70 分不發給證書之提醒卡 -->
+                <div class="unpassed-retake-card" id="retakeNoticeCard" style="display: none;">
+                    <div style="font-size: 38px; margin-bottom: 6px;">⚠️</div>
+                    <div style="font-size: clamp(18px, 4vw, 21px); font-weight: 900; color: var(--rust); margin-bottom: 6px;">
+                        本次測驗未達 70 分及格標準（依規定暫不核發結業證書）
+                    </div>
+                    <p style="font-size: clamp(13.5px, 2.9vw, 15px); color: var(--text-light); font-weight: 700; margin: 10px auto; max-width: 620px; line-height: 1.7;">
+                        同仁您好：金融資安與防詐防護關乎個人與企業資產安全，自主學習考核標準為 <strong>70 分及格</strong>（您本次得分：<strong id="retakeScoreVal" class="retake-score-highlight">0 分</strong>）。依自主學習管理規範，請仔細檢視下方每題錯誤解析與防詐盲點後，點擊下方按鈕<strong>重新抽取 10 題再測驗一次</strong>！
+                    </p>
+                    <button type="button" class="btn-action" style="background: var(--rust); margin-top: 8px; padding: 11px 26px;" onclick="refreshRandomQuiz()">
+                        🔄 立即重新抽取 10 題再考一次
+                    </button>
+                </div>
+
                 <div class="sdl-certificate-card" id="sdlCertificate">
                     <div class="cert-org-header">盛欣網絡科技 ｜ 盛碁網絡科技 數位教育訓練中心</div>
                     <div class="cert-main-title">🎓 自主學習結業能力認證書</div>
@@ -2719,7 +2753,7 @@
                     <button type="button" class="btn-email" id="btnManualMail" onclick="triggerEmailClient()">
                         ✉️ 一鍵寄送成績單郵件
                     </button>
-                    <button type="button" class="btn-action" style="padding: 10px 24px; font-size: 15px;" onclick="window.print()">
+                    <button type="button" class="btn-action" style="padding: 10px 24px; font-size: 15px;" id="btnPrintCert" onclick="window.print()">
                         🖨️ 列印結業證書與成績單
                     </button>
                     <button type="button" class="btn-secondary" style="padding: 10px 22px; font-size: 15px;" onclick="refreshRandomQuiz()">
@@ -3376,12 +3410,39 @@
                 alert(`提醒：您還有 ${currentQuestions.length - answeredCount} 題尚未作答！系統已依目前作答情況計分並顯示詳解。`);
             }
 
-            // 標記模組五完成
-            sdlState.m5 = true;
-            try {
-                localStorage.setItem('sx_sdl_state', JSON.stringify(sdlState));
-            } catch(e) {}
-            updateSDLDashboard();
+            // 70 分及格判定門檻
+            const isPassed = score >= 70;
+            const certCard = document.getElementById('sdlCertificate');
+            const retakeCard = document.getElementById('retakeNoticeCard');
+            const retakeScoreVal = document.getElementById('retakeScoreVal');
+            const btnPrint = document.getElementById('btnPrintCert');
+
+            if (isPassed) {
+                // 及格 (>= 70分): 頒發結業認證書
+                if (certCard) certCard.style.display = 'block';
+                if (retakeCard) retakeCard.style.display = 'none';
+                if (btnPrint) btnPrint.style.display = 'inline-flex';
+
+                // 標記自主學習模組五完成
+                sdlState.m5 = true;
+                try {
+                    localStorage.setItem('sx_sdl_state', JSON.stringify(sdlState));
+                } catch(e) {}
+                updateSDLDashboard();
+            } else {
+                // 不及格 (< 70分): 不發給證書，要求重考
+                if (certCard) certCard.style.display = 'none';
+                if (retakeCard) retakeCard.style.display = 'block';
+                if (retakeScoreVal) retakeScoreVal.innerText = score + ' 分';
+                if (btnPrint) btnPrint.style.display = 'none';
+
+                // 模組五不標記為完成
+                sdlState.m5 = false;
+                try {
+                    localStorage.setItem('sx_sdl_state', JSON.stringify(sdlState));
+                } catch(e) {}
+                updateSDLDashboard();
+            }
 
             const board = document.getElementById('scoreBoard');
             const scoreValEl = document.getElementById('scoreVal');
@@ -3392,47 +3453,53 @@
             const memeCaptionEl = document.getElementById('memeCaption');
             const receiptEl = document.getElementById('emailTargetInfo');
 
-            // 結業證書內容填入
-            const certBodyName = document.getElementById('certBodyName');
-            const certBodyDept = document.getElementById('certBodyDept');
-            const certSerialNo = document.getElementById('certSerialNo');
-            const certIssueDate = document.getElementById('certIssueDate');
+            // 結業證書內容填入 (若合格)
+            if (isPassed) {
+                const certBodyName = document.getElementById('certBodyName');
+                const certBodyDept = document.getElementById('certBodyDept');
+                const certSerialNo = document.getElementById('certSerialNo');
+                const certIssueDate = document.getElementById('certIssueDate');
 
-            if (certBodyName) certBodyName.innerText = finalUserName;
-            if (certBodyDept) certBodyDept.innerText = finalUserDept;
-            if (certSerialNo) {
-                const randCode = Math.floor(1000 + Math.random() * 9000);
-                certSerialNo.innerText = `SX-SDL-2026-${randCode}`;
+                if (certBodyName) certBodyName.innerText = finalUserName;
+                if (certBodyDept) certBodyDept.innerText = finalUserDept;
+                if (certSerialNo) {
+                    const randCode = Math.floor(1000 + Math.random() * 9000);
+                    certSerialNo.innerText = `SX-SDL-2026-${randCode}`;
+                }
+                if (certIssueDate) certIssueDate.innerText = examDate;
             }
-            if (certIssueDate) certIssueDate.innerText = examDate;
 
             board.style.display = 'block';
             scoreValEl.innerText = score;
 
             certNameEl.innerText = `🎓 學員姓名：${finalUserName} 同學`;
             certMetaEl.innerText = `所屬單位：${finalUserDept} ${userEmpId ? '｜ 工號：' + userEmpId : ''} ｜ 完賽日期：${examDate}`;
-            memeCaptionEl.innerText = `「${finalUserName}，我肯定你是有潛力的！」`;
 
             let gradeTitle = "";
             if (score === 100) {
-                gradeTitle = "🏆 完美結訓！榮獲「卓越防詐大師」認證";
+                gradeTitle = "🏆 滿分結訓！榮獲「卓越防詐大師」能力認證";
                 statusEl.innerText = gradeTitle;
                 statusEl.style.color = "var(--success-color)";
-                feedbackEl.innerText = `太強了！${finalUserName} 同學完全掌握現代 AI 金融詐騙話術的核心邏輯與心理弱點，具備極為嚴密的家庭財務防火牆機制！魔鬼筋肉人都為你點讚！`;
+                feedbackEl.innerText = `太強了！${finalUserName} 同學以滿分成績完全掌握現代 AI 金融防詐的核心邏輯與心理弱點，恭喜獲頒自主學習能力結業認證書！`;
+                memeCaptionEl.innerText = `「${finalUserName}，我肯定你是有潛力的！」── 滿分通過認證！`;
             } else if (score >= 80) {
-                gradeTitle = "⭐ 成績優異！具備高敏銳度防詐判斷力";
+                gradeTitle = `⭐ 成績優異！通過自主學習能力認證（${score}分合格）`;
                 statusEl.innerText = gradeTitle;
                 statusEl.style.color = "var(--tangerine)";
-                feedbackEl.innerText = `表現非常出色！${finalUserName} 同學已能敏銳識破絕大多數高風險騙局，請仔細閱讀紅色標註的錯誤題型詳解，將防禦邊界補強至極致！`;
-            } else if (score >= 60) {
-                gradeTitle = "⚠️ 基礎及格！部分深層心理盲點需加強警戒";
+                feedbackEl.innerText = `表現非常出色！${finalUserName} 同學已能敏銳識破絕大多數高風險騙局，成績高於 70 分及格門檻，恭喜獲頒結業證書！請參考下方解析補強少數錯誤。`;
+                memeCaptionEl.innerText = `「${finalUserName}，我肯定你是有潛力的！」── 恭喜通過考核！`;
+            } else if (score >= 70) {
+                gradeTitle = `✅ 成績合格！通過自主學習考核門檻（${score}分及格）`;
                 statusEl.innerText = gradeTitle;
                 statusEl.style.color = "var(--amber)";
-                feedbackEl.innerText = `${finalUserName} 同學已具備基礎防禦概念，但在「沉沒成本」或「假冒公權力」情境中仍可能面臨心理猶豫，建議複習第 2、3 模組的深度案例剖析！`;
+                feedbackEl.innerText = `${finalUserName} 同學已達到 70 分及格標準並獲發結業證書！但在部分深度情境中仍有些微盲點，建議多複習題目解析以達更高防禦水準。`;
+                memeCaptionEl.innerText = `「${finalUserName}，我肯定你是有潛力的！」── 及格達標！`;
             } else {
-                gradeTitle = "🚨 警戒偏低！強烈建議重新研讀課程核心模組";
+                gradeTitle = `🚨 未達 70 分合格標準（本次得分 ${score} 分，請研讀解析後再考一次）`;
+                statusEl.innerText = gradeTitle;
                 statusEl.style.color = "var(--rust)";
-                feedbackEl.innerText = `${finalUserName} 同學在情境模擬中有多處關鍵轉折點落入詐騙心理陷阱，請務必重新檢視每題解析，並落實 S-T-O-P 踩剎車原則以保護身家財產！`;
+                feedbackEl.innerText = `${finalUserName} 同學在情境模擬中有多處關鍵轉折點落入詐騙陷阱，本次得分未達 70 分合格標準，依規定暫不核發證書。請仔細閱讀下方每題詳細解析後，點擊按鈕再考一次！`;
+                memeCaptionEl.innerText = `「${finalUserName}，達叔肯定你是有潛力的！不要氣餒，再考一次！」`;
             }
 
             currentMailReport = `【盛欣網絡科技 ｜ 盛碁網絡科技】AI金融進階與詐騙情境模擬 - 自主學習評量報告\n` +
