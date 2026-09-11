@@ -2623,10 +2623,6 @@
                         <input type="email" id="userEmail" class="form-input" placeholder="用於接收成績報告（必填）" required>
                     </div>
                     <div class="form-group">
-                        <label for="userEmpId">員工編號 / 學號</label>
-                        <input type="text" id="userEmpId" class="form-input" placeholder="例如：SX-88021 或工號 (選填)">
-                    </div>
-                    <div class="form-group">
                         <label for="examDate">測驗日期</label>
                         <input type="text" id="examDate" class="form-input" readonly>
                     </div>
@@ -3328,14 +3324,12 @@
             const nameInput = document.getElementById('userName');
             const deptInput = document.getElementById('userDept');
             const emailInput = document.getElementById('userEmail');
-            const empIdInput = document.getElementById('userEmpId');
-            const dateInput = document.getElementById('examDate');
+                        const dateInput = document.getElementById('examDate');
 
             const userName = nameInput ? nameInput.value.trim() : '';
             const userDept = deptInput ? deptInput.value.trim() : '';
             const userEmail = emailInput ? emailInput.value.trim() : '';
-            const userEmpId = empIdInput ? empIdInput.value.trim() : '';
-            const examDate = dateInput ? dateInput.value.trim() : '';
+                        const examDate = dateInput ? dateInput.value.trim() : '';
 
             if (!isTimeUp && (!userName || !userDept || !userEmail)) {
                 alert("⚠️ 請先於測驗上方【考生報到與身分登記】完整輸入您的「學員姓名」、「所屬單位/部門」及「電子信箱 (Email)」！");
@@ -3473,7 +3467,7 @@
             scoreValEl.innerText = score;
 
             certNameEl.innerText = `🎓 學員姓名：${finalUserName} 同學`;
-            certMetaEl.innerText = `所屬單位：${finalUserDept} ${userEmpId ? '｜ 工號：' + userEmpId : ''} ｜ 完賽日期：${examDate}`;
+            certMetaEl.innerText = `所屬單位：${finalUserDept} ｜ 完賽日期：${examDate}`;
 
             let gradeTitle = "";
             if (score === 100) {
@@ -3506,8 +3500,7 @@
                                 `--------------------------------------------------------\n` +
                                 `學員姓名：${finalUserName}\n` +
                                 `所屬單位：${finalUserDept}\n` +
-                                `員工編號：${userEmpId || "無"}\n` +
-                                `學員信箱：${finalUserEmail}\n` +
+                                                                `學員信箱：${finalUserEmail}\n` +
                                 `自主學習進度：100% (五大模組已完成)\n` +
                                 `作答費時：${timeElapsedStr} (限時10分鐘)${isTimeUp ? ' [時間到自動交卷]' : ''}\n` +
                                 `測驗日期：${examDate}\n` +
