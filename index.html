@@ -931,6 +931,159 @@
             box-shadow: 0 5px 12px rgba(185, 76, 46, 0.35);
         }
 
+    
+        /* 強烈視覺下載專區樣式 */
+        .btn-top-download {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: #FFF2E8;
+            border: 2px solid var(--tangerine);
+            color: var(--rust);
+            padding: 8px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s ease;
+            box-shadow: 0 3px 8px rgba(233, 106, 40, 0.18);
+        }
+
+        .btn-top-download:hover {
+            background: var(--tangerine);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 14px rgba(233, 106, 40, 0.3);
+        }
+
+        .nav-download-btn {
+            margin-left: auto;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--rust);
+            color: white !important;
+            padding: 7px 18px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 900;
+            text-decoration: none;
+            box-shadow: 0 3px 8px rgba(185, 76, 46, 0.3);
+            white-space: nowrap;
+            transition: all 0.2s ease;
+        }
+
+        .nav-download-btn:hover {
+            background: #96381E;
+            transform: scale(1.03);
+            box-shadow: 0 5px 12px rgba(185, 76, 46, 0.4);
+        }
+
+        .global-download-banner {
+            background: linear-gradient(135deg, #FFFDF9 0%, #FEF5EA 100%);
+            border: 2.5px solid var(--tangerine);
+            border-radius: var(--radius-lg);
+            padding: 20px 26px;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 20px;
+            box-shadow: 0 8px 20px rgba(233, 106, 40, 0.12);
+        }
+
+        .banner-left {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            flex: 1;
+            min-width: 280px;
+        }
+
+        .banner-icon {
+            font-size: 38px;
+            line-height: 1;
+            background: white;
+            border: 2px solid var(--amber);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            box-shadow: 0 4px 10px rgba(242, 169, 59, 0.25);
+        }
+
+        .banner-title {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--rust);
+            margin-bottom: 4px;
+        }
+
+        .file-name-highlight {
+            background: var(--yellow);
+            color: var(--text-main);
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 17px;
+        }
+
+        .banner-desc {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 600;
+            line-height: 1.5;
+        }
+
+        .banner-right {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary-download {
+            background: var(--tangerine);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 30px;
+            font-size: 15px;
+            font-weight: 900;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 0 4px 12px rgba(233, 106, 40, 0.35);
+            transition: all 0.2s ease;
+        }
+
+        .btn-primary-download:hover {
+            background: var(--tangerine-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(233, 106, 40, 0.45);
+        }
+
+        .btn-sub-download {
+            background: white;
+            color: var(--text-main);
+            border: 1.5px solid var(--border-color);
+            padding: 11px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 800;
+            text-decoration: none;
+            transition: all 0.2s ease;
+        }
+
+        .btn-sub-download:hover {
+            border-color: var(--tangerine);
+            color: var(--tangerine);
+        }
+
     </style>
 </head>
 <body>
@@ -947,9 +1100,14 @@
                         <div class="brand-org-desc">內部數位金融素養與資安防詐教育訓練體系</div>
                     </div>
                 </div>
-                <div class="hero-badge" style="margin-bottom: 0;">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.5L20.3 19H3.7L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
-                    2026 最新指標案例
+                <div style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap;">
+                    <a href="1150831.docx" download="詐騙情境模擬1150831.docx" class="btn-top-download" title="點此直接下載原始講義檔案">
+                        <span>📥</span> 下載來源講義：<strong>詐騙情境模擬1150831.docx</strong>
+                    </a>
+                    <div class="hero-badge" style="margin-bottom: 0;">
+                        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2L1 21h22L12 2zm0 3.5L20.3 19H3.7L12 5.5zM11 10v4h2v-4h-2zm0 6v2h2v-2h-2z"/></svg>
+                        2026 最新指標案例
+                    </div>
                 </div>
             </div>
 
@@ -988,11 +1146,37 @@
             <button class="nav-btn" onclick="switchTab('deepcase')">3. 深度退休個案剖析</button>
             <button class="nav-btn" onclick="switchTab('framework')">4. 防詐五步驟與安全承諾</button>
             <button class="nav-btn" onclick="switchTab('quiz')">5. 課後綜合評量（百題抽測）</button>
+            <a href="1150831.docx" download="詐騙情境模擬1150831.docx" class="nav-download-btn" title="下載 1150831 原始研討講義 (.docx)">
+                📥 下載 1150831 原始講義 (.docx)
+            </a>
         </div>
     </nav>
 
     <!-- 主要內容區 -->
     <main class="main-content">
+
+        <!-- 永久置頂：課程來源講義 (1150831.docx) 下載專區 -->
+        <div class="global-download-banner">
+            <div class="banner-left">
+                <div class="banner-icon">📑</div>
+                <div>
+                    <div class="banner-title">
+                        官方培訓來源講義：<span class="file-name-highlight">詐騙情境模擬1150831.docx</span> (28.4 KB)
+                    </div>
+                    <div class="banner-desc">
+                        包含：五大經典案例原案、AI對話模擬劇本、70歲婦人兩千萬借貸痛點省思、S-T-O-P防詐步驟及安全承諾清單。
+                    </div>
+                </div>
+            </div>
+            <div class="banner-right">
+                <a href="1150831.docx" download="詐騙情境模擬1150831.docx" class="btn-primary-download">
+                    📥 立即點此下載 1150831 講義 (.docx)
+                </a>
+                <a href="詐騙情境模擬1150831.docx" download="詐騙情境模擬1150831.docx" class="btn-sub-download">
+                    備用下載點
+                </a>
+            </div>
+        </div>
 
         <!-- TAB 1: 現狀趨勢與核心心理 -->
         <section id="overview" class="tab-panel active">
