@@ -236,7 +236,14 @@
             border: 1px solid var(--border-color);
         }
 
-        .sdl-badge.completed {
+        .sdl-badge.completed, .sdl-badge.done {
+            background: #2E7D32 !important;
+            color: #FFFFFF !important;
+            border-color: #1B5E20 !important;
+            font-weight: 900 !important;
+            box-shadow: 0 2px 6px rgba(46, 125, 50, 0.25) !important;
+        }
+        .sdl-badge.oldcompleted {
             background: #E8F5E9;
             color: #2E7D32;
             border-color: #A5D6A7;
@@ -3156,6 +3163,96 @@
         const EXAM_END_DATE = new Date(2026, 8, 18, 12, 0, 0);   // 2026-09-18 12:00:00
 
         // ========================================================
+        // ========================================================
+        // 互動演練、防詐體質自測、音效控制與測驗流程別名
+        // ========================================================
+        let isSoundEnabled = true;
+        let isTimerPaused = false;
+        let riskScoreState = {};
+
+        function startExamFlow() {
+            startQuizAfterRegistration();
+        }
+
+        function toggleSound() {
+            initAudioContext();
+            isSoundEnabled = !isSoundEnabled;
+            const btn = document.getElementById('btnToggleSound');
+            if (btn) {
+                btn.innerText = isSoundEnabled ? '🔊 滴答音效：開啟' : '🔇 滴答音效：靜音';
+                btn.style.background = isSoundEnabled ? '#2E7D32' : '#757575';
+            }
+        }
+
+        function toggleTimer() {
+            if (isTimerPaused) {
+                isTimerPaused = false;
+                startTimer();
+                const btn = document.getElementById('btnToggleTimer');
+                if (btn) btn.innerText = '⏸️ 暫停計時';
+            } else {
+                isTimerPaused = true;
+                if (timerInterval) clearInterval(timerInterval);
+                timerInterval = null;
+                const btn = document.getElementById('btnToggleTimer');
+                if (btn) btn.innerText = '▶️ 繼續計時';
+            }
+        }
+
+        function showFeedback(fbId, choiceType) {
+            initAudioContext();
+            const box = document.getElementById(fbId);
+            if (!box) return;
+            box.style.display = 'block';
+            if (choiceType === 'safe' || choiceType === 'correct') {
+                box.className = 'chat-feedback-bubble fb-safe';
+                box.innerHTML = '<strong>✅ 正確決策！</strong>恭喜您做出明智判斷：堅持不加碼、不借貸、保持清醒，並主動撥打 165 官方專線或向銀行求證，成功阻斷詐騙！';
+            } else {
+                box.className = 'chat-feedback-bubble fb-trap';
+                box.innerHTML = '<strong>❌ 警訊！掉入陷阱：</strong>此舉正中詐騙集團下懷！拿維生房產或老本借貸加碼，將導致資產瞬間清空並背負巨額負債。請務必踩下 S-T-O-P 煞車！';
+            }
+        }
+
+        function setRiskScore(qNum, pts, btnEl, isSafe) {
+            initAudioContext();
+            riskScoreState[qNum] = pts;
+
+            if (btnEl && btnEl.parentElement) {
+                btnEl.parentElement.querySelectorAll('.btn-risk-opt').forEach(b => b.classList.remove('active'));
+                btnEl.classList.add('active');
+            }
+
+            const answeredCount = Object.keys(riskScoreState).length;
+            let totalRiskScore = 0;
+            Object.values(riskScoreState).forEach(p => totalRiskScore += p);
+
+            const board = document.getElementById('riskScoreBoard');
+            if (board) {
+                board.style.display = 'block';
+                let levelText = '';
+                let badgeColor = '';
+                if (totalRiskScore >= 75) {
+                    levelText = '🛡️ 【優良防護】您的防詐意識極佳，能有效識破各類常見話術！';
+                    badgeColor = '#2E7D32';
+                } else if (totalRiskScore >= 50) {
+                    levelText = '⚠️ 【中度風險】具備基本警覺，但在親友焦慮或急迫情境下仍有盲點，建議詳讀本課程模組！';
+                    badgeColor = '#F57C00';
+                } else {
+                    levelText = '🚨 【高危警戒】容易受到高報酬或恐嚇話術影響，請務必完成全套自主學習訓練！';
+                    badgeColor = '#C62828';
+                }
+
+                board.innerHTML = `
+                    <div style="font-size: 15px; font-weight: 900; color: ${badgeColor};">
+                        您的防詐體質評估得分：<strong>${totalRiskScore} / 100 分</strong>（已完成 ${answeredCount}/4 題）
+                    </div>
+                    <div style="font-size: 13.5px; color: #444; margin-top: 6px; line-height: 1.6;">
+                        ${levelText}
+                    </div>
+                `;
+            }
+        }
+
         // 3. 頁面導航與分頁切換 (Tabs Switching)
         // ========================================================
         function switchTab(tabId) {
@@ -3173,7 +3270,7 @@
             window.scrollTo({ top: 380, behavior: 'smooth' });
         }
 
-        // ========================================================
+                // ========================================================
         // 4. 自主學習 (SDL) 模組進度追蹤與打卡
         // ========================================================
         function initSDLState() {
@@ -3181,21 +3278,22 @@
                 const saved = localStorage.getItem('sx_sdl_state');
                 if (saved) {
                     sdlState = JSON.parse(saved);
-                    for (let i = 1; i <= 4; i++) {
-                        if (sdlState['m' + i]) {
-                            const btn = document.getElementById('btnCheckM' + i);
-                            if (btn) {
-                                btn.innerText = `✅ 模組${i}已完成研讀`;
-                                btn.style.background = '#1B5E20';
-                            }
-                        }
-                    }
                 }
                 for (let i = 1; i <= 4; i++) {
                     const savedNote = localStorage.getItem('sx_sdl_note_m' + i);
                     const noteEl = document.getElementById('noteM' + i);
                     if (savedNote && noteEl) {
                         noteEl.value = savedNote;
+                        if (savedNote.trim().length > 0) {
+                            sdlState['m' + i] = true;
+                        }
+                    }
+                    if (sdlState['m' + i]) {
+                        const btn = document.getElementById('btnCheckM' + i);
+                        if (btn) {
+                            btn.innerText = `✅ 模組${i}已完成研讀`;
+                            btn.style.background = '#1B5E20';
+                        }
                     }
                 }
             } catch(e) {
@@ -3222,9 +3320,23 @@
         function saveNote(mKey) {
             const noteEl = document.getElementById('note' + mKey);
             if (noteEl) {
+                const val = noteEl.value;
                 try {
-                    localStorage.setItem('sx_sdl_note_' + mKey.toLowerCase(), noteEl.value);
+                    localStorage.setItem('sx_sdl_note_' + mKey.toLowerCase(), val);
                 } catch(e) {}
+
+                // 當填寫筆記時，即刻自動標記該模組研讀完成並推進進度條
+                const mNum = parseInt(mKey.replace(/[^0-9]/g, ''));
+                if (val.trim().length > 0) {
+                    sdlState['m' + mNum] = true;
+                    try { localStorage.setItem('sx_sdl_state', JSON.stringify(sdlState)); } catch(e) {}
+                    const btn = document.getElementById('btnCheckM' + mNum);
+                    if (btn) {
+                        btn.innerText = `✅ 模組${mNum}研讀完成（已存檔）`;
+                        btn.style.background = '#1B5E20';
+                    }
+                }
+                updateSDLDashboard();
             }
         }
 
@@ -3232,21 +3344,27 @@
             const completedCount = Object.values(sdlState).filter(Boolean).length;
             const pct = Math.round((completedCount / 5) * 100);
 
-            const fillBar = document.getElementById('sdlFillBar');
-            const pctText = document.getElementById('sdlPctText');
-            const countText = document.getElementById('sdlCompletedCount');
+            const fillBar = document.getElementById('sdlProgressFill');
+            const pctText = document.getElementById('sdlProgressPercent');
 
             if (fillBar) fillBar.style.width = pct + '%';
             if (pctText) pctText.innerText = pct + '%';
-            if (countText) countText.innerText = completedCount;
 
             for (let i = 1; i <= 5; i++) {
-                const step = document.getElementById('sdlStep' + i);
-                if (step) {
+                const badge = document.getElementById('badgeM' + i);
+                if (badge) {
                     if (sdlState['m' + i]) {
-                        step.classList.add('done');
+                        badge.classList.add('done');
+                        badge.classList.add('completed');
+                        badge.style.background = '#2E7D32';
+                        badge.style.color = '#FFFFFF';
+                        badge.style.borderColor = '#1B5E20';
                     } else {
-                        step.classList.remove('done');
+                        badge.classList.remove('done');
+                        badge.classList.remove('completed');
+                        badge.style.background = '';
+                        badge.style.color = '';
+                        badge.style.borderColor = '';
                     }
                 }
             }
