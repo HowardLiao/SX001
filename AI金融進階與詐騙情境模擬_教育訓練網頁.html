@@ -1320,57 +1320,189 @@
             box-shadow: var(--shadow-lg);
         }
 
-        /* 正式自主學習結業電子證書 */
+        /* 政府與金融特許機構規格：高階防偽認證電子證書樣式 */
         .sdl-certificate-card {
-            background: white;
-            border: 4px double var(--amber);
-            border-radius: 16px;
-            padding: clamp(18px, 4vw, 30px);
-            margin: 20px auto;
-            max-width: 720px;
-            text-align: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+            background: #FFFEFA !important;
+            border: 8px double #C29648 !important;
+            border-radius: 12px !important;
+            padding: clamp(22px, 5vw, 42px) clamp(20px, 5vw, 45px) !important;
+            margin: 25px auto !important;
+            max-width: 780px !important;
+            text-align: center !important;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.12), inset 0 0 40px rgba(242, 169, 59, 0.05) !important;
+            position: relative !important;
+            background-image: 
+                radial-gradient(circle at 50% 50%, rgba(233, 106, 40, 0.03) 0%, transparent 60%),
+                repeating-linear-gradient(45deg, rgba(234, 219, 200, 0.12) 0px, rgba(234, 219, 200, 0.12) 2px, transparent 2px, transparent 12px) !important;
+        }}
+
+        .cert-border-inner {
+            border: 1.5px solid #8A682D;
+            padding: clamp(16px, 3.5vw, 30px);
             position: relative;
-        }
+            background: rgba(255, 255, 255, 0.7);
+        }}
+
+        .cert-corner-deco {
+            position: absolute;
+            width: 24px;
+            height: 24px;
+            border: 3px solid #C29648;
+        }}
+        .corner-tl { top: 4px; left: 4px; border-right: none; border-bottom: none; }
+        .corner-tr { top: 4px; right: 4px; border-left: none; border-bottom: none; }
+        .corner-bl { bottom: 4px; left: 4px; border-right: none; border-top: none; }
+        .corner-br { bottom: 4px; right: 4px; border-left: none; border-top: none; }
 
         .cert-org-header {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--rust);
-            letter-spacing: 1px;
-            margin-bottom: 6px;
-        }
+            font-size: clamp(13px, 2.8vw, 15px);
+            font-weight: 900;
+            color: #8A5214;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }}
 
         .cert-main-title {
-            font-size: clamp(20px, 4.5vw, 26px);
-            font-weight: 900;
-            color: var(--tangerine);
-            letter-spacing: 2px;
+            font-size: clamp(22px, 5vw, 30px);
+            font-weight: 950;
+            color: var(--rust);
+            letter-spacing: 3px;
+            margin-bottom: 2px;
+            font-family: 'Noto Sans TC', serif;
+            text-shadow: 1px 1px 0px rgba(185, 76, 46, 0.15);
+        }}
+
+        .cert-subtitle-en {
+            font-size: clamp(10px, 2.2vw, 12px);
+            font-weight: 800;
+            color: #8A682D;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
             margin-bottom: 12px;
-        }
+            font-family: 'Nunito', sans-serif;
+        }}
 
-        .cert-body-text {
-            font-size: clamp(14px, 3vw, 15.5px);
-            font-weight: 700;
-            color: var(--text-main);
-            line-height: 1.8;
-            margin: 14px 0;
-            text-align: justify;
-            text-align-last: center;
-        }
-
-        .cert-footer-meta {
+        .cert-serial-bar {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            border-top: 1.5px dashed var(--border-color);
-            padding-top: 14px;
-            margin-top: 14px;
-            font-size: 13px;
+            font-size: 12px;
             font-weight: 800;
-            color: var(--text-light);
+            color: #666;
+            border-bottom: 1px solid #E0D2C2;
+            padding-bottom: 8px;
+            margin-bottom: 14px;
             flex-wrap: wrap;
-            gap: 8px;
+            gap: 6px;
+        }}
+
+        .cert-body-text {
+            font-size: clamp(14px, 3.2vw, 16px);
+            font-weight: 700;
+            color: #242424;
+            line-height: 2.1;
+            margin: 16px 0;
+            text-align: justify;
+            text-align-last: justify;
+            letter-spacing: 0.5px;
+        }}
+
+        @media (max-width: 600px) {
+            .cert-body-text { text-align: left; text-align-last: left; }
+        }
+
+        .cert-seal-layout {
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1.5px dashed #D0C0AC;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .cert-meta-left {
+            text-align: left;
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #555;
+            line-height: 1.8;
+        }
+
+        .cert-stamps-center {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        /* 官方朱紅方印 (Official Red Seal) */
+        .red-seal-box {
+            width: 76px;
+            height: 76px;
+            border: 3.5px solid #C62828;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 235, 238, 0.4);
+            box-shadow: 0 0 8px rgba(198, 40, 40, 0.25);
+            transform: rotate(-3deg);
+            flex-shrink: 0;
+        }
+
+        .red-seal-text {
+            color: #C62828;
+            font-size: 11.5px;
+            font-weight: 900;
+            line-height: 1.25;
+            letter-spacing: 1px;
+            text-align: center;
+            font-family: 'Noto Sans TC', serif;
+        }
+
+        /* 官方金箔防偽鋼印 (Gold Foil Rosette) */
+        .gold-rosette-badge {
+            width: 78px;
+            height: 78px;
+            flex-shrink: 0;
+            filter: drop-shadow(0 4px 8px rgba(194, 150, 72, 0.35));
+        }
+
+        /* 列印證書專用優化樣式 */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #scoreBoard, #scoreBoard * {
+                visibility: visible;
+            }
+            #sdlCertificate, #sdlCertificate * {
+                visibility: visible;
+            }
+            #scoreBoard {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                background: white !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            #sdlCertificate {
+                max-width: 100% !important;
+                margin: 20px auto !important;
+                page-break-inside: avoid;
+            }
+            .meme-wrapper, .email-receipt-badge, .quiz-actions, nav, header, footer, .sticky-timer-dock {
+                display: none !important;
+            }
         }
 
         .score-user-title {
@@ -2874,16 +3006,64 @@
                     </button>
                 </div>
 
+                <!-- 政府與特許機構規格：數位金融防詐自主學習結業認證書 -->
                 <div class="sdl-certificate-card" id="sdlCertificate">
-                    <div class="cert-org-header">盛欣網絡科技 ｜ 盛碁網絡科技 數位教育訓練中心</div>
-                    <div class="cert-main-title">🎓 自主學習結業能力認證書</div>
-                    <div class="cert-body-text" id="certBody">
-                        茲證明學員 <strong id="certBodyName" style="color: var(--rust); font-size: 18px;">——</strong>（所屬部門：<span id="certBodyDept">——</span>），已依據成人自主學習標準，完整修習《AI金融進階與詐騙情境模擬》全套五大核心模組，完成情境對話實務演練、深層心理防護探討與 S-T-O-P 決策剎車實踐，並於綜合評量測驗中展現優異之金融資安防衛與風險識詐能力，成績合格，特頒此證。
-                    </div>
-                    <div class="cert-footer-meta">
-                        <span>認證時數：2.0 小時</span>
-                        <span>證書編號：<strong id="certSerialNo">SX-SDL-2026-0000</strong></span>
-                        <span>核發日期：<span id="certIssueDate">2026年9月11日</span></span>
+                    <div class="cert-border-inner">
+                        <!-- 四角防偽裝飾 -->
+                        <div class="cert-corner-deco corner-tl"></div>
+                        <div class="cert-corner-deco corner-tr"></div>
+                        <div class="cert-corner-deco corner-bl"></div>
+                        <div class="cert-corner-deco corner-br"></div>
+
+                        <!-- 官方頒發機構 -->
+                        <div class="cert-org-header">
+                            <img src="sx_logo.png" alt="盛欣" style="height: 24px; width: auto; vertical-align: middle;">
+                            <span>盛欣網絡科技股份有限公司 ｜ 盛碁網絡科技有限公司</span>
+                        </div>
+                        
+                        <!-- 證書正式大標題 -->
+                        <div class="cert-main-title">自主學習結業能力認證書</div>
+                        <div class="cert-subtitle-en">Certificate of Financial Security & Anti-Fraud Competency</div>
+
+                        <!-- 官方發文字號與驗證碼 -->
+                        <div class="cert-serial-bar">
+                            <span>發文字號：<strong id="certDocNumber" style="color: var(--rust);">盛網訓證字第 1150918-0000 號</strong></span>
+                            <span>考核制度：成人自主學習規程 (SDL Standard)</span>
+                        </div>
+
+                        <!-- 證書正式公文正文 (政府規範文案) -->
+                        <div class="cert-body-text">
+                            查學員 <strong id="certBodyName" style="color: var(--rust); font-size: 19px; border-bottom: 2px solid var(--tangerine); padding: 0 6px;">——</strong>（所屬單位：<span id="certBodyDept" style="font-weight: 800; color: #242424;">——</span>），參加本公司舉辦之『<strong>AI金融進階與詐騙情境模擬</strong>』數位自主學習專案訓練，修畢全套五大核心模組，並通過課後綜合能力評量測驗（評定總分：<strong id="certScoreVal" style="color: var(--rust); font-size: 18px;">0</strong> 分，達 70 分合格標準），具備識破各類金融詐欺、落實 S-T-O-P 決策防衛及防範 AI 深偽之專業知能，成績合格，特發給此證，以資證明。
+                        </div>
+
+                        <!-- 證書底部核發元數據、官方朱印與金箔鋼印 -->
+                        <div class="cert-seal-layout">
+                            <div class="cert-meta-left">
+                                <div>• 認證研習時數：<strong>2.0 小時 (全模組修畢)</strong></div>
+                                <div>• 考核方式：<strong>百題題庫隨機抽測綜合評量</strong></div>
+                                <div>• 證書編號：<strong id="certSerialNo" style="font-family: monospace; color: #333;">SX-SDL-2026-0000</strong></div>
+                                <div>• 核發日期：<span id="certIssueDate">中華民國 115 年 9 月 11 日</span></div>
+                            </div>
+
+                            <div class="cert-stamps-center">
+                                <!-- 官方朱紅方印 (Red Seal Stamp) -->
+                                <div class="red-seal-box" title="盛欣盛碁教育訓練審定專用印">
+                                    <div class="red-seal-text">
+                                        盛欣盛碁<br>網絡研訓<br>審定之印
+                                    </div>
+                                </div>
+
+                                <!-- 官方金箔防偽鋼印 (Gold Foil Competency Rosette SVG) -->
+                                <svg class="gold-rosette-badge" viewBox="0 0 100 100">
+                                    <circle cx="50" cy="50" r="46" fill="#F4E5BE" stroke="#C29648" stroke-width="2.5"/>
+                                    <circle cx="50" cy="50" r="38" fill="#FFFDF8" stroke="#8A682D" stroke-width="1.5" stroke-dasharray="3 2"/>
+                                    <polygon points="50,14 53,24 64,24 55,30 58,40 50,34 42,40 45,30 36,24 47,24" fill="#C29648"/>
+                                    <text x="50" y="52" text-anchor="middle" font-size="7.5" font-weight="900" fill="#8A5214" font-family="'Nunito', sans-serif" letter-spacing="0.5">COMPETENCY</text>
+                                    <text x="50" y="62" text-anchor="middle" font-size="9" font-weight="950" fill="#C62828" font-family="'Noto Sans TC', sans-serif">合格認證</text>
+                                    <text x="50" y="71" text-anchor="middle" font-size="6" font-weight="800" fill="#666" font-family="'Nunito', sans-serif">VERIFIED</text>
+                                </svg>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -3704,11 +3884,20 @@
 
                 if (certBodyName) certBodyName.innerText = finalUserName;
                 if (certBodyDept) certBodyDept.innerText = finalUserDept;
+                
+                const certScoreEl = document.getElementById('certScoreVal');
+                if (certScoreEl) certScoreEl.innerText = score;
+
+                const randCode = Math.floor(1000 + Math.random() * 9000);
+                const docNumEl = document.getElementById('certDocNumber');
+                if (docNumEl) docNumEl.innerText = `盛網訓證字第 1150918-${randCode} 號`;
+
                 if (certSerialNo) {
-                    const randCode = Math.floor(1000 + Math.random() * 9000);
                     certSerialNo.innerText = `SX-SDL-2026-${randCode}`;
                 }
-                if (certIssueDate) certIssueDate.innerText = examDate;
+                if (certIssueDate) {
+                    certIssueDate.innerText = `中華民國 115 年 9 月 11 日 (2026/09/11)`;
+                }
             }
 
             board.style.display = 'block';
