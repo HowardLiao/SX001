@@ -1347,223 +1347,294 @@
         <!-- TAB 1: 現狀趨勢與核心心理 -->
         <section id="overview" class="tab-panel active">
             <div class="section-header">
-                <h2>現狀分析：假投資損失居冠</h2>
-                <p class="lead">根據內政部警政署 165 打詐儀錶板，假投資依然是社會財物損失最高、破壞力最強的詐騙類型。</p>
+                <h2>1. 現狀分析與詐騙核心心理學</h2>
+                <p class="lead">根據內政部警政署 165 打詐儀錶板最新統計，假投資依然是全台財物損失最高、危害最烈的詐騙型態。本模組深度解構詐騙集團的產業現狀、滲透漏斗與人性弱點操控機制。</p>
             </div>
 
+            <!-- 單元 1.1: 165 打詐儀錶板數據全景分析 -->
             <div class="card card-tangerine">
-                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg> 2026 近期常見高風險手法與演進路徑</h3>
+                <span class="tag tag-news">單元 1.1 數據透視</span>
+                <h3><svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M16 6l2.29 2.29-4.88 4.88-4-4L2 16.59 3.41 18l6-6 4 4 6.3-6.29L22 12V6z"/></svg> 2026 台灣金融詐騙態勢與四大高風險型態</h3>
                 <div class="grid-2" style="margin-top: 15px;">
                     <div>
-                        <ul style="padding-left: 20px; line-height: 2; font-weight: 700; color: var(--text-light);">
-                            <li><strong>假投資群組：</strong>利用 Facebook/IG 廣告導入 LINE，製造全體學員獲利之集體假象。</li>
-                            <li><strong>假交友投資（殺豬盤）：</strong>於社群平台長線搭訕，以情感為抵押品誘導出資。</li>
-                            <li><strong>假金融專員：</strong>冒充理專或專家，以「AI高勝率選股」、「保本保證獲利」為吸金話術。</li>
-                            <li><strong>AI 深偽技術 (Deepfake)：</strong>利用變聲與生成視訊冒充親友或檢警公署，製造恐懼。</li>
+                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
+                            根據警政署 165 統計，各類詐騙中「假投資詐騙」單件平均財損超過數百萬元，總損金額佔全體詐騙 <strong>50% 以上</strong>。現代詐騙已從亂槍打鳥演化為高度組織化、AI 賦能的精密產業鏈：
+                        </p>
+                        <ul style="padding-left: 20px; line-height: 1.9; font-weight: 700; color: var(--text-light);">
+                            <li><strong>假投資群組 (佔比 48%)：</strong>透過 FB/IG/Threads 投放「免費飆股教學、AI 量化模型」廣告，引流至 LINE 封閉群組進行集體催眠。</li>
+                            <li><strong>假交友投資 / 殺豬盤 (佔比 26%)：</strong>於交友軟體與社群長線搭訕，耗費數月建立深厚感情依賴，再以「為共同未來」誘導投入黑箱虛幣/外匯。</li>
+                            <li><strong>假金融專員與權威投顧 (佔比 14%)：</strong>偽造金管會證書、銀行工作證，以「AI 運算絕對保本、年化 20% 固定配息」為誘餌吸金。</li>
+                            <li><strong>AI 深偽變臉變聲 (佔比 12%)：</strong>截取數秒公開影音即可複製親友或檢警聲音與即時視訊，製造極度恐懼逼迫交付財產。</li>
                         </ul>
                     </div>
-                    <div style="background: var(--card-subtle); padding: 18px; border-radius: 12px; border: 1px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;">
-                        <h4 style="color: var(--rust); margin-bottom: 8px; font-size: 16px;">🚨 標準核心滲透路徑：</h4>
-                        <div style="font-weight: 900; color: var(--tangerine); font-size: 17px; line-height: 1.8;">
-                            社群媒體誘餌廣告 ➔ LINE 封閉群組建立信任 ➔ 偽冒交易APP操弄數據 ➔ 拒絕出金強索保證金
+                    <div style="background: var(--card-subtle); padding: 22px; border-radius: 14px; border: 1.5px solid var(--border-color); display: flex; flex-direction: column; justify-content: center;">
+                        <h4 style="color: var(--rust); margin-bottom: 10px; font-size: 17px; font-weight: 900;">🚨 詐騙集團「四階滲透漏斗」標準 SOP：</h4>
+                        <div style="display: flex; flex-direction: column; gap: 10px; font-size: 14px; font-weight: 800;">
+                            <div style="background: white; padding: 8px 12px; border-radius: 8px; border-left: 4px solid var(--tangerine);">
+                                <strong style="color: var(--tangerine);">第一階・誘餌觸及：</strong>社群演算法廣告，宣稱免費領取飆股明牌或專家公益帶單。
+                            </div>
+                            <div style="background: white; padding: 8px 12px; border-radius: 8px; border-left: 4px solid var(--amber);">
+                                <strong style="color: var(--amber);">第二階・同溫層洗腦：</strong>加入數百人群組，95% 假學員暗樁天天貼出百萬獲利截圖。
+                            </div>
+                            <div style="background: white; padding: 8px 12px; border-radius: 8px; border-left: 4px solid var(--rust);">
+                                <strong style="color: var(--rust);">第三階・微額甜頭：</strong>指導下載側載黑箱 APP，初次小額投入並成功出金獲利 8%~15%。
+                            </div>
+                            <div style="background: white; padding: 8px 12px; border-radius: 8px; border-left: 4px solid #D32F2F;">
+                                <strong style="color: #D32F2F);">第四階・斷頭收割：</strong>誘使投入全部積蓄或房屋抵押，提領時索求 20% 保證金後封鎖。
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <div class="section-header" style="margin-top: 40px;">
+            <!-- 單元 1.2: 詐騙核心心理學解構 -->
+            <div class="section-header" style="margin-top: 35px;">
                 <h2>詐騙的核心邏輯：不是研究股票，而是研究人</h2>
                 <p class="lead">高報酬往往不是在販售投資，而是在販售你的焦慮，用高利息包裝希望。</p>
             </div>
 
             <div class="grid-3">
                 <div class="card card-amber">
-                    <span class="tag tag-discuss">心理洞察</span>
-                    <h3>他們精準掌握你的恐懼</h3>
-                    <p style="color: var(--text-light); font-weight: 700;">
-                        退休族害怕失去老本無依無靠；人身父母害怕孩子資源不足；家庭主婦害怕家庭經濟地位被邊緣化。每種恐懼都有專屬話術。
-                    </p>
+                    <span class="tag tag-discuss">心理洞察一</span>
+                    <h3>精準鎖定各族群的核心恐懼</h3>
+                    <ul style="padding-left: 18px; line-height: 1.8; font-size: 14px; font-weight: 700; color: var(--text-light); margin-top: 6px;">
+                        <li><strong>中高齡退休族：</strong>害怕老後無依、害怕醫療長照費用拖累子女 ➔ 兜售「每月固定高配息」。</li>
+                        <li><strong>為人父母者：</strong>害怕孩子未來競爭力不足、買不起房 ➔ 兜售「為下一代留存翻倍基金」。</li>
+                        <li><strong>家庭主婦族：</strong>害怕經濟話語權邊緣化、缺乏安全感 ➔ 兜售「自己也能在家賺大錢」。</li>
+                        <li><strong>年輕上班族：</strong>害怕階級固化、薪水追不上房價 ➔ 兜售「AI飆股翻倍，年輕就財富自由」。</li>
+                    </ul>
                 </div>
                 <div class="card card-rust">
-                    <span class="tag tag-news">陷阱操弄</span>
-                    <h3>高報酬販售的是焦慮</h3>
-                    <p style="color: var(--text-light); font-weight: 700;">
-                        詐騙集團從不正面談論風險，而是透過虛假的暴利刺激「害怕錯過（FOMO）」的心態，讓人因為渴望解決焦慮而交出本金。
+                    <span class="tag tag-news">心理洞察二</span>
+                    <h3>「販售焦慮」與「造夢機制」</h3>
+                    <p style="color: var(--text-light); font-weight: 700; font-size: 14px; line-height: 1.8;">
+                        詐騙集團深諳現代人的生活焦慮。他們從不主動討論下行市場風險，而是透過虛構的暴利數字，刺激「害怕錯過（FOMO）」與「希望迅速翻身」的非理性渴求。<br><br>
+                        受害者交出存款的那一刻，買的其實不是那個聽不懂的金融模型，而是「從此不用再為錢擔憂」的虛假安全感。
                     </p>
                 </div>
                 <div class="card card-tangerine">
-                    <span class="tag tag-lesson">防禦底層</span>
-                    <h3>會賺錢更要懂得守住錢</h3>
-                    <p style="color: var(--text-light); font-weight: 700;">
-                        懂投資更要懂風險。AI 可以成為理財輔助工具，但最後保護個人與家庭安全底線的，永遠是清醒的金融素養與查證習慣。
-                    </p>
+                    <span class="tag tag-lesson">心理洞察三</span>
+                    <h3>「信任瓦解與防線破防」三部曲</h3>
+                    <ul style="padding-left: 18px; line-height: 1.8; font-size: 14px; font-weight: 700; color: var(--text-light); margin-top: 6px;">
+                        <li><strong>1. 降維共情：</strong>傾聽你的煩惱，分享自己的奮鬥史，營造「只有我最懂你、為你著想」的假象。</li>
+                        <li><strong>2. 羊群見證：</strong>利用大量暗樁帳號洗版感謝老師，讓人產生「大家都上車了，只有我還在猶豫」的集體焦慮。</li>
+                        <li><strong>3. 封閉決策：</strong>以「專案限時名額、偵查不公開」為由，切斷受害者與外界親友商討的機會。</li>
+                    </ul>
                 </div>
             </div>
 
+            <!-- 金句展示框 -->
             <div class="quote-box">
                 「詐騙集團不是先研究股票，而是先研究人。<br>
                 退休的人怕沒有退休金；媽媽怕孩子沒錢；家庭主婦怕沒有安全感。<br>
-                所以，他們賣的從來不是利息，而是希望。」
+                所以，他們賣的從來不是利息，而是希望。會賺錢不一定會守住錢；懂投資更要敬畏風險。」
                 <cite>—— Howard Liao Ph.D.《AI金融進階與詐騙情境模擬》</cite>
             </div>
         </section>
 
-        <!-- TAB 2: 五大經典情境模擬與深度解析 -->
+        <!-- TAB 2: 五大經典情境模擬與對話 -->
         <section id="scenarios" class="tab-panel">
             <div class="section-header">
-                <h2>五大經典 AI 與金融詐騙情境剖析</h2>
-                <p class="lead">結合真實司法新聞事件與 AI 逼真情境對話模擬，拆解詐騙話術的關鍵突破口。</p>
+                <h2>2. 五大經典 AI 與金融詐騙情境深度剖析</h2>
+                <p class="lead">結合真實司法新聞原型、犯罪手法演繹與高擬真多回合 AI 對話模擬，全面拆解各類話術的破防點與關鍵停損時機。</p>
             </div>
 
-            <!-- 案例 1 -->
+            <!-- 案例一 -->
             <div class="card card-tangerine">
-                <span class="tag tag-news">案例一：LINE飆股群組</span>
-                <h3>「老師帶你賺」── 先讓你賺，再騙你更多</h3>
+                <span class="tag tag-news">案例一：LINE飆股群組「老師帶你賺」</span>
+                <h3>先讓你賺，再騙你更多 ── 虛擬名師與假學員的集體催眠</h3>
                 <div class="grid-2">
                     <div>
-                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
-                            <strong>真實事件：</strong>60多歲退休婦女在 Facebook 看到「免費飆股教學」廣告加入群組。群內假學員洗版獲利截圖，老師私訊推薦「AI選股APP」。初期投入 10 萬元成功獲利並出金，隨後被鼓動加碼近 500 萬元，最終平台以「需補繳保證金、稅金」為由拒絕出金。
-                        </p>
-                        <div style="background: var(--yellow-light); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--amber);">
-                            <strong style="color: var(--rust);">💡 金融素養重點：</strong><br>
-                            能成功出金一次，絕不代表平台合法！先給甜頭是「養、套、殺」的標準誘餌。任何宣稱「保證獲利」、「AI高勝率無風險」皆為詐騙警訊。
+                        <div style="background: var(--card-subtle); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                            <strong style="color: var(--rust); font-size: 15px;">📰 新聞原型還原：</strong>
+                            <p style="font-size: 14px; color: var(--text-light); font-weight: 600; margin-top: 4px; line-height: 1.6;">
+                                60多歲退休婦女在社群平台看到「AI選股獲利教學」廣告，加入LINE群組。群內每日數十名學員張貼大額獲利截圖。在助理指導下下載專屬操盤APP，前期投入10萬元成功獲利並出金8,000元。隨後在老師鼓動下抵押房產追加近500萬元，最終平台以「需補繳20%保證金」為由鎖定帳戶，負責人失聯。
+                            </p>
+                        </div>
+                        <div style="background: var(--yellow-light); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--amber);">
+                            <strong style="color: var(--rust); font-size: 15px;">💡 詐騙心理剖析與停損關鍵：</strong>
+                            <ul style="padding-left: 18px; font-size: 13.5px; color: var(--text-main); font-weight: 700; line-height: 1.7; margin-top: 4px;">
+                                <li><strong>出金誘餌：</strong>能成功出金一次，絕不代表平台合法！這是「養、套、殺」中建立信任的核心釣餌。</li>
+                                <li><strong>暗樁效應：</strong>群組內熱烈留言者 99% 皆為同夥人頭帳號或自動機器人。</li>
+                                <li><strong>關鍵停損點：</strong>要求下載非官方商店 APP，或要求匯款至「個人戶名/工程行」帳號時，必須立即停手查證！</li>
+                            </ul>
                         </div>
                     </div>
                     <div>
                         <div class="chat-simulation">
-                            <div class="chat-sender">📱 LINE 投資群組模擬</div>
+                            <div class="chat-sender">📱 LINE 投資群組深度對話模擬</div>
                             <div class="chat-msg attacker">
-                                <strong>【飆股分析師 老師】：</strong>恭喜林大姊！今天跟單又賺 8%，AI 模型預測下週還有大行情，許多會員都追加 200 萬了。
+                                <strong>【助理 小薇】：</strong>恭喜林大姊！今天跟著張老師 AI 量化模型佈局，單日又獲利 8.5%，目前已有 30 位會員申請加碼！
                             </div>
                             <div class="chat-msg victim">
-                                <strong>【林大姊】：</strong>老師，我戶頭只剩退休金 50 萬元，這樣也可以加嗎？
+                                <strong>【林大姊】：</strong>小薇，我上次投入的 10 萬元真的順利出金 8,000 元到我台銀戶頭了！真的很感謝老師！
                             </div>
                             <div class="chat-msg attacker">
-                                <strong>【飆股分析師 老師】：</strong>沒問題，我們這套 AI 演算法回測勝率高達 95%，現在加碼下個月就能翻倍！
+                                <strong>【特聘分析師 張老師】：</strong>林大姊，這只是前菜。下週我們 AI 模型偵測到主力資金即將發動翻倍主升段，但機構專戶名額有限，至少需追加 300 萬才能鎖定席位。
+                            </div>
+                            <div class="chat-msg victim">
+                                <strong>【林大姊】：</strong>可是我戶頭只剩退休金 50 萬，不夠 300 萬怎麼辦？
+                            </div>
+                            <div class="chat-msg attacker">
+                                <strong>【特聘分析師 張老師】：</strong>可以先用自住房產向我們合作的低利金主辦理二胎貸款，兩週翻倍後立刻還清，很多學員都這樣做！
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 案例 2 -->
-            <div class="card card-rust">
+            <!-- 案例二 -->
+            <div class="card card-rust" style="margin-top: 25px;">
                 <span class="tag tag-discuss">案例二：假交友投資（殺豬盤）</span>
-                <h3>「陪伴兩個月，只為騙走存款」── 愛情與金錢的致命混淆</h3>
+                <h3>陪伴兩個月，只為騙走存款 ── 愛情與金錢的致命綁架</h3>
                 <div class="grid-2">
                     <div>
-                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
-                            <strong>真實事件：</strong>家庭主婦在社群平台結識自稱在海外工作的男子，每天早晚長達兩個月噓寒問暖建立深厚信任。對方以「為了我們兩個的未來一起變好」為由，指導在特定外匯/虛幣平台下單。帳面數字不斷上漲，但申請提領時卻要求繳交巨額保證金，積蓄被洗劫一空。
-                        </p>
-                        <div style="background: var(--yellow-light); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--rust);">
-                            <strong style="color: var(--rust);">💡 金融素養重點：</strong><br>
-                            真正的伴侶不會催促你投入無法查證的黑箱平台。感情一旦混入未公開金錢投資，100% 是詐騙集團的「長線養套殺」。
+                        <div style="background: var(--card-subtle); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                            <strong style="color: var(--rust); font-size: 15px;">📰 新聞原型還原：</strong>
+                            <p style="font-size: 14px; color: var(--text-light); font-weight: 600; margin-top: 4px; line-height: 1.6;">
+                                家庭主婦在社群平台結識自稱在新加坡工作的工程師，對方早晚噓寒問暖長達兩個月。等受害者卸下防線後，男子開始不經意透露自己利用外匯與加密貨幣合約賺取高額利潤，並以「為了我們兩個未來買房一起生活」為由指導操作。受害者投入 200 萬積蓄後，提款遭要求補繳稅金，方知受騙。
+                            </p>
+                        </div>
+                        <div style="background: var(--yellow-light); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--rust);">
+                            <strong style="color: var(--rust); font-size: 15px;">💡 詐騙心理剖析與停損關鍵：</strong>
+                            <ul style="padding-left: 18px; font-size: 13.5px; color: var(--text-main); font-weight: 700; line-height: 1.7; margin-top: 4px;">
+                                <li><strong>長線養套殺：</strong>殺豬盤極具耐心，前期絕不提錢，專注攻克孤單感與情感依賴。</li>
+                                <li><strong>情緒勒索：</strong>將「是否願意出資」與「是否在乎這段感情、是否信任我」綁定。</li>
+                                <li><strong>關鍵停損點：</strong>網路認識從未見過面的對象，只要提及「代操、開戶、外匯、買虛擬幣」，100% 為詐騙！</li>
+                            </ul>
                         </div>
                     </div>
                     <div>
                         <div class="chat-simulation">
-                            <div class="chat-sender">💬 私聊軟體對話模擬</div>
+                            <div class="chat-sender">💬 私聊軟體長線對話模擬</div>
                             <div class="chat-msg attacker">
-                                <strong>【海外工程師 Jason】：</strong>我不是要妳投資，我只是看妳辛苦，希望妳跟我一起變好，有共同的未來。
+                                <strong>【海外工程師 Jason】：</strong>早安親愛的，記得吃早餐。看妳每天為家庭忙碌卻得不到體諒，我真的很心疼。
                             </div>
                             <div class="chat-msg victim">
-                                <strong>【受害者】：</strong>但我完全不懂加密貨幣跟外匯...
+                                <strong>【受害者】：</strong>謝謝你每天陪我聊天，這是我每天最放鬆的時刻...
                             </div>
                             <div class="chat-msg attacker">
-                                <strong>【Jason (三天後)】：</strong>傻瓜，有我在！我今天跟著系統又賺了 20 萬，妳只要開戶聽我指令操作就好。
+                                <strong>【Jason (三天後)】：</strong>我不是要妳投資，我只是希望妳跟我一起變好。我今天跟著系統節點又賺了 20 萬，妳只要開戶聽我指令操作就好，賺到錢我們就能早日見面！
+                            </div>
+                            <div class="chat-msg victim">
+                                <strong>【受害者】：</strong>但我完全不懂加密貨幣，會不會賠錢？
+                            </div>
+                            <div class="chat-msg attacker">
+                                <strong>【Jason】：</strong>傻瓜，有我在怎麼可能讓妳賠？連這點信任都不給我，難道妳不想為我們的未來努力嗎？
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 案例 3 -->
-            <div class="card card-amber">
-                <span class="tag tag-lesson">案例三：假理專與假金融專家</span>
-                <h3>「權威光環與保本陷阱」── 披著西裝的高科技謊言</h3>
+            <!-- 案例三 -->
+            <div class="card card-amber" style="margin-top: 25px;">
+                <span class="tag tag-lesson">案例三：假理專與假專家保證高獲利</span>
+                <h3>權威光環與保本陷阱 ── 披著西裝的高科技謊言</h3>
                 <div class="grid-2">
                     <div>
-                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
-                            <strong>真實事件：</strong>詐騙集團偽冒銀行高級理專或投資投顧專家，身穿西裝出示偽造金管會證書與識別證，宣稱掌有「AI大數據選股、內線主力佈局、絕對固定年化20%保本收益」。民眾差點將數百萬元匯入其指定的私人受託帳戶，幸得臨櫃行員察覺阻攔。
-                        </p>
-                        <div style="background: var(--yellow-light); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--amber);">
-                            <strong style="color: var(--rust);">💡 金融素養重點：</strong><br>
-                            真正的合法金融從業人員，受法規嚴格約束「必須揭露市場下行風險」；在金融市場中，「保證獲利」與「絕對保本」本身就是最大的詐欺特徵！
+                        <div style="background: var(--card-subtle); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                            <strong style="color: var(--rust); font-size: 15px;">📰 新聞原型還原：</strong>
+                            <p style="font-size: 14px; color: var(--text-light); font-weight: 600; margin-top: 4px; line-height: 1.6;">
+                                詐騙集團冒充知名金控資深理財顧問，身穿高級西裝出示偽造的金管會核准執照，宣稱掌握「全球 AI 量化大數據套利系統」，保證年化報酬率 20% 且本金絕對保本。民眾差點將 450 萬元匯入其指定的受託私人專戶，幸得臨櫃行員察覺受款帳戶異常並報警及時攔阻。
+                            </p>
+                        </div>
+                        <div style="background: var(--yellow-light); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--amber);">
+                            <strong style="color: var(--rust); font-size: 15px;">💡 詐騙心理剖析與停損關鍵：</strong>
+                            <ul style="padding-left: 18px; font-size: 13.5px; color: var(--text-main); font-weight: 700; line-height: 1.7; margin-top: 4px;">
+                                <li><strong>權威偏誤 (Authority Bias)：</strong>利用專業名詞、西裝、精美識別證使人放鬆理性批判能力。</li>
+                                <li><strong>保本高利矛盾：</strong>高報酬必定伴隨高風險，「保證獲利」與「絕對保本」本身就是最大違法特徵。</li>
+                                <li><strong>關鍵停損點：</strong>合法金融機構從業人員依法必揭露風險；凡要求匯款至個人帳號者必是詐騙。</li>
+                            </ul>
                         </div>
                     </div>
                     <div>
                         <div class="chat-simulation">
-                            <div class="chat-sender">👔 假冒理專話術模擬</div>
+                            <div class="chat-sender">👔 假冒理專權威話術模擬</div>
                             <div class="chat-msg attacker">
-                                <strong>【投顧特聘資深理專】：</strong>廖先生您好，我們機構專屬的 AI 量化模組每天掃描全球跨國資產，年化 20% 是常態，最重要的是「保本零風險」。
+                                <strong>【投顧資深副總裁 陳顧問】：</strong>廖先生您好，這是我們通過金管會備查的 AI 量化模組，回測十年間年化報酬穩居 22.5%，最重要的是由母公司信託全額「保本保息」。
                             </div>
                             <div class="chat-msg victim">
-                                <strong>【投資人】：</strong>投資真的完全不會賠嗎？
+                                <strong>【投資人】：</strong>真的完全零風險嗎？正規基金不是都有波動？
                             </div>
                             <div class="chat-msg attacker">
-                                <strong>【投顧特聘資深理專】：</strong>我們背後有大股東擔保信託，名額只剩兩個，今天沒匯款資格就釋出給其他VIP了！
+                                <strong>【陳顧問】：</strong>一般大眾商品才有風險，這是我們針對高淨值 VIP 的內部機構對沖額度。全台僅剩最後兩個名額，今天 15:30 前未匯入專用受託帳戶就視同棄權！
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 案例 4 -->
-            <div class="card card-tangerine">
+            <!-- 案例四 -->
+            <div class="card card-tangerine" style="margin-top: 25px;">
                 <span class="tag tag-news">案例四：實體黃金／貴金屬投資詐騙</span>
-                <h3>「眼見為憑的迷思」── 收到真金，反而引爆沉沒成本</h3>
+                <h3>收到真貨反而更危險 ── 沉沒成本效應的無底深淵</h3>
                 <div class="grid-2">
                     <div>
-                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
-                            <strong>真實事件：</strong>以實體黃金、貴金屬避險為名，前期真的將小額實體金條快遞交付給投資人，徹底瓦解受害者心防。隨後以「國際金價暴漲、大量批發進貨、需補齊最後100萬差額否則取消資格並沒收前期款項」為由，一步步勒索數百萬本金。
-                        </p>
-                        <div style="background: var(--yellow-light); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--tangerine);">
-                            <strong style="color: var(--rust);">💡 金融素養重點：</strong><br>
-                            警惕「沉沒成本效應」！因為前期投入了巨資或嘗到甜頭，受害者往往不願承認受騙而持續「補款救資產」，勇於認賠停損才能保全餘命資金。
+                        <div style="background: var(--card-subtle); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                            <strong style="color: var(--rust); font-size: 15px;">📰 新聞原型還原：</strong>
+                            <p style="font-size: 14px; color: var(--text-light); font-weight: 600; margin-top: 4px; line-height: 1.6;">
+                                以實體黃金避險投資為名，前期真的將 1 條實體真金快遞寄送給投資人，徹底打破受害人戒心。隨後平台宣稱國際金價即將暴漲，誘導受害者陸續匯款 350 萬元批發進貨。後期平台以「配額管制、帳戶差額 100 萬」為由勒索，威脅若不補足將沒收先前所有貨款，受害者為保全資產四處借貸。
+                            </p>
+                        </div>
+                        <div style="background: var(--yellow-light); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--tangerine);">
+                            <strong style="color: var(--rust); font-size: 15px;">💡 詐騙心理剖析與停損關鍵：</strong>
+                            <ul style="padding-left: 18px; font-size: 13.5px; color: var(--text-main); font-weight: 700; line-height: 1.7; margin-top: 4px;">
+                                <li><strong>實體誘餌：</strong>眼見為憑的迷思。騙徒不惜成本給予初期真貨，是為了後續掠奪數十倍本金。</li>
+                                <li><strong>沉沒成本 (Sunk Cost)：</strong>「已經投入幾百萬了，不補錢就全沒了」的執念讓人越陷越深。</li>
+                                <li><strong>關鍵停損點：</strong>只要出現「不補款就沒收前款」的勒索話術，勇敢停損認賠才是保命關鍵！</li>
+                            </ul>
                         </div>
                     </div>
                     <div>
                         <div class="chat-simulation">
                             <div class="chat-sender">📦 貴金屬交易平台客服模擬</div>
                             <div class="chat-msg attacker">
-                                <strong>【平台高級客服】：</strong>王先生，您上次收到的 1 條真金確認無誤吧？目前金價即將迎來歷史主升段！
+                                <strong>【平台高級主管】：</strong>王先生，您上次收到的實體金條經銀樓檢驗確認是純金無誤吧？目前國際金價正處於歷史大噴發前夕！
                             </div>
                             <div class="chat-msg victim">
-                                <strong>【投資人】：</strong>那我的第二批貨什麼時候能出貨呢？
+                                <strong>【王先生】：</strong>那我的第二批 300 萬金條什麼時候能出貨？
                             </div>
                             <div class="chat-msg attacker">
-                                <strong>【平台高級客服】：</strong>總部目前全面配額管制，您帳戶還差 100 萬會員保證金，若今日 15:30 前未補足，之前的 300 萬配額與貨款將依約作廢！
+                                <strong>【平台高級主管】：</strong>因總部配額管制，您帳戶還差 100 萬保證金。若今日未補足，依合約規定會員資格將取消，先前的 300 萬貨款亦將全數作廢沒收！
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- 案例 5 -->
-            <div class="card card-rust">
-                <span class="tag tag-danger">案例五：假檢警與 AI 深偽 (Deepfake)</span>
-                <h3>「恐懼行銷與科技偽裝」── 變臉變聲的公權力恐嚇</h3>
+            <!-- 案例五 -->
+            <div class="card card-rust" style="margin-top: 25px;">
+                <span class="tag tag-danger">案例五：假檢警與 AI 深偽技術 (Deepfake)</span>
+                <h3>恐懼行銷與高科技偽裝 ── 變臉變聲的公權力恐嚇</h3>
                 <div class="grid-2">
                     <div>
-                        <p style="font-weight: 700; color: var(--text-light); margin-bottom: 12px;">
-                            <strong>真實事件：</strong>受害者接到假冒警察與檢察官電話，對方利用 AI 變聲技術或仿造親友視訊，宣稱當事人帳戶涉及重特大洗錢洗黑錢案。以「偵查不公開、違者收押禁見」為由阻絕其與外界求援，甚至要求其將全部存款提領購買黃金，交由假便衣特警「監管保管」。
-                        </p>
-                        <div style="background: var(--yellow-light); padding: 12px 16px; border-radius: 8px; border-left: 4px solid var(--rust);">
-                            <strong style="color: var(--rust);">💡 金融素養重點：</strong><br>
-                            真正的檢警司法機關「絕對不會透過 LINE 或通訊軟體辦案」，更絕對不會要求民眾「提領現金、購買黃金或交付存摺密碼作監管」！
+                        <div style="background: var(--card-subtle); padding: 14px 18px; border-radius: 10px; border: 1px solid var(--border-color); margin-bottom: 12px;">
+                            <strong style="color: var(--rust); font-size: 15px;">📰 新聞原型還原：</strong>
+                            <p style="font-size: 14px; color: var(--text-light); font-weight: 600; margin-top: 4px; line-height: 1.6;">
+                                受害者接到假冒戶政所與警察局電話，利用 AI 變聲技術合成嚴厲語氣，聲稱其帳戶涉及跨國特大洗錢黑金案。歹徒以通訊軟體傳送偽造之「最高檢察署強制凍結處分書」，並以「偵查不公開、違者立即聲押禁見」恫嚇其不得告知家人，最終指示將存款提現換成黃金，交由假特偵專員「代管保管」。
+                            </p>
+                        </div>
+                        <div style="background: var(--yellow-light); padding: 14px 18px; border-radius: 10px; border-left: 4px solid var(--rust);">
+                            <strong style="color: var(--rust); font-size: 15px;">💡 詐騙心理剖析與停損關鍵：</strong>
+                            <ul style="padding-left: 18px; font-size: 13.5px; color: var(--text-main); font-weight: 700; line-height: 1.7; margin-top: 4px;">
+                                <li><strong>極度恐懼與認知窄化：</strong>公權力威嚇引發巨大恐慌，使大腦進入戰逃反應，喪失常識思考力。</li>
+                                <li><strong>偵查不公開是辦案人員義務：</strong>偵查不公開是約束檢警司法人員，絕非恐嚇民眾不得諮詢親友的工具！</li>
+                                <li><strong>關鍵停損點：</strong>檢警絕不會用 LINE 辦案，更絕對沒有所謂「資產監管專戶」或「專員代管現金黃金」！</li>
+                            </ul>
                         </div>
                     </div>
                     <div>
                         <div class="chat-simulation">
                             <div class="chat-sender">⚖️ 偽冒司法機關電話模擬</div>
                             <div class="chat-msg attacker">
-                                <strong>【自稱地檢署張檢察官】：</strong>陳女士，你的帳戶涉及跨國特大洗錢洗錢案，這份最高檢察署傳票你先看清楚！
+                                <strong>【自稱特偵組 張主任檢察官】：</strong>陳女士，你的帳戶涉及重特大洗錢案，這份最高檢察署凍結傳票你看清楚！
                             </div>
                             <div class="chat-msg victim">
-                                <strong>【陳女士】：</strong>長官，我一生清白教書，怎麼可能涉案？我要打電話問我兒子...
+                                <strong>【陳女士】：</strong>長官，我一生清白教書，絕不可能洗錢！我打電話給我兒子問一下...
                             </div>
                             <div class="chat-msg attacker">
-                                <strong>【自稱地檢署張檢察官】：</strong>住口！本案受偵查不公開嚴格限制，洩露者立刻聲押！請在兩小時內將帳戶資產換成實體黃金交由特偵專員監管證明清白！
+                                <strong>【自稱張檢察官】：</strong>住口！本案受刑事訴訟法偵查不公開嚴格限制，敢洩露一句立刻派員聲押禁見！請在兩小時內將存款全數提現購買黃金，交由特派員保管以證明清白！
                             </div>
                         </div>
                     </div>
@@ -1574,37 +1645,71 @@
         <!-- TAB 3: 深度退休個案剖析 -->
         <section id="deepcase" class="tab-panel">
             <div class="section-header">
-                <h2>深度探討：「我不是想發財，我只是想安心退休」</h2>
-                <p class="lead">這不是貪心，這是一個關於中高齡長者深層恐懼的真實沉痛故事。</p>
+                <h2>3. 深度退休個案探討：「我不是想發財，我只是想安心退休」</h2>
+                <p class="lead">這不是貪心，這是一個關於中高齡長者深層恐懼與家庭責任的真實沉痛教訓。</p>
             </div>
 
+            <!-- 案例全景 -->
             <div class="card card-rust" style="background: #FFFDFB;">
-                <h3 style="font-size: 22px; color: var(--rust);">🚨 七十多歲婦人的真實處境與悲劇代價</h3>
-                <div style="line-height: 1.8; font-size: 16px; color: var(--text-main); margin-top: 10px;">
-                    <p><strong>【背景身家】：</strong>名下坐擁約 5,000 萬元的優質不動產，看似資產豐厚。</p>
-                    <p><strong>【真實痛點】：</strong>每月家庭基本生活、醫療與照護開支高達 15 ~ 20 萬元。她極度恐懼未來的退休準備金用罄，更害怕自己年老臥病後成為子女沉重的財務負擔。</p>
-                    <p><strong>【受騙過程】：</strong>熟識朋友介紹一項「民間借貸配息投資」，宣稱借款人是農會高層主管，每月固定高利配息，遠高於銀行定存。婦人認為投入 2,000 萬元產生的利息剛好足以打平每月開銷，不再需要向子女伸手。為了籌措更多本金，甚至將自住房屋抵押借貸了 1,500 萬元投入。</p>
-                    <p><strong>【悲慘結局】：</strong>借貸公司負責人捲款失聯，2,000 萬元老本徹底血本無歸。原本是不想拖累子女，最終卻每個月必須背負十幾萬的沉重房貸本息，讓全家人共同墜入經濟深淵。</p>
+                <h3 style="font-size: 22px; color: var(--rust);">🚨 七旬婦人兩千萬民間高利借貸慘案全景還原</h3>
+                <div style="line-height: 1.85; font-size: 15.5px; color: var(--text-main); margin-top: 12px;">
+                    <p><strong>【身家背景】：</strong>名下坐擁約 5,000 萬元的優質房產，外人看來經濟無虞、生活優渥。</p>
+                    <p><strong>【真實痛點】：</strong>每月家庭基本生活、長期照護與醫療開銷高達 15 ~ 20 萬元。她極度擔憂老後積蓄坐吃山空，更害怕年老臥病後成為子女沉重的經濟包袱。</p>
+                    <p><strong>【受騙過程】：</strong>熟識朋友介紹一項「民間借貸配息專案」，宣稱借款人是某農會高層主管，每月固定高利配息 1.5%~2%（年化 18%~24%）。婦人計算投入 2,000 萬元產生的利息剛好足以打平每月 20 萬生活費，不再需要向子女伸手。為了籌措足夠本金，甚至將自住房屋抵押借貸了 1,500 萬元全數投入。</p>
+                    <p><strong>【崩盤結局】：</strong>借貸公司負責人捲款失聯，2,000 萬元老本徹底血本無歸。原本是不想拖累子女，最終卻每個月必須背負十幾萬的銀行房貸本息，讓全家人共同墜入經濟深淵。</p>
                 </div>
             </div>
 
-            <div class="grid-2">
+            <!-- 換位思考與恐懼剖析 -->
+            <div class="grid-2" style="margin-top: 25px;">
                 <div class="card card-tangerine">
-                    <span class="tag tag-discuss">換位思考</span>
-                    <h3>請先安靜思考一分鐘：我們真正害怕的是什麼？</h3>
+                    <span class="tag tag-discuss">換位思考一分鐘</span>
+                    <h3>如果妳是她，我們真正害怕的是什麼？</h3>
+                    <p style="font-weight: 700; color: var(--text-light); margin-bottom: 8px;">
+                        她從來不是想揮霍買名牌或奢華享樂，她恐懼的是：
+                    </p>
                     <ul style="padding-left: 20px; line-height: 2; font-weight: 700; color: var(--text-light);">
-                        <li>害怕老了沒有穩定現金流收入。</li>
-                        <li>害怕生重病需要長照卻沒有醫療金。</li>
-                        <li>害怕失去自理能力，成為孩子眼中的負擔與累贅。</li>
-                        <li>眼看著通膨與固定存款一點一滴縮水的巨大無力感。</li>
+                        <li>害怕老了失去穩定現金流收入，失去尊嚴。</li>
+                        <li>害怕失能生病需要昂貴看護費，耗盡家產。</li>
+                        <li>害怕成為孩子眼中的沈重負擔與累贅。</li>
+                        <li>眼看著通膨與物價上漲，資產不斷縮水的無力焦慮。</li>
                     </ul>
                 </div>
-                <div class="card card-amber" style="display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: #FFF9F0;">
-                    <div style="font-size: 48px; margin-bottom: 10px;">🛡️</div>
-                    <h4 style="font-size: 22px; color: var(--rust); font-weight: 900; margin-bottom: 10px;">金融素養的本質</h4>
-                    <p style="font-size: 17px; font-weight: 700; color: var(--text-light); line-height: 1.7;">
-                        真正的財富，不是盲目追求市場最高報酬，而是讓自己在人生的任何階段，都有能力且有尊嚴地安心生活。
+                <div class="card card-amber" style="display: flex; flex-direction: column; justify-content: center; background: #FFF9F0;">
+                    <h4 style="font-size: 20px; color: var(--rust); font-weight: 900; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+                        🛡️ 深度省思：高報酬販售的是焦慮
+                    </h4>
+                    <p style="font-size: 15px; font-weight: 700; color: var(--text-light); line-height: 1.8;">
+                        這個案例比一般的「假投資 APP」更值得社會深思。中高齡長者面臨的真實處境，往往交織著對未來的強烈不安全感與對子女的愛。<br><br>
+                        <strong>防詐教育不能只講冰冷法條，唯有理解並化解長者的深層焦慮，才能建立最牢固的心理防火牆。</strong>
                     </p>
+                </div>
+            </div>
+
+            <!-- 金融素養真正教的三件大事 -->
+            <div class="card card-tangerine" style="margin-top: 25px;">
+                <h3>📚 金融素養不是教你賺最多，而是教你守護生活底線</h3>
+                <div class="grid-3" style="margin-top: 15px;">
+                    <div style="background: white; border: 1.5px solid var(--border-color); padding: 18px; border-radius: 12px;">
+                        <h4 style="color: var(--tangerine); font-size: 17px; margin-bottom: 8px;">第一件事：精算生活需要</h4>
+                        <p style="font-size: 13.5px; color: var(--text-light); font-weight: 700; line-height: 1.7;">
+                            不要被模糊的恐慌牽著走！具體盤點每月到底需要多少「必要開銷」與「彈性支出」，計算合理退休準備金缺口，避免因無邊際的恐懼追求高利冒險。
+                        </p>
+                    </div>
+                    <div style="background: white; border: 1.5px solid var(--border-color); padding: 18px; border-radius: 12px;">
+                        <h4 style="color: var(--tangerine); font-size: 17px; margin-bottom: 8px;">第二件事：構築三層防護網</h4>
+                        <p style="font-size: 13.5px; color: var(--text-light); font-weight: 700; line-height: 1.7;">
+                            <strong>1. 緊急預備金：</strong>準備 6 個月生活固定支出。<br>
+                            <strong>2. 適當保險：</strong>醫療與長照險轉嫁重大傷病風險。<br>
+                            <strong>3. 資產嚴格分散：</strong>絕不抵押唯一房產投資投機項目。
+                        </p>
+                    </div>
+                    <div style="background: white; border: 1.5px solid var(--border-color); padding: 18px; border-radius: 12px;">
+                        <h4 style="color: var(--tangerine); font-size: 17px; margin-bottom: 8px;">第三件事：決策四個拷問</h4>
+                        <p style="font-size: 13.5px; color: var(--text-light); font-weight: 700; line-height: 1.7;">
+                            任何投資前先自問：若賠光能生活嗎？我真懂賺錢邏輯嗎？對方為何無條件讓利？若家人要買我同意嗎？以客觀理性打破貪婪與盲從。
+                        </p>
+                    </div>
                 </div>
             </div>
         </section>
@@ -1612,40 +1717,41 @@
         <!-- TAB 4: 防詐五步驟與安全承諾 -->
         <section id="framework" class="tab-panel">
             <div class="section-header">
-                <h2>金融防護網建置：S-T-O-P 防詐五步驟</h2>
-                <p class="lead">AI 可以成為理財助手，但保護家庭財務安全的，始終是關鍵時刻踩剎車的冷靜判斷。</p>
+                <h2>4. 金融防護網建置：S-T-O-P 防詐五步驟與實踐承諾</h2>
+                <p class="lead">AI 可以成為理財助手，但保護家庭財務安全的，始終是關鍵時刻踩剎車的冷靜判斷與標準防禦 SOP。</p>
             </div>
 
+            <!-- STOP 五步驟與靈魂四問 -->
             <div class="grid-2">
                 <div class="card card-rust">
-                    <h3>🛑 S-T-O-P 決策剎車原則</h3>
+                    <h3>🛑 S-T-O-P 防詐決策剎車原則</h3>
                     <div style="margin-top: 15px; display: flex; flex-direction: column; gap: 14px;">
-                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                        <div style="display: flex; gap: 15px; align-items: flex-start; background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
                             <span style="background: var(--rust); color: white; font-weight: 900; font-size: 18px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">S</span>
                             <div>
-                                <strong style="font-size: 17px; color: var(--rust);">Stop (先不要匯款)</strong>
-                                <p style="font-size: 14px; color: var(--text-light);">暫停任何轉帳、提款、交付黃金或存摺密碼的動作，阻斷衝動。</p>
+                                <strong style="font-size: 16px; color: var(--rust);">Stop (先不要匯款・冷卻 24 小時)</strong>
+                                <p style="font-size: 13.5px; color: var(--text-light); margin-top: 2px;">暫停任何轉帳、提款、交付黃金或密碼的動作，中斷騙徒製造的急迫恐慌節奏。</p>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                        <div style="display: flex; gap: 15px; align-items: flex-start; background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
                             <span style="background: var(--tangerine); color: white; font-weight: 900; font-size: 18px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">T</span>
                             <div>
-                                <strong style="font-size: 17px; color: var(--tangerine);">Think (是不是太好賺？)</strong>
-                                <p style="font-size: 14px; color: var(--text-light);">天下沒有白吃的午餐，超額利息背後究竟隱藏了什麼致命風險？</p>
+                                <strong style="font-size: 16px; color: var(--tangerine);">Think (是不是太好賺？・推敲獲利本質)</strong>
+                                <p style="font-size: 13.5px; color: var(--text-light); margin-top: 2px;">天下沒有白吃的午餐！若真有穩賺暴利，對方為何不向銀行低利借款獨賺？</p>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                        <div style="display: flex; gap: 15px; align-items: flex-start; background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
                             <span style="background: var(--amber); color: white; font-weight: 900; font-size: 18px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">O</span>
                             <div>
-                                <strong style="font-size: 17px; color: var(--amber);">Observe (查證管道來源)</strong>
-                                <p style="font-size: 14px; color: var(--text-light);">查核公司登記、金管會許可執照，勿信社群廣告與個人私訊截圖。</p>
+                                <strong style="font-size: 16px; color: var(--amber);">Observe (查證官方來源・拒信截圖)</strong>
+                                <p style="font-size: 13.5px; color: var(--text-light); margin-top: 2px;">前往金管會證期局名錄、商工登記公示系統查證牌照，勿信社群廣告與個人私訊截圖。</p>
                             </div>
                         </div>
-                        <div style="display: flex; gap: 15px; align-items: flex-start;">
+                        <div style="display: flex; gap: 15px; align-items: flex-start; background: white; padding: 12px; border-radius: 10px; border: 1px solid var(--border-color);">
                             <span style="background: var(--success-color); color: white; font-weight: 900; font-size: 18px; width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">P</span>
                             <div>
-                                <strong style="font-size: 17px; color: var(--success-color);">Protect (撥打165／問銀行／問家人)</strong>
-                                <p style="font-size: 14px; color: var(--text-light);">立刻與家人商量，或撥打 165 反詐騙專線、向實體銀行臨櫃查證。</p>
+                                <strong style="font-size: 16px; color: var(--success-color);">Protect (撥打165／問銀行／問家人)</strong>
+                                <p style="font-size: 13.5px; color: var(--text-light); margin-top: 2px;">立刻與至少兩位家人面對面商量，或撥打 165 反詐專線、向實體銀行臨櫃人員查證。</p>
                             </div>
                         </div>
                     </div>
@@ -1653,27 +1759,54 @@
 
                 <div class="card card-tangerine">
                     <h3>⚖️ 投資前必須自問的四個靈魂拷問</h3>
-                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 10px;">
-                        <div style="background: white; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px;">
-                            <strong style="color: var(--tangerine);">1. 風險承受度：</strong>
-                            <p style="font-size: 14px; color: var(--text-light); margin-top: 4px;">如果這筆錢全部賠光，我跟家人明天的日子還能正常過嗎？</p>
+                    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+                        <div style="background: white; border: 1px solid var(--border-color); padding: 13px 16px; border-radius: 10px;">
+                            <strong style="color: var(--tangerine); font-size: 15px;">1. 風險承受度：</strong>
+                            <p style="font-size: 13.5px; color: var(--text-light); margin-top: 3px;">如果這筆錢全部賠光歸零，我跟家人明天的日子還能正常安心過嗎？</p>
                         </div>
-                        <div style="background: white; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px;">
-                            <strong style="color: var(--tangerine);">2. 認知邊界：</strong>
-                            <p style="font-size: 14px; color: var(--text-light); margin-top: 4px;">我真的搞得懂它底層是靠什麼產生暴利的嗎？還是只是聽信別人的說法？</p>
+                        <div style="background: white; border: 1px solid var(--border-color); padding: 13px 16px; border-radius: 10px;">
+                            <strong style="color: var(--tangerine); font-size: 15px;">2. 認知邊界：</strong>
+                            <p style="font-size: 13.5px; color: var(--text-light); margin-top: 3px;">我真的搞得懂它底層是靠什麼產生暴利的嗎？還是只是聽信別人的美麗說辭？</p>
                         </div>
-                        <div style="background: white; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px;">
-                            <strong style="color: var(--tangerine);">3. 合理性懷疑：</strong>
-                            <p style="font-size: 14px; color: var(--text-light); margin-top: 4px;">為什麼一個陌生人願意無緣無故、無條件把這麼好的暴利機會讓給我？</p>
+                        <div style="background: white; border: 1px solid var(--border-color); padding: 13px 16px; border-radius: 10px;">
+                            <strong style="color: var(--tangerine); font-size: 15px;">3. 合理性懷疑：</strong>
+                            <p style="font-size: 13.5px; color: var(--text-light); margin-top: 3px;">為什麼一個素昧平生的陌生人，願意無緣無故、無條件把暴利機會讓給我？</p>
                         </div>
-                        <div style="background: white; border: 1px solid var(--border-color); padding: 12px 16px; border-radius: 10px;">
-                            <strong style="color: var(--tangerine);">4. 第三方視角：</strong>
-                            <p style="font-size: 14px; color: var(--text-light); margin-top: 4px;">如果今天要做這筆投資的是我的孩子或父母，我會放心同意他去買嗎？</p>
+                        <div style="background: white; border: 1px solid var(--border-color); padding: 13px 16px; border-radius: 10px;">
+                            <strong style="color: var(--tangerine); font-size: 15px;">4. 第三方視角：</strong>
+                            <p style="font-size: 13.5px; color: var(--text-light); margin-top: 3px;">如果今天要做這筆投資的是我的孩子或父母，我會放心同意他去買嗎？</p>
                         </div>
                     </div>
                 </div>
             </div>
 
+            <!-- 防詐推理王與 AI 輔助 SOP -->
+            <div class="card card-amber" style="margin-top: 25px;">
+                <span class="tag tag-ai">分組實戰指引</span>
+                <h3>🔍 「防詐推理王」分組研討與生成式 AI 查證 SOP</h3>
+                <p style="font-size: 14.5px; color: var(--text-light); font-weight: 700; margin-bottom: 12px;">
+                    學員可利用 ChatGPT 或 AI 工具輔助梳理可疑訊息的邏輯破綻。推薦五大提示詞（Prompt）模板：
+                </p>
+                <div class="grid-2">
+                    <div style="background: white; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <strong style="color: var(--rust); font-size: 14px;">💬 提示詞 1（拆解話術盲點）：</strong>
+                        <p style="font-size: 13px; color: var(--text-light); margin-top: 4px; font-family: monospace;">
+                            「有人宣稱投資某外匯項目保證年化 20% 且保本，請以金融監管法規與經濟學原理，客觀列出其可能存在的 3 個致命邏輯漏洞與詐騙特徵。」
+                        </p>
+                    </div>
+                    <div style="background: white; padding: 14px; border-radius: 10px; border: 1px solid var(--border-color);">
+                        <strong style="color: var(--rust); font-size: 14px;">💬 提示詞 2（逆向推敲動機）：</strong>
+                        <p style="font-size: 13px; color: var(--text-light); margin-top: 4px; font-family: monospace;">
+                            「如果一個 AI 量化模型勝率達 95%，其發明者自行向銀行貸款套利與公開在 LINE 群組招攬散戶相比，哪種商業動機更符合常理？為什麼？」
+                        </p>
+                    </div>
+                </div>
+                <div style="background: #FFFDF9; border: 1px dashed var(--amber); padding: 12px 16px; border-radius: 8px; margin-top: 14px; font-size: 13px; color: var(--rust); font-weight: 800;">
+                    ⚠️ AI 工具邊界提醒：AI 是強大的思維輔助工具，能協助梳理話術破綻，但絕不能代替個人決策責任，更「絕對禁止上傳身分證、網銀帳密等機密個資」至任何外部模型！
+                </div>
+            </div>
+
+            <!-- 互動式金融安全承諾打卡 -->
             <div class="card card-amber" style="margin-top: 25px;">
                 <h3>☑️ 我的金融安全承諾卡（點擊互動打卡）</h3>
                 <p style="font-size: 15px; color: var(--text-light);">請在每項守則上點擊勾選，將防詐承諾內化為日常生活的保護機制：</p>
