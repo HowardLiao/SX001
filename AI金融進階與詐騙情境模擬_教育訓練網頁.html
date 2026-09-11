@@ -2226,7 +2226,7 @@
                     <button type="button" class="btn-check-module" id="btnCheckM1" onclick="markModuleDone(1)">
                         ✅ 標記模組一研讀完畢 (+20%進度)
                     </button>
-                    <button type="button" class="btn-next-module" onclick="switchTab('scenarios')">
+                    <button type="button" class="btn-next-module" onclick="nextModule(1, 'scenarios')">
                         ➡️ 進入【模組二：五大情境模擬】
                     </button>
                 </div>
@@ -2519,7 +2519,7 @@
                     <button type="button" class="btn-check-module" id="btnCheckM2" onclick="markModuleDone(2)">
                         ✅ 標記模組二研讀完畢 (+20%進度)
                     </button>
-                    <button type="button" class="btn-next-module" onclick="switchTab('deepcase')">
+                    <button type="button" class="btn-next-module" onclick="nextModule(2, 'deepcase')">
                         ➡️ 進入【模組三：深度退休個案剖析】
                     </button>
                 </div>
@@ -2651,7 +2651,7 @@
                     <button type="button" class="btn-check-module" id="btnCheckM3" onclick="markModuleDone(3)">
                         ✅ 標記模組三研讀完畢 (+20%進度)
                     </button>
-                    <button type="button" class="btn-next-module" onclick="switchTab('framework')">
+                    <button type="button" class="btn-next-module" onclick="nextModule(3, 'framework')">
                         ➡️ 進入【模組四：防詐五步驟與安全承諾】
                     </button>
                 </div>
@@ -2820,7 +2820,7 @@
                     <button type="button" class="btn-check-module" id="btnCheckM4" onclick="markModuleDone(4)">
                         ✅ 標記模組四研讀完畢 (+20%進度)
                     </button>
-                    <button type="button" class="btn-next-module" onclick="switchTab('quiz')">
+                    <button type="button" class="btn-next-module" onclick="nextModule(4, 'quiz')">
                         ➡️ 進入【模組五：課後綜合評量】
                     </button>
                 </div>
@@ -3249,19 +3249,41 @@
 
         // 3. 頁面導航與分頁切換 (Tabs Switching)
         // ========================================================
+        // ========================================================
+        // 進入下一模組與分頁切換加強版
+        // ========================================================
+        function nextModule(currentNum, nextTabId) {
+            initAudioContext();
+            saveNote('M' + currentNum);
+            markModuleDone(currentNum);
+            switchTab(nextTabId);
+        }
+
         function switchTab(tabId) {
             document.querySelectorAll('.tab-panel').forEach(panel => panel.classList.remove('active'));
             document.querySelectorAll('.nav-btn').forEach(btn => btn.classList.remove('active'));
 
             const activePanel = document.getElementById(tabId);
-            if (activePanel) activePanel.classList.add('active');
+            if (activePanel) {
+                activePanel.classList.add('active');
+                setTimeout(() => {
+                    const navBar = document.querySelector('.nav-bar');
+                    if (navBar) {
+                        const navTop = navBar.getBoundingClientRect().top + window.pageYOffset - 10;
+                        window.scrollTo({ top: navTop, behavior: 'smooth' });
+                    }
+                }, 30);
+            }
 
             const buttons = document.querySelectorAll('.nav-btn');
             const map = ['overview', 'scenarios', 'deepcase', 'framework', 'quiz'];
             const idx = map.indexOf(tabId);
-            if (idx !== -1 && buttons[idx]) buttons[idx].classList.add('active');
-
-            window.scrollTo({ top: 380, behavior: 'smooth' });
+            if (idx !== -1 && buttons[idx]) {
+                buttons[idx].classList.add('active');
+                try {
+                    buttons[idx].scrollIntoView({ behavior: 'smooth', inline: 'center', block: 'nearest' });
+                } catch(e) {}
+            }
         }
 
                         // ========================================================
