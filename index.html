@@ -1084,6 +1084,154 @@
             color: var(--tangerine);
         }
 
+    
+        /* 10分鐘倒數計時器與音效樣式 */
+        .quiz-timer-card {
+            background: linear-gradient(135deg, #FFFDF8 0%, #FFF5EB 100%);
+            border: 2.5px solid var(--tangerine);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 14px rgba(233, 106, 40, 0.15);
+            transition: all 0.3s ease;
+        }
+
+        .quiz-timer-card.timer-warning {
+            border-color: #D32F2F;
+            background: #FFF0F0;
+            box-shadow: 0 0 16px rgba(211, 47, 47, 0.35);
+            animation: timerPulse 1s infinite alternate;
+        }
+
+        @keyframes timerPulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.015); }
+        }
+
+        .timer-top-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+
+        .timer-display-group {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .timer-icon {
+            font-size: 38px;
+            line-height: 1;
+        }
+
+        .timer-title {
+            font-size: 14px;
+            font-weight: 800;
+            color: var(--text-light);
+            margin-bottom: 2px;
+        }
+
+        .timer-digits {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--rust);
+            font-family: 'Nunito', monospace;
+            letter-spacing: 2px;
+            line-height: 1.1;
+        }
+
+        .timer-controls {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            background: white;
+            border: 1.5px solid var(--border-color);
+            color: var(--text-main);
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .timer-btn:hover {
+            border-color: var(--tangerine);
+            color: var(--tangerine);
+            background: #FFFDF9;
+        }
+
+        .timer-sound-btn {
+            background: #FFF2E8;
+            border-color: var(--amber);
+            color: var(--rust);
+        }
+
+        .timer-progress-track {
+            height: 8px;
+            background: #EEDBC8;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 14px;
+        }
+
+        .timer-progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, var(--amber) 0%, var(--tangerine) 100%);
+            transition: width 1s linear;
+        }
+
+        .timer-warning .timer-progress-bar {
+            background: #D32F2F;
+        }
+
+        .timer-footer-hint {
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-top: 8px;
+        }
+
+        .sticky-mini-timer {
+            position: fixed;
+            bottom: 25px;
+            right: 25px;
+            background: rgba(36, 36, 36, 0.94);
+            color: white;
+            padding: 10px 18px;
+            border-radius: 30px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 999;
+            font-family: 'Nunito', monospace;
+            font-size: 18px;
+            font-weight: 900;
+            border: 2px solid var(--amber);
+            backdrop-filter: blur(8px);
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .sticky-mini-timer:hover {
+            transform: scale(1.05);
+        }
+
+        .sticky-mini-timer.warning {
+            border-color: #FF5252;
+            background: rgba(185, 46, 46, 0.95);
+            animation: timerPulse 0.8s infinite alternate;
+        }
+
     </style>
 </head>
 <body>
@@ -1559,7 +1707,43 @@
         <section id="quiz" class="tab-panel">
             <div class="section-header">
                 <h2>課後學習成效評量（精選 100 題動態隨機抽測）</h2>
-                <p class="lead">本系統建立百題深度案例題庫。每次測驗隨機抽取 10 題，採實名登記制，完畢後即時計分並抄送報告至學員信箱與 Liao.Howard@gmail.com。</p>
+                <p class="lead">本系統建立百題深度案例題庫。每次測驗隨機抽取 10 題，採實名登記制，限時 10 分鐘，完畢後即時計分並抄送報告至學員信箱與 Liao.Howard@gmail.com。</p>
+            </div>
+
+            <!-- 10 分鐘倒數計時器面板 (含秒數滴答音效與到時鈴聲) -->
+            <div class="quiz-timer-card" id="timerWidget">
+                <div class="timer-top-row">
+                    <div class="timer-display-group">
+                        <span class="timer-icon" id="timerIcon">⏱️</span>
+                        <div>
+                            <div class="timer-title">課後學習評量倒數計時（限時 10 分鐘）</div>
+                            <div class="timer-digits" id="timerDisplay">10:00</div>
+                        </div>
+                    </div>
+                    <div class="timer-controls">
+                        <button type="button" class="timer-btn" id="btnToggleTimer" onclick="toggleTimer()">
+                            ⏸️ 暫停計時
+                        </button>
+                        <button type="button" class="timer-btn" onclick="resetTimer(600)">
+                            🔄 重新計時 (10分)
+                        </button>
+                        <button type="button" class="timer-btn timer-sound-btn" id="btnSoundToggle" onclick="toggleSound()">
+                            🔊 秒數音效：開啟
+                        </button>
+                    </div>
+                </div>
+                <div class="timer-progress-track">
+                    <div class="timer-progress-bar" id="timerProgressBar" style="width: 100%;"></div>
+                </div>
+                <div class="timer-footer-hint" id="timerHint">
+                    🔔 限時 10 分鐘：每秒播放秒數滴答音效提醒，時間截止將發出響鈴並自動結算送出！
+                </div>
+            </div>
+
+            <!-- 常駐浮動迷你倒數計時器 (滾動時隨侍在側) -->
+            <div class="sticky-mini-timer" id="stickyMiniTimer" style="display: none;" onclick="scrollTimerIntoView()" title="點擊回到計時器位置">
+                <span>⏱️ 測驗倒數：</span>
+                <span id="miniTimerTime">10:00</span>
             </div>
 
             <!-- 考生資料填寫區 -->
@@ -1666,6 +1850,242 @@
 
     <!-- JavaScript 交互引擎與百題題庫抽測系統 -->
     <script>
+        
+        // ========================
+        // 10 分鐘計時器與 Web Audio 音效引擎
+        // ========================
+        let totalSeconds = 600; // 10 分鐘
+        let remainingSeconds = 600;
+        let timerInterval = null;
+        let isTimerRunning = false;
+        let soundEnabled = true;
+        let audioCtx = null;
+
+        // 初始化 Web Audio Context (現代瀏覽器需使用者點擊或操作後啟動)
+        function initAudioContext() {
+            if (!audioCtx) {
+                const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                if (AudioContextClass) {
+                    audioCtx = new AudioContextClass();
+                }
+            }
+            if (audioCtx && audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+
+        // 播放秒數滴答音效 (Web Audio API 合成)
+        function playTickSound(isUrgent = false) {
+            if (!soundEnabled) return;
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+
+                const osc = audioCtx.createOscillator();
+                const gain = audioCtx.createGain();
+                osc.connect(gain);
+                gain.connect(audioCtx.destination);
+
+                const now = audioCtx.currentTime;
+                if (isUrgent) {
+                    // 緊張音頻 (最後一分鐘)
+                    osc.type = 'sine';
+                    osc.frequency.setValueAtTime(950, now);
+                    gain.gain.setValueAtTime(0.12, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+                    osc.start(now);
+                    osc.stop(now + 0.08);
+                } else {
+                    // 標準時鐘秒針滴答
+                    osc.type = 'triangle';
+                    osc.frequency.setValueAtTime(680, now);
+                    gain.gain.setValueAtTime(0.06, now);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + 0.04);
+                    osc.start(now);
+                    osc.stop(now + 0.04);
+                }
+            } catch (e) {
+                console.warn("Audio play error:", e);
+            }
+        }
+
+        // 播放到時響鈴警報音效 (數位鈴聲三和弦)
+        function playAlarmSound() {
+            if (!soundEnabled) return;
+            try {
+                initAudioContext();
+                if (!audioCtx) return;
+
+                // 數位急促警報鈴聲 (嗶！嗶！嗶！)
+                const beeps = [
+                    { freq: 880, start: 0, dur: 0.15 },
+                    { freq: 1046.5, start: 0.2, dur: 0.15 },
+                    { freq: 1318.5, start: 0.4, dur: 0.3 },
+                    { freq: 880, start: 0.8, dur: 0.15 },
+                    { freq: 1046.5, start: 1.0, dur: 0.15 },
+                    { freq: 1318.5, start: 1.2, dur: 0.4 }
+                ];
+
+                const now = audioCtx.currentTime;
+                beeps.forEach(b => {
+                    const osc = audioCtx.createOscillator();
+                    const gain = audioCtx.createGain();
+                    osc.type = 'square';
+                    osc.frequency.setValueAtTime(b.freq, now + b.start);
+                    gain.gain.setValueAtTime(0.18, now + b.start);
+                    gain.gain.exponentialRampToValueAtTime(0.001, now + b.start + b.dur);
+                    osc.connect(gain);
+                    gain.connect(audioCtx.destination);
+                    osc.start(now + b.start);
+                    osc.stop(now + b.start + b.dur);
+                });
+            } catch (e) {
+                console.warn("Alarm play error:", e);
+            }
+        }
+
+        // 音效切換開關
+        function toggleSound() {
+            initAudioContext();
+            soundEnabled = !soundEnabled;
+            const btn = document.getElementById('btnSoundToggle');
+            if (btn) {
+                btn.innerText = soundEnabled ? '🔊 秒數音效：開啟' : '🔇 秒數音效：靜音';
+                btn.style.backgroundColor = soundEnabled ? '#FFF2E8' : '#F0F0F0';
+            }
+            if (soundEnabled) {
+                playTickSound(false);
+            }
+        }
+
+        // 格式化秒數為 MM:SS
+        function formatTime(sec) {
+            const m = Math.floor(sec / 60);
+            const s = sec % 60;
+            return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        // 更新計時器外觀
+        function updateTimerUI() {
+            const timeStr = formatTime(remainingSeconds);
+            const displayEl = document.getElementById('timerDisplay');
+            const miniDisplayEl = document.getElementById('miniTimerTime');
+            const barEl = document.getElementById('timerProgressBar');
+            const cardEl = document.getElementById('timerWidget');
+            const miniEl = document.getElementById('stickyMiniTimer');
+            const hintEl = document.getElementById('timerHint');
+
+            if (displayEl) displayEl.innerText = timeStr;
+            if (miniDisplayEl) miniDisplayEl.innerText = timeStr;
+
+            const pct = Math.max(0, (remainingSeconds / totalSeconds) * 100);
+            if (barEl) barEl.style.width = pct + '%';
+
+            // 最後 60 秒進入警戒狀態
+            if (remainingSeconds <= 60 && remainingSeconds > 0) {
+                if (cardEl) cardEl.classList.add('timer-warning');
+                if (miniEl) miniEl.classList.add('warning');
+                if (hintEl) hintEl.innerHTML = '<span style="color:#D32F2F; font-weight:900;">⚠️ 倒數最後警戒中！剩餘時間不足 1 分鐘，請把握時間作答！</span>';
+            } else if (remainingSeconds > 60) {
+                if (cardEl) cardEl.classList.remove('timer-warning');
+                if (miniEl) miniEl.classList.remove('warning');
+                if (hintEl) hintEl.innerHTML = '🔔 限時 10 分鐘：每秒播放秒數滴答音效提醒，時間截止將發出響鈴並自動結算送出！';
+            }
+        }
+
+        // 啟動計時器
+        function startTimer() {
+            if (isTimerRunning) return;
+            isTimerRunning = true;
+            const btn = document.getElementById('btnToggleTimer');
+            if (btn) btn.innerText = '⏸️ 暫停計時';
+
+            timerInterval = setInterval(() => {
+                if (remainingSeconds > 0) {
+                    remainingSeconds--;
+                    updateTimerUI();
+
+                    // 播放秒數聲音
+                    if (remainingSeconds <= 30) {
+                        playTickSound(true); // 最後30秒急促音
+                    } else {
+                        playTickSound(false); // 標準滴答
+                    }
+                } else {
+                    // 時間到！
+                    stopTimer();
+                    updateTimerUI();
+                    playAlarmSound();
+
+                    alert("⏰【測驗時間截止】10 分鐘作答時間已結束！系統將為您自動結算成績並生成報告！");
+                    gradeQuiz(true); // 強制交卷
+                }
+            }, 1000);
+        }
+
+        // 停止計時器
+        function stopTimer() {
+            if (timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+            }
+            isTimerRunning = false;
+            const btn = document.getElementById('btnToggleTimer');
+            if (btn) btn.innerText = '▶️ 繼續計時';
+        }
+
+        // 切換暫停 / 繼續
+        function toggleTimer() {
+            initAudioContext();
+            if (isTimerRunning) {
+                stopTimer();
+            } else {
+                startTimer();
+            }
+        }
+
+        // 重置計時器
+        function resetTimer(seconds = 600) {
+            stopTimer();
+            totalSeconds = seconds;
+            remainingSeconds = seconds;
+            updateTimerUI();
+            const cardEl = document.getElementById('timerWidget');
+            const miniEl = document.getElementById('stickyMiniTimer');
+            if (cardEl) cardEl.classList.remove('timer-warning');
+            if (miniEl) miniEl.classList.remove('warning');
+            startTimer();
+        }
+
+        // 滾動至計時器位置
+        function scrollTimerIntoView() {
+            const widget = document.getElementById('timerWidget');
+            if (widget) widget.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        // 滾動監聽：在測驗區域時顯示浮動迷你計時器
+        window.addEventListener('scroll', () => {
+            const quizPanel = document.getElementById('quiz');
+            const miniTimer = document.getElementById('stickyMiniTimer');
+            if (!quizPanel || !miniTimer) return;
+
+            if (quizPanel.classList.contains('active')) {
+                const rect = quizPanel.getBoundingClientRect();
+                // 若正在瀏覽測驗且上方計時卡片滾出視窗，顯示浮動小計時器
+                const widget = document.getElementById('timerWidget');
+                if (widget) {
+                    const widgetRect = widget.getBoundingClientRect();
+                    if (widgetRect.bottom < 60 && rect.bottom > 200) {
+                        miniTimer.style.display = 'flex';
+                    } else {
+                        miniTimer.style.display = 'none';
+                    }
+                }
+            } else {
+                miniTimer.style.display = 'none';
+            }
+        });
+
         // 全量 100 題完整題庫
         const questionPool = [{"id": 1, "type": "假投資與出金陷阱", "question": "王女士在 LINE 飆股群組跟隨「老師」操作，第一次投入 10 萬元真的順利出金獲利 8,000 元。老師宣稱專屬 AI 模型回測勝率 95%，催促她追加 500 萬積蓄。此時最應具備的認知為何？", "options": ["A. 第一次能順利出金到銀行帳戶，代表交易平台受嚴格監管，可放心加碼", "B. 能出金一次是詐騙集團「養、套、殺」中建立信任的誘餌，絕不代表平台合法", "C. AI 選股勝率 95% 屬於現代科技常態，應把握機會借款買進", "D. 只要向銀行辦理房屋抵押借款，利用槓桿攤平獲利就是安全的理財配置"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團最經典的手法是「前期給甜頭」以瓦解心理防衛，讓人誤以為「真的可以領到錢」，進而誘騙投入畢生積蓄。能出金一次絕對不等於平台合法，宣稱 AI 95% 保證獲利更是標準詐騙特徵。"}, {"id": 2, "type": "心理盲點與焦慮操弄", "question": "課程強調「詐騙集團不是先研究股票，而是先研究人」。當詐騙集團以超額高報酬包裝金融產品時，其底層在心理學上的實質操作是什麼？", "options": ["A. 替金融機構推廣前瞻性的普惠金融衍生品", "B. 協助中高齡群體抵抗通膨以早日達成退休財富自由", "C. 販售受害者對老後生活、醫療及家庭開支的「恐懼與焦慮」，用高利息包裝希望", "D. 客觀測試投資人對於不同流動性商品的風險承受度"], "correct": 2, "explanation": "【核心解析：選項 C 正確】高報酬往往不是在販售投資，而是在販售你的焦慮。詐騙集團深諳長者怕沒退休金、父母怕拖累子女、主婦怕無安全感的內心痛點，精準利用焦慮感讓人喪失風險判斷能力。"}, {"id": 3, "type": "假交友殺豬盤", "question": "李先生在交友平台認識一位自稱海外工作的女子，天天聊天兩個月建立感情。對方某天說：「我不是要你投資，我只是希望你跟我一起變好，我教你操作外匯跟加密貨幣」。這屬於下列何種手法？", "options": ["A. 正常的跨國遠距戀愛金錢觀念磨合", "B. 典型的假交友投資「殺豬盤」，利用孤單感、情感依賴與 FOMO（害怕錯過）心理誘導投入資金", "C. 專業私人銀行針對高資產會員所提供的客製化理財輔導", "D. 合法外匯保證金經紀商的正規業務開拓模式"], "correct": 1, "explanation": "【核心解析：選項 B 正確】此為標準「殺豬盤」（Pig-Butchering Scam）。詐騙集團極具耐心，耗時數週建立感情（養），隨後以「一起變好」的話術將感情與黑箱投資綁定（套），最後收割本金（殺）。網戀提及金錢務必立刻提高警覺。"}, {"id": 4, "type": "假理專與權威光環", "question": "若有一名身著高級西裝、出示印有知名金控識別證與 AI 證書的專業理專，向你推薦一個「AI 全球資產配置，年化報酬率保證 20%，絕對保本零風險」專案，下列何項判斷最正確？", "options": ["A. 只要對方穿著專業西裝並出示實體識別證，即可確認其合法性並直接匯款", "B. 真正合法金融從業人員受法規嚴格約束必須揭露市場風險；「保證獲利」與「保本高報酬」本身就是最大的詐欺警訊", "C. 現代 AI 演算法已能精準預測股市波動，年化 20% 保本是科技進步的合理成果", "D. 應立即依照指示將資金匯入理專所提供的「個人受託投資專戶」以搶佔專屬額度"], "correct": 1, "explanation": "【核心解析：選項 B 正確】金管會明文禁止對非保本商品宣稱保證獲利。真正專業從業人員必定會提醒風險；凡是宣稱「保證高回報且零風險」，不論其包裝多權威，皆為詐騙典型標籤。"}, {"id": 5, "type": "沉沒成本陷阱", "question": "在實體黃金或貴金屬投資詐騙中，詐騙集團前期先將小額實體真金條交付給投資人，後期卻以「需補足最後 100 萬差額否則取消會員資格且沒收先前投入的 300 萬」為由勒索。這是掉入了何種心理陷阱？", "options": ["A. 沉沒成本效應（Sunk Cost Fallacy）—— 因前期已投入巨資而不甘心停損認賠", "B. 錨定效應（Anchoring Effect）", "C. 羊群效應（Herd Behavior）", "D. 稟賦效應（Endowment Effect）"], "correct": 0, "explanation": "【核心解析：選項 A 正確】「沉沒成本效應」指人對於已經發生的付出產生強烈的損失厭惡，產生「若不再補款，之前的錢就全泡湯了」的執念。詐騙集團利用此心理步步緊逼，勇於認賠停損才能保全資金。"}, {"id": 6, "type": "假檢警公權力威嚇", "question": "接到自稱台北地檢署特偵檢察官的電話，指控你的銀行帳戶涉及重特大洗錢案，以「偵查不公開」命令你絕對保密，要求加 LINE 傳送公文並指示在兩小時內將存款全數提領購買黃金交由專人監管。你應如何應對？", "options": ["A. 司法威信不可違抗，為維護清白應迅速前往銀行提款並嚴格保密配合", "B. 真正的司法檢警機關絕對不會以通訊軟體辦案，更絕不會要求交付現金、黃金或存摺；應立即掛斷電話並撥打 165 查證", "C. 先匯出 10% 保證金至指定帳戶表示配合意願，並爭取寬限期", "D. 將收到的檢察官公文拍照傳入家族親友群組，請親友代為向該檢察官求情"], "correct": 1, "explanation": "【核心解析：選項 B 正確】檢警辦案絕不會透過 LINE 傳送公文或語音通知，更絕對不會設立「資金監管帳戶」或要求民眾交付現金、黃金或存摺。遇此情況務必立刻掛斷並撥打 165。"}, {"id": 7, "type": "退休族心理省思", "question": "名下擁有 5,000 萬元房產的 70 歲婦人，每月家庭開銷約 15~20 萬，最終因投入民間高利借貸並拿自住房產貸款 1,500 萬而落得血本無歸、拖累家人。本案例給予社會大眾最重要的核心警示為何？", "options": ["A. 許多嚴重的金融詐騙並非起源於貪婪想發大財，而是源自於對老後開銷、健康失能及拖累子女的深層恐懼與焦慮", "B. 只要名下不動產估值超過五千萬，即使被詐騙也不會影響生活品質", "C. 只要有當地農會高層掛名擔保，民間高利借貸在法律上即具備不可撤銷的保障", "D. 只要具備房貸資格，透過以房養房擴大槓桿操作即可完全抵銷詐騙風險"], "correct": 0, "explanation": "【核心解析：選項 A 正確】這位婦人完全不是為了揮霍發財，而是因深愛家人、害怕成為子女的負擔，在面對沉重開支時誤入高利借貸陷阱。防詐教育必須同理並解決高齡族群的深層恐懼。"}, {"id": 8, "type": "S-T-O-P 防詐原則", "question": "面對可疑或高報酬誘惑的金融情境，課程推廣之「S-T-O-P」防詐四大步驟，其字母分別代表之正確防禦行動為何？", "options": ["A. S-Sign立即簽約 / T-Trade快速交易 / O-Online線上認證 / P-Profit享受獲利", "B. S-Stop先不要匯款 / T-Think是不是太好賺 / O-Observe查證管道來源 / P-Protect打165、問銀行、問家人", "C. S-Search搜尋代碼 / T-Trust完全信任導師 / O-Open開立專戶 / P-Pay支付保證金", "D. S-Screen快速篩選 / T-Transfer立即轉帳 / O-Obey服從指令 / P-Pass通過審核"], "correct": 1, "explanation": "【核心解析：選項 B 正確】S-T-O-P 原則是關鍵剎車機制：S (Stop) 先不要匯款暫停動作；T (Think) 思考是否太好賺；O (Observe) 觀察查證官方管道；P (Protect) 撥打 165、諮詢銀行或家人啟動多方保護。"}, {"id": 9, "type": "投資決策四問", "question": "在進行任何金融投資之前，課程強調必須先對自己進行四個「靈魂拷問」。下列何者「不屬於」這四個自我提問的關鍵指標？", "options": ["A. 「如果這筆錢全部賠光，我還能正常安心生活嗎？」", "B. 「我真的了解它背後是怎麼賺錢的嗎？還是只聽別人說？」", "C. 「為什麼對方願意無條件給我這麼高的暴利回報？」", "D. 「我身邊的親朋好友或社群網友是不是大家都已經跟著買了？」"], "correct": 3, "explanation": "【核心解析：選項 D 不屬於正向四問，而是危險的從眾陷阱】正向四問包括：1.風險承受度、2.認知邊界、3.合理性懷疑、4.第三方視角。選項 D 是盲目從眾與羊群效應，恰恰是詐騙最常操弄的弱點。"}, {"id": 10, "type": "AI 工具與防詐推理", "question": "在「防詐推理王」分組活動中，學員探討如何將生成式 AI（如 ChatGPT）作為防詐與理財助手。下列關於 AI 工具在金融防禦中之正確角色定位為何？", "options": ["A. 可以將個人銀行帳號與密碼輸入給 AI，由其直接代替自己判定交易是否安全", "B. AI 可以協助我們蒐集資訊、梳理盲點、推敲話術漏洞與盤點下行風險；但真正保護財務的始終是個人的冷靜判斷與求證習慣", "C. 只要 AI 宣稱特定投資平台尚未有公開負面詐騙新聞，即百分之百等同於該平台絕對合法", "D. 生成式 AI 已經具備完全取代合格理財規劃顧問與司法檢警調查的公權力地位"], "correct": 1, "explanation": "【核心解析：選項 B 正確】AI 是思維輔助工具，能從第三方角度梳理盲點，但不能取代個人法遵責任與嚴謹查證，更絕不能將個人隱私金融機密輸入給未知模型。"}, {"id": 11, "type": "假投資APP與側載風險", "question": "投資群組的「助教」傳來一個網址連結，要求學員點擊下載「內部專屬機構操盤 APP（APK 檔案或企業簽名設定檔）」，並稱這是在 App Store 找不到的特規 VIP 軟體。下列處置何者最正確？", "options": ["A. 只要手機防毒軟體沒有立即發出警報，就可以信任並安裝", "B. 這是未經官方應用程式商店審核的惡意側載軟體，極易竊取手機個資、簡訊 OTP 並操縱假行情，絕不可安裝", "C. 安裝後先不要登入網銀帳號就不會有安全問題", "D. 先轉傳給朋友測試安裝是否正常"], "correct": 1, "explanation": "【核心解析：選項 B 正確】繞過 App Store 或 Google Play 官方審核的安裝包（APK 或描述檔）往往包含木馬病毒、鍵盤側錄器，或只是詐騙集團能隨意修改後台數字的假交易界面。"}, {"id": 12, "type": "假群組暗樁心理學", "question": "在 LINE「飆股分享群」中，每天都有幾十位「學員」熱烈貼出百萬獲利對帳單，並感謝老師指導。根據打詐實務調查，這些熱絡留言的學員真實身份為何？", "options": ["A. 都是經過實名認證的高淨值真實散戶投資人", "B. 絕大多數都是詐騙集團同夥持有多個假帳號分飾多角扮演的「暗樁（假學員）」，甚至使用自動化機器人洗版", "C. 證券交易所隨機指派的合規監理人員", "D. 金管會特約的市場流動性提供者"], "correct": 1, "explanation": "【核心解析：選項 B 正確】投資群組內 99% 的成員都是詐騙集團操作的暗樁（人頭帳號）。獲利截圖是修圖軟體合成的，目的是營造「大家都發財、只剩你猶豫」的集體從眾壓力與焦慮感。"}, {"id": 13, "type": "提領保證金詐術", "question": "某假投資平台界面顯示帳戶獲利 300 萬元，但當投資人申請「出金提領」時，客服表示：「因觸發金管會洗錢防制風控，需先匯款 20%（60萬元）作為解凍保證金才能放行」。此時正確的反應為何？", "options": ["A. 為了趕快拿回 300 萬，應立即去向親友借 60 萬元匯款補齊", "B. 這是詐騙集團二次剝削的典型話術，任何要求「先繳保證金/稅金才能出金」的平台 100% 是詐騙，絕不可再匯款", "C. 跟客服協商看能不能先繳 10 萬元解凍", "D. 請客服直接從帳戶內的 300 萬獲利中扣除 60 萬保證金"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合法金融機構辦理出金絕不會要求客戶「額外匯款繳交保證金或稅金」。要求額外匯款是詐騙集團榨乾被害人最後一滴資金的陷阱，一旦匯出只會被索求更多名目的費用。"}, {"id": 14, "type": "假券商與人頭匯款帳戶", "question": "在投資入金時，群組助理提供了一個個人戶名的銀行帳號（如「陳大明」或某工程行名義），並聲稱這是「券商特約在台快速儲值通道」。下列判斷何者正確？", "options": ["A. 個人帳戶手續費比較省，屬於合規節稅模式", "B. 正規證券與期貨商入金帳戶必定為該金融機構專屬法人帳戶，要求匯入個人帳號 100% 是人頭洗錢戶", "C. 只要匯款備註填寫「借款」或「貨款」即可規避風險", "D. 只要該帳戶設在國內公股銀行就絕對安全"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合法的券商或基金平台，資金託管帳戶必定是該金融特許法人的專戶（戶名為公司全稱）。要求匯入個人或無關行號帳戶者，皆為詐騙集團的人頭帳戶（洗錢水房）。"}, {"id": 15, "type": "行員阻詐與詐團教學話術", "question": "詐騙集團指導被害人到銀行櫃檯提領 200 萬元現金時，特意叮嚀：「如果行員問起提款用途，一定要說是『房屋裝潢款』或『買二手車』，千萬不能說要投資，否則會被課重稅」。詐團此舉的真實目的為何？", "options": ["A. 體貼客戶，協助客戶避免繁瑣的稅務申報流程", "B. 惡意欺騙銀行行員，破壞金融機構的第一線「臨櫃關懷提問阻詐機制」，使被害人失去被警示的機會", "C. 銀行法規規定投資款提領必須繳納額外手續費", "D. 為了保護被害人的個人隱私不外洩"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團教導受害人以「裝潢、買車、親友借貸」為藉口，正是為了瓦解銀行行員的關懷提問防線。當行員熱心關切時，請務必如實以告以獲得專業查證保護。"}, {"id": 16, "type": "殺豬盤時間長度", "question": "傳統電信詐騙往往講求幾分鐘內恐嚇得手，而「殺豬盤（假交友投資）」詐騙通常具有何種截然不同的時間特徵？", "options": ["A. 都在認識後一小時內立即要求匯款", "B. 極具耐心，詐團常投入數週甚至數個月時間天天陪伴聊天「養熟目標」，徹底建立情感依賴後才慢慢提及投資", "C. 絕不會超過三天", "D. 僅在週末深夜隨機發送釣魚簡訊"], "correct": 1, "explanation": "【核心解析：選項 B 正確】殺豬盤最大特點就是「長線培養感情」。前期不談錢，只談生活、夢想與陪伴，等受害者放下所有戒備後，才「無意間」透露獲利訊息，引誘受害者主動要求跟單。"}, {"id": 17, "type": "網路交友照片真偽辨識", "question": "在交友軟體認識自稱高富帥或白富美的網友，其大頭照非常精緻、生活照皆為豪華跑車或米其林餐廳，但每當要求視訊通話時，對方總是藉故「相機壞掉」、「軍隊/海外專案保密限制」推託。此時最合理的推論為何？", "options": ["A. 對方個性害羞內向，應給予尊重不再要求視訊", "B. 對方很可能是盜用網路網紅照片或使用 AI 生成虛擬頭像的詐騙集團操作員", "C. 海外專案確實需要高度軍事級隱私，值得信賴", "D. 只要對方語音聽起來溫柔誠懇就一定是真人"], "correct": 1, "explanation": "【核心解析：選項 B 正確】不敢真面目視訊通話（或視訊只有幾秒鐘且畫面模糊不自然）是假交友詐騙的鐵證。大頭貼往往盜用網紅、模特兒甚至使用 AI 生成，生活照片全為網路上抓取的素材。"}, {"id": 18, "type": "情感綁架話術剖析", "question": "當你在交友對話中表示「我目前沒有多餘資金想投資」時，對方生氣回覆：「原來你根本不信任我，我每天花這麼多時間陪你，你卻連我們兩個未來的基金都不願意努力」。這種話術在心理學上屬於何種操控？", "options": ["A. 成熟伴侶之間的健康溝通與激勵", "B. 典型的「情緒勒索（Emotional Blackmail）」與罪惡感操控，意圖利用受害者怕失去這段關係的弱點強迫出資", "C. 合法理財顧問的激勵話術", "D. 風險耐受度的客觀評估"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團擅長使用情緒勒索，將「是否出資」與「是否在乎這段感情/是否信任我」畫上等號，讓受害者在內疚中交出個人積蓄。"}, {"id": 19, "type": "FOMO 心理操弄", "question": "殺豬盤話術常說：「這個加密貨幣合約節點只開放到今晚 24:00，錯過這次暴利，我們買房子的夢想又要延遲三年了！」這種話術在行為經濟學中是利用了何種心理？", "options": ["A. 稟賦效應", "B. FOMO（Fear of Missing Out，害怕錯過機會的恐慌焦慮）與緊迫感製造", "C. 賭徒謬誤", "D. 框架效應"], "correct": 1, "explanation": "【核心解析：選項 B 正確】製造「極度稀缺」與「限時截止」的緊迫感，是為了關閉受害者的理性思考窗口，誘發 FOMO 焦慮，促使人在慌亂衝動中完成轉帳。"}, {"id": 20, "type": "虛擬貨幣提幣轉帳陷阱", "question": "在假交友誘導下，網友教你先在合法的交易所（如幣托、MAX）買入泰達幣（USDT），隨後指示你「將泰達幣提幣轉移至某某特定網址的去中心化合約錢包」進行高息質押。下列何者最接近真實情況？", "options": ["A. 只要第一手是在合規交易所買入的幣，轉去哪裡都絕對安全合法", "B. 一旦將加密貨幣提幣至詐騙集團指定的外部錢包地址，資產便會立即被轉走且區塊鏈交易不可逆，再也無法追回", "C. 區塊鏈智能合約會自動保護本金不受侵蝕", "D. 可以隨時要求交易所客服取消區塊鏈上的已確認交易"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合規交易所只是被害人換幣的跳板。一旦將 USDT 轉入詐騙集團的假平台或外部地址，因區塊鏈去中心化與匿名不可逆的特性，資金將瞬間落入洗錢鏈條，極難追繳。"}, {"id": 21, "type": "假冒名人代言投資", "question": "在社群平台上看到知名財經專家（如謝金河、張錫）或科技巨頭創辦人親自推薦「私密飆股飆漲社團」的贊助廣告。下列判斷何者最正確？", "options": ["A. 廣告既然能在主流社群平台刊登，內容必然經過主管機關審核保證真實", "B. 100% 是詐騙集團盜用名人肖像或使用 AI 換臉合成的偽冒廣告，知名正派財經人士絕不會開私密 LINE 群招攬帶單", "C. 應點進去先觀察一週看名人的準確度", "D. 只要名人有名氣，跟著操作就一定能賺大錢"], "correct": 1, "explanation": "【核心解析：選項 B 正確】社群平台上 99.9% 假借財經名人、企業家之名義的「免費選股、私聊入群」廣告皆為詐騙集團盜用照片或深偽影片。正派專家均已公開聲明絕無開設任何私訊帶單投資群。"}, {"id": 22, "type": "內線交易話術破綻", "question": "自稱金融內部人士向你透露：「我們掌握某上市公司即將併購的內線主力底牌，現在跟著我們的專戶布局保證有 300% 暴利」。面對此類話術，正確的法律與常識認知為何？", "options": ["A. 機會難得，內線交易在台灣是合法的民間投資福利", "B. 真正的內線交易是嚴重違反證券交易法的重罪；而向陌生人宣稱有內線帶你發財者，100% 只是詐騙吸金話術", "C. 只要資金不超過一百萬就不算內線", "D. 應立即把這個消息分享給身邊親朋好友一起買"], "correct": 1, "explanation": "【核心解析：選項 B 正確】真正的內線人員若洩漏消息將面臨刑責，絕不可能無緣無故分享給陌生網友。宣稱掌握「內線主力明牌」是詐騙集團誘騙貪心投資人的標準陷阱。"}, {"id": 23, "type": "辨別合法金融機構管道", "question": "如何最有效查證一家自稱是「合法受監管投資顧問公司」或「國際券商」的真實性？", "options": ["A. 觀看其官方網站製作是否精美大氣、是否有華麗的影片介紹", "B. 前往「金融監督管理委員會（金管會）證期局」或「中華民國證券投資信託暨顧問商業同業公會（SITCA）」官網查詢合法業者名錄，或撥打 165 查證", "C. 詢問其線上 LINE 客服請其出示執照照片", "D. 在 Google 搜尋該平台名稱，如果沒有看到負面新聞就代表合法"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合法金融業者必須取得主管機關許可。查驗合法性唯一權威標準是「金管會官網的合格金融機構名錄」，而非詐騙集團自行製作的精美網頁或偽造證書照片。"}, {"id": 24, "type": "海外高息定存與外幣保單陷阱", "question": "有人推銷一種「瑞士知名私銀境外離岸帳戶，美金固定年息 18%，每季配息且本金閉鎖期僅需三個月」。面對此類推銷，首要的風險考量為何？", "options": ["A. 美元全球市場基準利率僅在低個位數百分比，無任何實體經濟活動能常態支撐 18% 保本配息，此極高機率為龐氏騙局（Ponzi Scheme）", "B. 只要合同有蓋英文印章，就具有跨國最高民事賠償保障", "C. 既然是瑞士銀行，就絕對不會倒閉或違約", "D. 應該把全家人的外幣存款集中換成美金匯入該帳戶"], "correct": 0, "explanation": "【核心解析：選項 A 正確】金融市場具有無風險利率常識。在美元基準利率僅約 3%~5% 的環境下，宣稱保證 18% 年息且保本，純屬利用後金補前金的「龐氏騙局」，資金一旦出境將求償無門。"}, {"id": 25, "type": "身分證與存摺拍照風險", "question": "網路兼職或假投資助理要求你：「為了開立 VIP 交易帳戶與發放福利金，請先拍下你的身分證正反面、健保卡以及銀行存摺封面傳給我們」。這樣做會帶來何種嚴重後果？", "options": ["A. 沒有密碼就不會有任何風險，可以放心傳送", "B. 個資可能被詐騙集團拿去申辦人頭門號、網銀帳戶或申請貸款，甚至使你名下帳戶被列為詐欺警示帳戶而遭全數凍結", "C. 只要在照片上用鉛筆寫「僅供開戶」就不會有任何法律責任", "D. 只要是彩色照片就符合個資保護規範"], "correct": 1, "explanation": "【核心解析：選項 B 正確】將雙證件與存摺清晰照片傳給陌生人極其危險，詐團常利用此資訊開立數位人頭帳戶洗錢，被害人不僅拿不到錢，還可能成為詐欺共犯並淪為聯徵警示黑名單。"}, {"id": 26, "type": "實體黃金面交陷阱", "question": "假投資客服表示：「為避免銀行電匯被政府追查，我們特約安排專屬理財專員到府或相約超商，親自向您收取現金或黃金並簽收保管條」。這種「專人面交收款」的手法說明了什麼？", "options": ["A. 體現該機構尊榮 VIP 的貼心到府服務精神", "B. 這 100% 是詐騙集團的「車手」前來取款，目的是規避銀行臨櫃防詐通報與金流數位追蹤痕跡", "C. 只要對方身穿西裝並簽收蓋章，該收據在法律上就具備十足保障", "D. 面交比銀行匯款更安全，因為不用洩漏帳號"], "correct": 1, "explanation": "【核心解析：選項 B 正確】正規金融機構絕對不會派遣業務員到超商、路邊或住宅收取現金或黃金。要求「面交現金」純粹是為了避開銀行行員的防詐通報，前來收款者皆為詐欺車手。"}, {"id": 27, "type": "假黃金成色問題", "question": "某些貴金屬投資詐騙案中，受害者後期收到的實體金條雖然沉重且表面金黃，但經專業銀樓檢驗後發現內部全為「包金鎢金條（鍍金金條）」。這說明了什麼金融教訓？", "options": ["A. 銀樓技術落後，應改以民間當鋪檢驗為準", "B. 詐騙集團會使用高度仿真的偽造實體商品製造安全感假象，未經合法公正檢驗的實物交割存在極大造假風險", "C. 鎢金比純金更有投資增值潛力", "D. 只要有塑膠密封封套包裝的金條就一定是真品"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團無所不用其極，甚至製造「外鍍真金、內裹鎢金」的假金條來矇騙投資人。購買黃金應透過合法正規銀行（如台銀黃金存摺）或具公信力之合格銀樓。"}, {"id": 28, "type": "貴金屬高槓桿爆倉話術", "question": "受害者在非法倫敦金/貴金屬平臺投資，某晚突然發現系統在幾分鐘內暴跌造成「強制爆倉平倉」，帳戶幾百萬瞬間歸零。客服宣稱是「國際不可抗力突發黑天鵝事件」。事實往往為何？", "options": ["A. 國際金融市場真實波動劇烈所導致的正常現象", "B. 該平台根本未串接真實國際交易所，行情數據完全由詐團在軟體後台自導自演「人為插針」惡意爆倉吞噬客戶本金", "C. 是投資人運氣不佳，下次加碼就能賺回來", "D. 金管會會主動賠償所有海外爆倉損失"], "correct": 1, "explanation": "【核心解析：選項 B 正確】黑箱交易平台（對賭盤）的行情走勢完全由詐騙後台操縱，詐團只需在後台修改參數「插針」，就能瞬間讓客戶資金全部爆倉歸零，本金早已流入詐團私囊。"}, {"id": 29, "type": "黃金回收高價陷阱", "question": "網路廣告宣稱「專人高價回收實體黃金，收購價比台灣銀行國際金價牌價高出 30%」。面對此種話術，正確判斷為何？", "options": ["A. 是難得的套利良機，應立刻將家中金飾全數出售", "B. 商業市場上絕不可能有商家長期以高於公允市場價 30% 收購商品，此為誘騙被害人攜帶黃金前往並進行強奪或換包之犯罪陷阱", "C. 可能是該珠寶商擁有特權外銷管道", "D. 只要在公開場所交易就絕對沒有危險"], "correct": 1, "explanation": "【核心解析：選項 B 正確】高於市場公允價收購是不符合商業邏輯的典型誘餌。許多案件中，被害人攜帶黃金赴約後，遭歹徒以調包、假鈔付款或暴力強奪，財物全失。"}, {"id": 30, "type": "投資人停損認賠心態", "question": "當發現自己投入的 50 萬元在平台上已無法正常提領，且對方繼續要求補款時，最強韌的心理防衛行為是什麼？", "options": ["A. 抱持僥倖心理，再匯 10 萬元碰碰運氣看能不能解凍", "B. 勇敢承認遭遇詐騙並「果斷停損認賠」，立即報警撥打 165，絕不再匯出任何一塊錢", "C. 在社群網路上痛罵對方，但私下繼續匯款配合指令", "D. 向地下錢莊借高利貸去填補平台要求的差額"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「果斷停損認賠」是止血自救的唯一正確道路。繼續匯款只會讓損失如雪球般擴大，認清事實、立即停止與騙徒接觸並報警求助，才能保住剩餘資產。"}, {"id": 31, "type": "AI 聲音深偽技術原理", "question": "現代 AI 深偽（Deepfake）語音複製技術在犯罪中的運用日益普遍。詐騙集團通常只需要取得受害人親友多長時間的聲音樣本，即可高保真複製其語音與語調？", "options": ["A. 需要至少 100 小時的高清專業錄音室錄音", "B. 僅需社群平台上 3 到 5 秒鐘的公開短影音或通話錄音，即可生成高度逼真的合成聲音", "C. 目前 AI 技術完全無法複製人類真實講話的情感與方言", "D. 必須在受害人家中安裝竊聽器連續錄製一個月"], "correct": 1, "explanation": "【核心解析：選項 B 正確】現代語音生成模型極為先進，詐團僅需利用親友在 IG/TikTok 上的短影音截取數秒聲音，就能利用 AI 模擬出親友哭泣求救或借錢的語音，極具欺騙性。"}, {"id": 32, "type": "親友 AI 變聲借錢查證 SOP", "question": "接到「兒子」打來語音電話，聲音完全一模一樣，語氣慌張哭訴：「爸，我跟朋友合夥出事被扣押了，需要馬上匯 30 萬救急，千萬不要跟我媽說」。此時最正確的處置 SOP 為何？", "options": ["A. 救子心切，立即依照電話裡的指示用網銀轉帳", "B. 保持冷靜，立刻掛斷該電話，主動撥打兒子原本的手機號碼查證，或透過平時約定的「通關密語/家庭私密問答」確認身分", "C. 跑到銀行直接匯款，但備註寫贈與", "D. 馬上在 Facebook 發文尋求親友協助募款"], "correct": 1, "explanation": "【核心解析：選項 B 正確】遇到親友突發借錢或危急電話，切記「先掛斷、再回撥原號查證」。平日應與重要家人建立一組只有彼此知道的「防詐通關密語」，即可瞬間識破 AI 假冒語音。"}, {"id": 33, "type": "視訊 AI 換臉辨識技巧", "question": "如果懷疑與你通話的檢警或親友視訊畫面是 AI 即時換臉生成的，可以要求對方做出何種動作來快速檢驗畫面破綻？", "options": ["A. 要求對方眨一下眼睛", "B. 請對方把手掌在臉部前方來回揮動，或側轉臉部 90 度，觀察面部邊緣是否出現像素抖動、撕裂或模糊變形", "C. 聽對方背誦身分證字號", "D. 只要視訊畫面解析度高就代表絕對是真的"], "correct": 1, "explanation": "【核心解析：選項 B 正確】即時 AI 換臉在面對障礙物遮擋（如手掌在臉前揮動）或大角度側轉臉時，演算法難以即時計算面部特徵點，會產生明顯的面部邊緣撕裂、模糊或抖動破綻。"}, {"id": 34, "type": "假檢警傳真公文破綻", "question": "詐騙集團透過通訊軟體傳送「最高檢察署強制性資產凍結處分命令」公文圖片。下列關於真實台灣司法公文的敘述，何者正確？", "options": ["A. 檢警辦案講求時效，會透過 LINE 或通訊軟體傳送公文給當事人簽收", "B. 真正的司法機關絕不會以 LINE 等通訊軟體傳送正式傳票或處分書，必是以掛號郵寄送達當事人戶籍地址", "C. 只要公文上方蓋有「法務部」紅色大印，就一定是真實公文", "D. 公文若寫明「受偵查不公開限制」，律師也不能陪同閱卷"], "correct": 1, "explanation": "【核心解析：選項 B 正確】台灣司法機關送達公文有嚴格法定程序，必定透過郵差專送或轄區員警親送掛號信函，絕不可能透過 LINE 傳送圖片要求民眾核對或繳納保證金。"}, {"id": 35, "type": "資產監管與專員代保管謬誤", "question": "假警察說：「因案情重大，為證明你的清白，請將名下所有銀行帳戶存款提領出來，交給我們特約的安全監管人員暫時代管保管，結案後全額發還」。這句話最大的謬誤在哪裡？", "options": ["A. 應該交給法官保管，而不是警察保管", "B. 司法檢察體系中根本不存在所謂「資產監管帳戶」或「專員代保管現金」的制度，要求交出財產就是 100% 詐騙", "C. 代管期間應該有支付利息給當事人", "D. 必須要有里長在場見證才能交付保管"], "correct": 1, "explanation": "【核心解析：選項 B 正確】我國法律沒有任何「資金監管帳戶」或「派專員代管現金黃金」之機制。凡提及交付存摺、提款卡、現金、金條以「證明清白或監管」者，必定為詐騙。"}, {"id": 36, "type": "企業高層偽冒（CEO Fraud）", "question": "財務同仁收到一封自稱「集團董事長 / 執行長」發來的急件 Email，語氣嚴厲指示：「本公司正在進行極度機密的跨國併購案，請立即在半小時內將準備金 500 萬元匯入指定海外帳戶，因簽署保密協定千萬不可告知其他同仁」。財務人員此時應採取的安全作為為何？", "options": ["A. 長官交代且事態緊急，應先火速辦理匯款以免耽誤公司商機", "B. 這是標準的「商業電子郵件詐騙（BEC / CEO Fraud）」，必須立即暫停匯款，透過公司原本既定的「雙人核決機制」與「實體電話或當面覆核」長官身分", "C. 先匯款一半金額以示配合誠意", "D. 直接回覆該郵件詢問對方「真的是老闆嗎？」"], "correct": 1, "explanation": "【核心解析：選項 B 正確】商業電子郵件詐騙（BEC）常偽冒高階主管要求緊急機密匯款。防範唯一法門是恪遵企業內部內控覆核流程，透過不同安全通道（當面或既有內部分機）進行雙重查證。"}, {"id": 37, "type": "簡訊 OTP 驗證碼安全原則", "question": "在任何情況下，銀行或線上平台發送至個人手機的「簡訊 OTP（一次性動態密碼驗證碼）」，可以透露給他人嗎？", "options": ["A. 只要對方自稱是銀行防洗錢客服或公司主管就可以提供", "B. 絕對不可以！OTP 等同於你的本人印鑑與數位簽章，任何索取 OTP 驗證碼的人 100% 是要盜刷你的卡片或轉移你的帳號", "C. 只要對方承諾十分鐘內會返還帳號就可以說", "D. 只要在通訊軟體私訊中告知就不會被外人截獲"], "correct": 1, "explanation": "【核心解析：選項 B 正確】簡訊 OTP 是交易核准與身分認證的最高授權碼。銀行客服、電商、甚至檢警均「絕無權限要求客戶口述或傳送 OTP」。一旦交付，帳戶存款與卡片額度將瞬間遭盜用。"}, {"id": 38, "type": "釣魚郵件辨識技巧", "question": "收到一封標題為「Netflix 會員扣款失敗，請於 24 小時內點擊此處更新信用卡資訊否則帳號將永久停用」的電子郵件。下列哪一項查證動作最能識破詐騙？", "options": ["A. 檢查寄件者真實電子郵件地址（Domain）是否為官方合法網域（例如是否偽裝成 service@netfllix-verify.com），並直接開啟官方 APP 確認帳號狀態而非點擊郵件內的連結", "B. 只要信件內有 Netflix 的紅色 Logo 就代表真實無誤", "C. 立即點開連結輸入卡號測試看能否刷過", "D. 轉寄給全體公司同仁請大家幫忙點看"], "correct": 0, "explanation": "【核心解析：選項 A 正確】釣魚郵件常偽造急迫警告與官方商標，但寄件者真實網域名稱往往露出馬腳。切勿點擊郵件中的超連結，應自行開啟官方官方應用程式登入核實。"}, {"id": 39, "type": "公司同仁 LINE 帳號遭盜用借錢", "question": "同事的 LINE 突然傳訊息來：「我現在在外面臨時不方便，你能幫我用手機買 3 萬元的 App Store / GASH 點數卡並把密碼拍照傳給我嗎？明天進辦公室馬上還你現金」。遇到此情況應如何處理？", "options": ["A. 同事平時交情很好，應立即前往超商購買點數拍照支援", "B. 這代表該同事的 LINE 帳號已經遭到詐騙集團盜用，應立即撥打該同事的手機電話或公司分機向本人求證，並通報公司 IT 進行資安阻斷", "C. 先買 5,000 元點數以示心意", "D. 請超商店員幫忙確認該點數是否能退款後再買"], "correct": 1, "explanation": "【核心解析：選項 B 正確】要求代買「遊戲點數卡、Apple Store 儲值卡」並回傳序號密碼，是帳號遭盜用後的典型洗錢手法。點數序號一旦傳送即被瞬間兌領，無法撤回。"}, {"id": 40, "type": "公共場所免費 Wi-Fi 資安風險", "question": "在機場、咖啡廳或高鐵站等公共場所，使用免密碼的公開公共 Wi-Fi 進行網路銀行轉帳或輸入信用卡資訊，存在何種安全風險？", "options": ["A. 速度可能會變慢，但沒有任何資安風險", "B. 駭客可在相同區域架設同名假熱點（Evil Twin 惡魔雙胞胎）進行中間人攻擊（MITM），側錄傳輸之帳號、密碼與未加密憑證", "C. 只要手機電池電量高於 80% 就能防範側錄", "D. 只要在瀏覽器開啟無痕模式即可完全阻絕攔截"], "correct": 1, "explanation": "【核心解析：選項 B 正確】公共免密 Wi-Fi 極易遭黑客設置假熱點攔截網路封包。進行金融交易或重要登入時，應優先使用手機 4G/5G 個人行動熱點，避免個資裸奔。"}, {"id": 41, "type": "民間借貸與高額房貸槓桿", "question": "長輩常被朋友推薦「民間借貸高息互助會」或「土地抵押二胎投資」，宣稱月配息 2%（年化 24%）。為了籌資，許多長輩將唯一的自住房產拿去辦理高額房貸。這種做法最大致命傷為何？", "options": ["A. 銀行房貸審核時間太長，會錯過最好的入金時機", "B. 將具有法律擔保的「剛性負債（房貸每月必還）」壓注在完全無實質保障的「高風險黑箱投資」，一旦對方倒閉，長者將失去棲身之所且被迫面對破產與家人經濟崩潰", "C. 只要每月有收到第一次配息就表示風險已被消除", "D. 房貸利息可以抵扣個人綜合所得稅，屬於聰明的節稅槓桿"], "correct": 1, "explanation": "【核心解析：選項 B 正確】拿自住房屋借貸去投資高利民間借貸，是將自己的生存底線置於萬劫不復之地。一旦民間公司倒閉失聯，每月的巨額銀行房貸仍需償還，極易導致房產遭法拍。"}, {"id": 42, "type": "長輩遭遇詐騙時的家庭溝通技巧", "question": "當發現家中長輩疑似加入可疑投資群組且堅持要匯款時，子女採取何種溝通方式最能有效阻攔？", "options": ["A. 當場嚴厲責罵長輩「你怎麼這麼貪心！這麼老了還會被騙！」", "B. 理解長輩「擔心老後生活、害怕拖累家人」的深層恐懼，以關心同理的態度傾聽，並陪同長輩到銀行臨櫃或派出所請專業第三方客觀查證", "C. 沒收長輩的所有身分證與存摺，斷絕其人際關係", "D. 放任長輩匯小額款項，讓他自己賠錢學教訓"], "correct": 1, "explanation": "【核心解析：選項 B 正確】嚴厲指責只會激起長輩的防衛心理與羞愧感，反而使其暗中借錢匯款。唯有同理其對老後的焦慮，以愛與耐心引導第三方（警察、行員、165）客觀介入，方能化解危機。"}, {"id": 43, "type": "緊急預備金的金融防護意義", "question": "在健全的家庭財務防護體系中，「緊急預備金」的最主要功能是什麼？", "options": ["A. 等待股市暴跌時全數進場抄底", "B. 準備相當於 6 個月以上的生活固定開支，存放於高流動性安全資產，應付突發疾病或失業，避免在恐慌中被迫接受不合理的高利騙局", "C. 用來向親友炫耀個人的流動資產儲備", "D. 購買最高槓桿的投機期貨合約"], "correct": 1, "explanation": "【核心解析：選項 B 正確】充足的緊急預備金是心態穩定的基石。當家庭面對突發變故時有足夠的安全緩衝，就不會因走投無路的恐慌而病急亂投醫，掉入高利吸金的陷阱。"}, {"id": 44, "type": "保險在防詐心理上的防禦角色", "question": "適當配置醫療險與長照險，在心理防詐層面上能帶來何種關鍵效益？", "options": ["A. 保險公司會主動幫保戶過濾所有的詐騙簡訊", "B. 能有效轉嫁突發重大傷病帶來的巨額支出恐懼，消除「老了生病會花光存款、拖累孩子」的心靈痛點，從根源化解對高報酬詐騙的依賴衝動", "C. 保單可以隨時在網路上當作虛擬貨幣質押借款", "D. 只要有買保險，投資任何地下基金賠錢都能申請全額理賠"], "correct": 1, "explanation": "【核心解析：選項 B 正確】許多長者之所以冒險投資高利配息，背後深層原因正是害怕失能後的龐大看護費用拖垮家庭。透過正規保險築牢健康保障，能從根本上瓦解詐團兜售焦慮的話術。"}, {"id": 45, "type": "資產分散與集中風險", "question": "民間有句諺語「不要把雞蛋放在同一個籃子裡」。在防範金融詐騙與重大投資暴雷中，這項原則的核心精神為何？", "options": ["A. 盡可能將資金分散在十個不同的 LINE 飆股群組中跟單", "B. 嚴格分散投資標的，絕不將全部身家（甚至抵押唯一房產）重壓在單一未受法規監管的項目或非公開發行公司債券上", "C. 把資產分成現金、黃金與外幣全部藏在家中保險箱", "D. 在不同的虛擬貨幣交易所買入同一種空氣幣"], "correct": 1, "explanation": "【核心解析：選項 B 正確】資產配置必須建立在「合法、受監管、透明」的基礎之上，並避免將過高比例的資產押注在單一高風險項目，特別是不可抵押維生資產換取投機資金。"}, {"id": 46, "type": "165 反詐騙專線功能", "question": "當你接到可疑電話、收到可疑投資簡訊，或懷疑自己剛完成的匯款可能遭遇詐騙時，最應在第幾時間採取的行動為何？", "options": ["A. 先上網發文發問，等待網友回覆確認後再說", "B. 立即撥打「165 反詐騙諮詢專線」，由專業警務人員協助查證判斷，若剛匯款可立即啟動金融聯防圈存機制攔阻款項", "C. 聯絡身邊朋友看有沒有人認識該平台主管", "D. 重新匯款一筆測試看帳戶是否正常"], "correct": 1, "explanation": "【核心解析：選項 B 正確】165 專線 24 小時提供詐騙查證服務。若不幸已匯款，在黃金時間內撥打 165，警方可通報受款銀行啟動「緊急圈存機制」，將該人頭帳戶暫時凍結，大幅提升攔阻資金之機率。"}, {"id": 47, "type": "圈存機制黃金時效", "question": "如果不幸誤將款項匯入詐騙集團指定的人頭帳戶，啟動銀行聯防「緊急圈存」的關鍵黃金時間通常在多久之內？", "options": ["A. 一年之內隨時都可以", "B. 越快越好，通常在匯款後 10 至 15 分鐘內的「黃金攔阻期」，因詐團車手水房多在極短時間內完成多層次轉帳與提領", "C. 必須等到每個月結算日才可以申請", "D. 等到下個工作日銀行開門再臨櫃申請即可"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團水房一旦偵測到入金，通常在 5~15 分鐘內就會透過網銀分流轉帳至數十個二三層人頭戶或由車手提領現鈔。匯款後必須分秒必爭立刻通報 165 圈存。"}, {"id": 48, "type": "警示帳戶聯徵聯防", "question": "個人銀行帳戶一旦被警方列為「警示帳戶（涉及詐欺洗錢）」，其日常生活將面臨何種嚴峻後果？", "options": ["A. 僅該帳戶暫時不能使用，其餘所有銀行帳戶、網銀、信用卡與貸款均完全不受影響", "B. 名下所有金融機構帳戶將全數被列為「衍生管制帳戶」，暫停網銀轉帳、提款卡功能與信用卡使用，無法收受薪資轉帳，且影響個人信用評等長達數年", "C. 只要換一張健保卡即可立即解除管制", "D. 只要在社群平台發文道歉即可自動註銷紀錄"], "correct": 1, "explanation": "【核心解析：選項 B 正確】成為警示帳戶的代價極其高昂。聯徵中心會通報全體金融機構，當事人名下所有帳戶的電子交易、提款卡均會被全面凍結，無法發放薪資，日常生活將陷入巨大癱瘓。"}, {"id": 49, "type": "合法徵才與租借帳戶陷阱", "question": "求職社團出現「居家兼職輕鬆賺，僅需提供銀行存摺與提款卡供外商公司節稅走帳，每本每月補助租金 3 萬元」。這項行為在法律上的定性為何？", "options": ["A. 合法共享經濟與閒置資產活化", "B. 這是標準提供人頭帳戶供詐騙集團洗錢的犯罪行為，依《洗錢防制法》及《刑法》可被認定為詐欺共犯並負擔連帶民事賠償責任", "C. 只要合約有註明「不法用途概不負責」即可免責", "D. 只要是短期出租就屬於民法租賃契約範疇"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「租借存摺、提供提款卡與密碼」100% 是詐騙集團收購人頭戶的陷阱。提供者即為洗錢共犯，除面臨刑事責任外，更需對所有受害人的財物損失承擔龐大民事賠償責任。"}, {"id": 50, "type": "二次詐騙（維權律師/黑客追款）", "question": "遭遇詐騙損失慘重後，在網路上看到自稱「國際頂尖資安黑客團隊」或「專辦反詐維權海外律師」，宣稱「掌握區塊鏈底層技術，只要先付 3 萬元定金即可百分之百幫你追回被騙本金」。這屬於何種陷阱？", "options": ["A. 現代民間科技司法救援組織的專業服務", "B. 典型的「二次詐騙（追款詐騙）」，專門鎖定已經受害且急於翻本的人群進行二次剝削，切勿相信", "C. 金管會特約的海外資產清算中心", "D. 只要對方出示電腦程式代碼截圖就值得信賴"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「二次詐騙」極為惡劣。詐團精準利用被害人痛苦急切想討回失款的心態，假冒駭客或律師索取諮詢費或技術費，收到錢後再度失聯，絕無可能以此方式追回款項。"}, {"id": 51, "type": "靈魂拷問一・風險承受度", "question": "投資前靈魂拷問第一問：「如果這筆錢全部賠光，我還能正常安心生活嗎？」這項檢驗的核心目的是什麼？", "options": ["A. 測試自己是否有成為富翁的膽量與野心", "B. 確保投入的資金屬於「可承受完全損失的閒置資本」，嚴禁挪用維生準備金、醫療金或生活必需資金進行高風險投機", "C. 評估向銀行借款的信用額度上限", "D. 衡量自己能否承受三天不吃不喝的心理壓力"], "correct": 1, "explanation": "【核心解析：選項 B 正確】所有投資的前提是保全基本生活。一旦挪用維生資金或高槓桿負債，當市場逆轉或遭遇騙局時，生活秩序將徹底崩解。"}, {"id": 52, "type": "靈魂拷問二・認知邊界", "question": "投資前靈魂拷問第二問：「我真的了解它背後是怎麼賺錢的嗎？還是只聽別人說？」根據傳奇投資家巴菲特的原則，這對應到何種重要概念？", "options": ["A. 市場有效假說", "B. 堅守「能力圈（Circle of Competence）」，不碰自己搞不懂底層商業邏輯與現金流來源的黑箱商品", "C. 技術分析黃金交叉", "D. 隨機漫步理論"], "correct": 1, "explanation": "【核心解析：選項 B 正確】巴菲特強調「永遠不要投資你看不懂的生意」。詐團常以「量子演算法、AI量化、元宇宙DeFi」等高端名詞包裝，正是為了讓人因聽不懂而放棄追究獲利合理性。"}, {"id": 53, "type": "靈魂拷問三・合理性懷疑", "question": "投資前靈魂拷問第三問：「為什麼對方願意無條件給我這麼高的暴利回報？」面對超額收益，清醒的理性人應該如何推敲？", "options": ["A. 相信是自己天生運氣特別好，遇見了生命中的貴人", "B. 若真有穩定年化 20%~30% 且保本的機會，發起人只需向銀行低利借款即可獨吞暴利，何必費盡心思在網路拉陌生人分潤？其唯一目的是為了掠奪你的本金", "C. 相信該團隊是出於菩薩心腸與慈善公益理念帶領大家發財", "D. 認為這是大型機構推廣初期所發放的免費促銷補貼"], "correct": 1, "explanation": "【核心解析：選項 B 正確】商業底層邏輯十分殘酷：凡是穩賺且暴利的項目，絕對不會無故分享給陌生網友。「你看中他的利息，他看中你的本金」，這是所有金融騙局的鐵律。"}, {"id": 54, "type": "靈魂拷問四・第三方視角", "question": "投資前靈魂拷問第四問：「如果今天是我的家人（父母或子女）要做這筆投資，我會同意嗎？」這項反思機制的心理學功能為何？", "options": ["A. 將決策責任推卸給家人承擔", "B. 抽離自身「當局者迷、深陷 FOMO 與貪念」的非理性情緒，透過「客觀第三方視角」重新審視交易的真實風險與破綻", "C. 藉此刺探家人的存款底細", "D. 測試家庭成員是否支持自己創業"], "correct": 1, "explanation": "【核心解析：選項 B 正確】人往往對自己的誘惑盲目，但對親友的風險極為清醒。切換為第三方守護者視角，能瞬間識破許多原本在迷戀中被忽視的漏洞。"}, {"id": 55, "type": "理財助手 vs 決策主體", "question": "面對當代 AI 科技浪潮，正確的金融哲學與態度應當為何？", "options": ["A. 完全順從 AI 模型的一切買賣指令，放棄個人自主思考", "B. AI 可以成為蒐集資訊、比較產品、辨識破綻的強大「理財與防詐助手」；但保護家庭財富的終極關鍵，永遠是人類自身「冷靜的判斷與負責任的查證習慣」", "C. 徹底抗拒現代科技，拒絕使用任何數位網銀工具", "D. 相信 AI 演算法能在零風險前提下創造無限財富"], "correct": 1, "explanation": "【核心解析：選項 B 正確】科技是工具，不是萬能的神。AI 能幫我們分析數據與拆解話術，但下達金融指令與承擔最終盈虧的始終是個人，冷靜與素養才是最終防線。"}, {"id": 56, "type": "假虛擬幣空投與錢包授權", "question": "在去中心化錢包中突然收到價值數萬美元的陌生未知代幣（AirDrop 空投），點擊說明網址要求你「批准錢包智能合約授權（Approve）」。若點擊確認，將發生何事？", "options": ["A. 順利將該筆意外之財兌現為新台幣提領", "B. 惡意智能合約將獲得動用你錢包內所有其他資產（如 USDT、ETH）的完全控制權，將存款瞬間洗劫一空", "C. 僅該筆代幣會被凍結，其他資產完全安全", "D. 錢包會自動升級為最高防護等級"], "correct": 1, "explanation": "【核心解析：選項 B 正確】這是常見的「釣魚空投授權陷阱」。惡意合約透過 Approve 授權獲取轉移你錢包中所有代幣的無限權限，只要授權確認，錢包內正當資產將被秒速轉空。"}, {"id": 57, "type": "假律師函與存證信函恐嚇", "question": "收到簡訊宣稱：「你因違約未繳納會員升級款，已被本法律事務所提起民事訴訟，點擊以下連結下載存證信函並於 3 日內調解」。此時正確反應為何？", "options": ["A. 害怕被告，立刻點擊連結下載檔案查看", "B. 切勿點擊簡訊內的任何超連結！真實存證信函必由郵局以實體紙本掛號寄送，簡訊連結多為釣魚木馬下載程式", "C. 立即回撥簡訊電話跟對方律師談判私了", "D. 轉傳給其他親戚請大家幫忙點看"], "correct": 1, "explanation": "【核心解析：選項 B 正確】存證信函與法院通知絕無透過簡訊超連結送達的法律效力。簡訊內附帶的短網址是釣魚網站或惡意 APK 木馬安裝檔。"}, {"id": 58, "type": "假網購客服重複扣款騙局", "question": "接獲自稱電商客服來電：「因系統人員操作失誤，將您的訂單誤設為批發商會員，每個月會自動扣款 12,000 元，現在幫您轉接銀行客服解除分期付款設定」。下列何者為正確認知？", "options": ["A. 依客服指示前往 ATM 機台或開啟手機網銀操作「解除設定」", "B. ATM 與網路銀行只有「提款、轉帳」功能，絕對沒有「解除分期付款或取消扣款」之功能！這是經典詐騙話術，應立即掛斷", "C. 只要在 ATM 螢幕選擇英文界面就不會扣款", "D. 只要按照指示輸入身分證號碼當作驗證碼就不會轉帳"], "correct": 1, "explanation": "【核心解析：選項 B 正確】ATM 與手機網銀完全無法操作「取消分期扣款或身分認證」。詐團指導在轉帳金額欄位輸入的「密碼或驗證碼」，實際上就是轉出金額！"}, {"id": 59, "type": "假中獎通知與所得稅預繳", "question": "LINE 收到官方認證般的好友通知：「恭喜您被抽中特斯拉電動車一台，請於今日 17:00 前預繳 10% 贈與稅 15 萬元至專戶，逾期取消得獎資格」。正確應對方式為何？", "options": ["A. 車子價值幾百萬，預繳 15 萬非常划算，應趕快匯款", "B. 凡是「未曾主動報名卻突降天價中獎」，並要求「先匯款預繳保證金或稅金」者 100% 為詐騙，切勿匯款", "C. 詢問對方能否直接用車子抵押折抵稅金", "D. 先匯款一半看對方會不會寄車鑰匙過來"], "correct": 1, "explanation": "【核心解析：選項 B 正確】正規抽獎若需繳納機會中獎稅，皆有嚴謹的公證與身分核對程序，且由得獎人親自確認主辦單位合法性。天上不會無緣無故掉餡餅，要求預繳款項必為詐欺。"}, {"id": 60, "type": "個人資料保護與社群隱私", "question": "在 Facebook、IG 或 Threads 等公開社群平台上，頻繁打卡並公開曬出「新買的豪車、名牌包、存摺百萬餘額、房屋權狀」會帶來何種潛在危機？", "options": ["A. 能提升個人信貸評分，有利於向銀行申請優質房貸", "B. 容易被詐騙集團的「情蒐人員（OSINT）」鎖定為高價值肥羊目標，進而量身訂做殺豬盤或假冒公權力進行精準詐騙", "C. 完全沒有風險，只是正常的個人生活紀錄", "D. 社群平台會自動為高資產帳號提供特別資安防護"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團常在社群平台搜尋炫富或透露財務資訊的對象。高調曬出資產與作息，形同向犯罪集團提供行騙的劇本素材與目標定位。"}, {"id": 61, "type": "盛欣/盛碁同仁內部資安守則", "question": "作為盛欣網絡與盛碁網絡科技的一員，在處理公司核心資產與內部通訊時，下列何項行為符合企業資訊安全規範？", "options": ["A. 為了圖方便，將公司內部的客戶資料與核心源代碼上傳至未受控管的公開個人雲端網盤備份", "B. 嚴格遵守公司資安規定，不隨意點擊外部釣魚郵件連結，不擅自安裝未授權第三方外掛，重要業務與財務變更必經內部合規簽核流程", "C. 將個人公務帳號密碼寫在便利貼上貼在辦公室螢幕邊緣方便記憶", "D. 在未加密的公共場所熱點下直接連線公司核心生產資料庫"], "correct": 1, "explanation": "【核心解析：選項 B 正確】企業資安是組織的生命線。同仁應落實密碼管理、警惕釣魚郵件、遵守資料治理規範，守護企業機密與同仁自身之資產安全。"}, {"id": 62, "type": "釣魚 QR Code（Quishing）詐騙", "question": "在公共自行車、停車繳費機或餐廳桌面看到一張貼紙，寫著「掃描 QR Code 立即領取 200 元折價券」，掃描後跳出一個網頁要求輸入信用卡號與安全碼。這種手法的危害為何？", "options": ["A. 這是正常的數位行銷推廣活動", "B. 此為「QR Code 釣魚（Quishing）」，歹徒將假 QR Code 覆蓋在合法公共設備上，誘導民眾進入假網頁側錄信用卡與支付資訊", "C. 只要手機鏡頭掃得出來就代表該條碼是官方合法的", "D. 只要在五分鐘內刷卡就不會被重複扣款"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「Quishing」是新興詐騙手法，歹徒在真實機台張貼偽造 QR 碼。遇到掃碼跳出要求輸入敏感金融資訊時，務必停止操作並向店家求證。"}, {"id": 63, "type": "假冒親友借帳號收驗證碼", "question": "FB 很久沒聯絡的同學私訊：「我手機送修，可以借用你的手機號碼幫我收一下驗證碼嗎？」當你收到簡訊時，發現簡訊內容寫著【這是您的 LINE 換機登入碼，請勿提供他人】。若將該驗證碼給對方，會發生什麼事？", "options": ["A. 順利幫助同學找回他的手機帳號", "B. 你的 LINE 帳號將會立即在你的手機上被登出，並被詐騙集團徹底奪取控制權，拿去向你的所有親朋好友借錢", "C. 同學只能查看你的聯絡人名單，不會影響使用", "D. 系統會自動發送警報並退回該要求"], "correct": 1, "explanation": "【核心解析：選項 B 正確】任何索取「換機碼、身分驗證碼」的訊息，都是為了盜取你的社群帳號。一旦給出，自己的帳號即被強佔，成為詐團向全體好友行騙的工具。"}, {"id": 64, "type": "以房養老合規管道 vs 地下抵押", "question": "中高齡長者若希望活用名下房產創造穩定退休現金流，下列何者為正當且受政府保障之合法金融途徑？", "options": ["A. 向民間融資公司或當鋪辦理高利民間二胎借貸，並將資金交由該公司代操股票", "B. 向政府核准之正規公私立商業銀行洽詢「商業型不動產逆向抵押貸款（俗稱以房養老）」，由銀行按月穩定撥付生活費，且產權受法律嚴格保障", "C. 將房屋所有權狀正本交給網路認識的理財顧問代管", "D. 把房子過戶給不知名的海外資產管理公司以換取高額利息"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合法「以房養老」是金管會推動的正規銀行授信業務，產權仍在長輩名下，銀行按月給付養老金。切勿將房產抵押給民間地下金融，以免房產遭侵吞。"}, {"id": 65, "type": "假金融 APP 假行情操控手法", "question": "受害者下載假投資 APP 後，看著帳戶內的股票每天漲停板，資產從 100 萬暴增到 800 萬。這個「暴賺數字」在技術上的真相是什麼？", "options": ["A. 該平台掌握了全球最高速的高頻交易演算法，獲利真實可信", "B. 這完全只是詐騙集團在後台資料庫隨意填寫的「假數字與假動畫」，受害者的真實本金早在匯款當天就被車手提領一空", "C. 是真實獲利，但必須等待三年後才能在台灣證交所報稅提款", "D. 代表該股票確實受到全球主力機構強力拉抬"], "correct": 1, "explanation": "【核心解析：選項 B 正確】假投資 APP 上的「損益走勢、獲利金額、成交紀錄」全是騙徒在後台隨意輸入的虛擬數字，如同單機遊戲。帳面上賺再多，本金早已不在平台裡。"}, {"id": 66, "type": "假律師事務所法務諮詢", "question": "在臉書粉專看見「全台受害者自救聯盟」，聲稱由「前法官、退休主任檢察官」成立，只要加入私密社群就能免費幫你打跨國官司並優先拿回被扣押資金。判斷其真偽的關鍵指標為何？", "options": ["A. 只要其臉書粉專有超過一萬個讚，就必定是真實公義組織", "B. 可至法務部律師查詢系統查核其宣稱之律師真實姓名與執業證號，司法案件必須透過合法法定訴訟程序，絕無所謂「付費給私人粉專優先退還贓款」之管道", "C. 只要群組管理員熱心回覆訊息，就值得信賴", "D. 應該先將剩餘的積蓄當作律師公費匯給對方"], "correct": 1, "explanation": "【核心解析：選項 B 正確】假自救會、假律師粉專是詐騙集團收割剩餘價值的「二次詐騙」鏈條。律師身分可於法務部官網公開查證，正規司法體系絕不會保證能全額追回已洗出境之贓款。"}, {"id": 67, "type": "虛擬貨幣冷錢包與助記詞安全", "question": "持有虛擬貨幣冷錢包（Hardware Wallet）時，最重要的 12 或 24 個英文「助記詞（Seed Phrase）」應如何保管？", "options": ["A. 截圖保存在手機相簿中，並上傳到 Google Drive 雲端同步", "B. 手寫抄錄在紙本或金屬板上妥善保存在私人保險箱，絕不拍照上傳網路，且「絕對不在任何網站或向任何人透露」", "C. 遇到交易所客服要求協助排查時，直接傳給客服", "D. 在社群聊天群組中請大家幫忙檢查拼字是否正確"], "correct": 1, "explanation": "【核心解析：選項 B 正確】助記詞是恢復私鑰的唯一根基，誰擁有助記詞誰就完全擁有該錢包的所有資產。上傳雲端或截圖存在被木馬偷取的風險，手寫離線保存才是最安全方式。"}, {"id": 68, "type": "金融防詐安全承諾守則", "question": "課程中所推廣的「我的金融安全承諾卡」中，建議動用單筆超過多少金額之資金前，必須至少與兩位家人或專業銀行人員商討？", "options": ["A. 新台幣一千元", "B. 新台幣五萬元", "C. 新台幣一千萬元", "D. 新台幣五億元"], "correct": 1, "explanation": "【核心解析：選項 B 正確】課程規範五大承諾之一為：「動用單筆超過新台幣五萬元資金前，一定至少與兩位家人或專業銀行人員討論」，藉此設立決策緩衝期，阻斷衝動匯款。"}, {"id": 69, "type": "被誘騙簽署空白本票風險", "question": "民間借貸借款人或投資擔保人若要求你「先在空白本票上簽名並捺指印，金額與日期由他們後續依照專案自動填寫」。簽署空白本票在法律上的致命後果為何？", "options": ["A. 空白本票沒有法律效力，簽了也不用負責", "B. 持票人可隨意在上面填寫上千萬甚至億元之天價金額，並向法院聲請「本票裁定」直接強制執行查封扣押你的所有銀行存款與房產", "C. 只要事後在存證信函中聲明作廢即可自動解除責任", "D. 只有蓋公司章才有效，個人簽名完全無效"], "correct": 1, "explanation": "【核心解析：選項 B 正確】本票具有極強的法律強制執行力。簽署空白本票如同把空白支票交給惡人，對方填入巨額數字即可透過法院裁定秒查封名下所有財產，萬不可簽署！"}, {"id": 70, "type": "高齡長輩失智與財務監護制度", "question": "若家中高齡長輩出現認知退化、記憶障礙，且頻繁成為詐騙集團行騙目標時，家屬依法可向法院聲請何種機制來提供法律財產保護？", "options": ["A. 聲請「監護宣告」或「輔助宣告」，並辦理銀行「安養信託」，由受監護宣告人之法定監護人會同把關大額財產處分", "B. 只能任由長輩處分財產，法律完全無法介入保護", "C. 找鎖匠把長輩鎖在家中", "D. 替長輩投保最高額的人壽保險"], "correct": 0, "explanation": "【核心解析：選項 A 正確】對於認知障礙長者，民法設有「監護宣告」或「輔助宣告」制度，配合信託機制，可使長輩的大額資產處分必須經監護人或法院同意，築起合法防詐防火牆。"}, {"id": 71, "type": "求職詐騙變車手", "question": "剛畢業求職者應徵「外商高薪外勤助理」，工作內容僅是「依照主管指令，持提款卡至不同超商 ATM 提領現鈔，並將現金裝入紙袋交給特定人士，每天現領 5,000 元獎金」。這名求職者實際上在從事何種行為？", "options": ["A. 正常跨國企業現金流外勤調度", "B. 已經成為詐騙集團的「第一線提款車手」，依法為詐欺罪與洗錢罪現行犯，將面臨有期徒刑並揹負全案巨額連帶民事賠償責任", "C. 只要跟法官說「我不知道這是詐騙」就可以完全無罪釋放", "D. 屬於正當勞基法規範的鐘點工"], "correct": 1, "explanation": "【核心解析：選項 B 正確】天下沒有白吃的午餐。「持多張卡片提款領現交給他人」即為標準詐欺車手行為。司法實務上「不知情」並不能免除刑事與民事賠償責任，切勿因小失大。"}, {"id": 72, "type": "假問卷抽獎釣魚個資", "question": "社群軟體跳出「填寫 30 秒台灣民眾生活滿意度問卷，立即免費領取 500 元超商禮券」，但在填寫過程中逐步要求輸入：真實姓名、身分證字號、出生年月日、現住地址、網銀帳號與母親姓名。這項活動的實質目的為何？", "options": ["A. 政府客觀的大數據民意調查", "B. 典型的「釣魚式個資蒐集（Doxxing / Phishing）」，蒐集完整個資後用於冒名申辦人頭帳號、破解銀行安全問題或進行精準詐騙", "C. 超商為了回饋消費者的正規促銷", "D. 只要不填密碼就沒有任何危害"], "correct": 1, "explanation": "【核心解析：選項 B 正確】正規問卷絕不會要求民眾提供身分證號碼、住址或網銀帳號。這些敏感資訊被犯罪團伙打包建檔後，將成為精準電話詐騙與盜辦帳戶的核彈級武器。"}, {"id": 73, "type": "假博弈網站輸贏操弄", "question": "在好友推薦下加入「海外線上娛樂城博弈平台」，對方宣稱掌握「體育賽事賠率漏洞、百家樂必勝打纜法」，起初真的贏了幾十萬，但最後想將錢領出時系統卻要求「必須打滿 50 倍流水才能出金」。這說明了什麼？", "options": ["A. 這是國際博弈業通用常態，只要繼續玩滿 50 倍就能全部領回", "B. 整個娛樂城後台輸贏數據完全由詐團私自控制，「高倍流水要求」純粹是讓你繼續下注直到本金輸光或拒絕出金的藉口", "C. 代表平台非常正規重視防洗錢", "D. 只要跟客服吵架平台就會妥協放款"], "correct": 1, "explanation": "【核心解析：選項 B 正確】非法的假博弈網站所有勝率都在後台掌控中。所謂的「流水倍數、洗碼量限制」是詐團用來阻擋出金的常見託詞，本金一旦進入便絕無可能取回。"}, {"id": 74, "type": "冒充房屋房東租屋詐騙", "question": "在租屋網看見地段極佳、裝潢奢華但租金遠低於市價的物件，房東在 LINE 上說：「目前看房人數眾多，只要你先匯款 2 個月押金 4 萬元作為『排隊優先看房保留金』，看完不喜歡保證全額退還」。此時正確決定為何？", "options": ["A. 為了搶到好房子，趕快匯款卡位", "B. 絕不可在「未實地見到房東本人、未進屋現場看房、未核對房屋所有權狀與身分證件」之前匯出任何押金或定金！這是典型的假房東詐騙", "C. 先匯一個月押金折衷", "D. 請房東先寄鑰匙過來確認"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「未看屋先付定金保留」是假房東常見詐術。歹徒盜用精美民宿照片，收到定金後立即封鎖消失。租屋務必堅持「現場看房、核對證件、簽約交匙後再付款」。"}, {"id": 75, "type": "假包裹簡訊釣魚", "question": "手機收到簡訊：「【中華郵政】您的包裹因地址不全無法派送，請在 24 小時內點擊 http://post-gov-tw.top 更新地址並支付 28 元重新派送費」。這項簡訊的破綻與危險為何？", "options": ["A. 這是中華郵政最新的便民貼心服務", "B. 網址根本不是台灣政府與郵政的官方網域（.gov.tw / post.gov.tw），一旦在假網頁輸入信用卡資訊，將被盜刷數萬元跨國大額交易", "C. 只要補繳 28 元包裹就會立刻送達", "D. 中華郵政會透過 .top 網址處理國際包裹"], "correct": 1, "explanation": "【核心解析：選項 B 正確】台灣公家機關與國營事業網址必定包含 `.gov.tw`。騙徒以「28 元微額費用」卸下受害人心防，實則在背景側錄卡號盜刷大額交易，絕不可點擊！"}, {"id": 76, "type": "長照支出與真實生活開銷精算", "question": "課程強調金融素養的第一件事是「了解自己的真實生活需要」。面對老後生活，為何「精算基本開銷」比「盲目追逐高投報」更能有效防詐？", "options": ["A. 因為精算之後會發現根本不需要任何存款也能生活", "B. 當具體算出每月固定開支（必要 vs 想要），就能破除對未來的模糊恐慌，避免因「漫無邊際的恐懼」而被不合理的超額配息誘餌牽著走", "C. 只要精算清楚，銀行就會無條件提供免費長照服務", "D. 精算財務可以讓自己不用再購買任何健康保險"], "correct": 1, "explanation": "【核心解析：選項 B 正確】許多受騙源於「對老後財務的模糊恐懼」。當精算並釐清實際需要多少準備金後，就能腳踏實地透過穩健配置滿足需求，不再輕易受暴利話術迷惑。"}, {"id": 77, "type": "假貸款先繳手續費詐騙", "question": "信用有瑕疵的民眾在網路申請「保證過件小額貸款 50 萬元」，線上專員核准後表示：「因您評分不足，需先匯款 3 萬元做為『銀行流水包裝費與履約保證金』，貸款放款後連同保證金一併退還」。這是何種手法？", "options": ["A. 正規民間代書的合理授信風控手續", "B. 典型的「假貸款真詐財」，正規合法金融機構辦理貸款，絕不會在「尚未撥款前」要求申請人預先匯款支付任何保證金或手續費", "C. 只要簽署線上合約就具有法律拘束力，必須匯款", "D. 應該再借 5 萬元一起包裝"], "correct": 1, "explanation": "【核心解析：選項 B 正確】正規貸款機構（銀行）的相關手續費都是在「核貸撥款時由本金直接扣除」，絕對不會要求客戶預先掏腰包匯入保證金。要求先付款者皆為詐欺。"}, {"id": 78, "type": "假冒瓦斯檢驗更換防爆閥", "question": "有人身穿制服按門鈴，自稱是「欣欣天然瓦斯服務檢驗員」，進屋檢查後稱「您家瓦斯管線嚴重漏氣隨時會氣爆，必須立刻花 4,500 元更換專利防爆閥並現場收取現金」。面對此種情況，正確防範作為為何？", "options": ["A. 氣爆危險巨大，應立刻掏出現金請其更換維修", "B. 這是常見的假冒瓦斯檢驗推銷！正規公用瓦斯公司即使更換設備，費用也必定「併入次期瓦斯費帳單中繳納」，絕不會派人現場收取現金，應拒絕開門並向瓦斯公司求證", "C. 請對方出示便當發票確認身分", "D. 只要有穿反光背心就一定是合法公用事業人員"], "correct": 1, "explanation": "【核心解析：選項 B 正確】公用天然瓦斯公司定期檢查前均會張貼正式公告，且現場「絕不收取任何現金」。要求現場收現金更換零件者皆為不法民間業者藉恐嚇手法牟取暴利。"}, {"id": 79, "type": "詐騙受害者心理創傷修復", "question": "當親友不幸遭遇重大詐騙失去積蓄時，除了法律訴訟外，周遭親人給予何種心理支持最能預防其發生自傷或二度受騙的極端情況？", "options": ["A. 天天在飯桌上提起這件事並訓斥其愚蠢，督促其反省", "B. 停止指責與羞辱，給予溫暖陪伴，強調「人比錢重要，全家人共同承擔」，協助其尋求心理諮商與法律扶助資源重新建立生活秩序", "C. 要求其簽下切結書並剝奪其所有財務自主權", "D. 鼓勵他趕快再去借錢投資其他高風險項目翻本"], "correct": 1, "explanation": "【核心解析：選項 B 正確】遭遇重大財損的受害者常伴隨極度自責、羞恥與創傷後壓力。家人的溫暖支持與停止言語霸凌是拯救生命的關鍵，陪伴其面對現實方能重拾生活希望。"}, {"id": 80, "type": "165 打詐儀錶板數據認知", "question": "根據內政部警政署「165 打詐儀錶板」公布之官方統計，近年來在全台各類詐騙手法中，「財物損失金額最高、人均損失金額最大」的詐騙類型始終為何者？", "options": ["A. 網購解除分期付款詐騙", "B. 假投資詐騙（包括假股票群組、假外匯虛幣平台與假交友投資殺豬盤）", "C. 一般色情應召詐騙", "D. 假借親友借車票錢詐騙"], "correct": 1, "explanation": "【核心解析：選項 B 正確】165 打詐儀錶板數據顯示，「假投資詐騙」造成的單件財損往往高達數百萬至數千萬元，累計總損失金額長期佔據各類詐騙首位，為社會危害最深之毒瘤。"}, {"id": 81, "type": "假中籤股票認購補款", "question": "投資群組的營業員通知你：「恭喜林先生！您幸運抽中某準上市櫃公司股票 50 張，每張現賺差價 10 萬元，但需在今日 14:00 前補足交割認購款 300 萬，否則將依申購違約交割送辦」。此時應如何查證？", "options": ["A. 怕違約交割被抓去關，趕快四處籌措 300 萬匯入對方指定的集保專戶", "B. 台灣公開上市櫃股票申購（抽籤）必定是透過「本人於合法券商開立之證券集保戶」進行，且中籤前扣款日帳戶就必須有足夠存款；絕無所謂「先中籤再私下匯款補交割」之制度，這 100% 是假中籤詐騙", "C. 詢問營業員能否只買其中 10 張", "D. 匯入 50 萬元當作違約和解金"], "correct": 1, "explanation": "【核心解析：選項 B 正確】台灣公開抽籤股票必在扣款日先扣款才抽籤，且全透過集中保管結算所與個人證券交割戶連線。宣稱「私下大額中籤、催促場外匯款否則違約」100% 為詐騙。"}, {"id": 82, "type": "無痛換匯與洗錢風險", "question": "在國外旅遊或外派時，有陌生網友提議：「我用優於銀行的匯率跟你用現金換新台幣，你把美金給我，我叫台灣朋友直接網銀轉新台幣到你的台灣帳戶」。若接受此種地下換匯，最大的法律風險為何？", "options": ["A. 匯率太划算，會被親友嫉妒", "B. 對方轉入你台灣帳戶的款項極可能是詐騙集團剛從其他受害人手中騙來的贓款，導致你的帳戶直接被警政機關列為洗錢警示帳戶並列為刑事共犯", "C. 只要鈔票是真的就沒有任何法律問題", "D. 只要單次金額不超過一萬美元就完全免責"], "correct": 1, "explanation": "【核心解析：選項 B 正確】地下換匯是詐騙集團洗錢最常用的「水房通道」。受害者自以為撿到便宜匯率，實際上帳戶收受了詐騙贓款，瞬間淪為警示帳戶並面臨洗錢罪調查。"}, {"id": 83, "type": "假冒自來水公司停水催繳簡訊", "question": "手機收到簡訊：「【自來水事業處】您積欠水費 385 元，逾期未繳今日將執行停水，請立即登入繳費 http://water-gov-pay.cc」。此時正確做法為何？", "options": ["A. 水費金額很小，趕快點進去刷信用卡免得家中沒水可用", "B. 這是利用小額費用誘騙信用卡資訊的釣魚簡訊，公用事業催繳不會使用 .cc 等非官方網址，應開啟水費官方 APP、查看紙本帳單或撥打自來水客服查證", "C. 把簡訊轉傳給里長請里長代繳", "D. 只要在半夜點進去就不會被扣款"], "correct": 1, "explanation": "【核心解析：選項 B 正確】自來水、台電、遠通電收催繳簡訊是常見詐騙模板，以「小額欠費停水停電」製造恐慌，誘導至假頁面盜刷信用卡。"}, {"id": 84, "type": "社群帳號雙重驗證（2FA）重要性", "question": "在預防個人 LINE、Facebook、Google 帳號遭到詐騙集團暴力破解或撞庫盜用中，下列何項資安設定是最基礎且最重要的防線？", "options": ["A. 每週更換一次只有四位數的純數字密碼", "B. 全面啟用「雙重驗證（2FA / MFA，如 Google Authenticator 或簡訊授權）」，並設定高強度獨立密碼，不跨平台共用同一密碼", "C. 將瀏覽器歷史紀錄全部手動刪除", "D. 只要不使用電腦版登入就絕對不會被盜"], "correct": 1, "explanation": "【核心解析：選項 B 正確】雙重驗證（2FA）能在密碼不幸外洩時提供第二道實體防線。即使黑客獲取密碼，沒有動態驗證碼依然無法登入，能阻絕 99% 的自動化盜帳號攻擊。"}, {"id": 85, "type": "AI 生成偽造證件辨識", "question": "假理專在通訊軟體出示金管會發放的「AI 高階量化投資牌照」圖片，印有華麗的金色浮雕大印與官方編號。一般民眾應如何看破破綻？", "options": ["A. 仔細觀察大印是否為紅色", "B. 金管會與政府機關根本沒有設立「AI 量化投資執照」這種名目的牌照，直接致電金管會專線（02-8773-5100）或至官網查詢合法業者，即可戳破偽造證書", "C. 只要證書上有寫「中華民國」就代表合法", "D. 請對方手持證書拍照即可證明真實"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐騙集團利用大眾對金融特許名詞的不熟悉，自行用軟體合成各類虛構牌照。核實唯一方法是比對法定正式牌照種類，並向金管會直接求證。"}, {"id": 86, "type": "假基金經理人跟單分潤", "question": "自稱某明星基金經理人在 Telegram 成立專屬頻道：「因受法規限制我不便公開露面，但我每天將親自帶單操作，獲利您拿 80%、我只抽取 20% 分潤，虧損由我個人擔保補足」。這項承諾的致命荒謬點在哪？", "options": ["A. 分潤比例給投資人 80% 太高，經理人賺太少不合常理", "B. 依我國法律，正規經理人私下帶單、保證獲利與承諾吸收虧損皆為重大違法行為；且對方真實身分根本不可考，一旦入金虧損，騙徒將立即人間蒸發", "C. 經理人應該抽取 50% 才是合規行情", "D. 只要在合約上蓋指印就具有刑事擔保效力"], "correct": 1, "explanation": "【核心解析：選項 B 正確】合法經理人絕不可私下募集資金，更不可能「承諾承擔虧損」。「包賺不賠、虧損我貼」是所有吸金騙局最經典的空頭支票，一旦資金落袋，對方秒封鎖退群。"}, {"id": 87, "type": "虛擬貨幣場外交易（OTC）風險", "question": "相約在咖啡廳進行泰達幣（USDT）場外現金交易（OTC），對方帶著現金點鈔機，承諾以高於市場 3% 的價格向你收購 USDT。下列何種潛在犯罪風險最常發生？", "options": ["A. 咖啡廳低消太貴不划算", "B. 現金可能是假鈔或已被染指的贓款，甚至在轉幣完成後遭現場同夥以辣椒水、暴力強行奪回現金，人身安全與財物面臨巨大威脅", "C. 只要有簽署 OTC 買賣契約就絕對能獲得警方民事保障", "D. 場外交易比合規交易所更受到金管會特別保護"], "correct": 1, "explanation": "【核心解析：選項 B 正確】場外實體虛幣交易（OTC）黑吃黑、持假鈔換幣或暴力搶奪案件頻傳。虛擬貨幣交易應一律透過完成金管會洗防法遵聲明之合規本地交易所進行。"}, {"id": 88, "type": "假求職要求辦理手機門號換現金", "question": "通訊行外包兼職標榜：「只要幫電信公司衝業績，持雙證件申辦 3 支高資費門號，手機歸通訊行，每門號現領現金 8,000 元，後續月租費通訊行會全額幫你繳納」。若參與此活動，後續法律責任為何？", "options": ["A. 合法賺取電信推廣佣金，無任何風險", "B. 通訊行拿走門號後絕不會代繳月租，電信公司將對你追討數萬元違約金；更嚴重的是，門號將被詐騙集團作為發送詐騙簡訊與行騙的通訊工具，你將淪為詐欺幫助犯被警察送辦", "C. 只要在門號開通後立刻向電信公司掛失即可免責", "D. 只要拿到的現金有繳所得稅就完全合法"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「辦門號換現金」是詐團騙取人頭門號的毒計。當事人背負高額違約金不說，門號發送萬封詐騙簡訊後，檢警必定順藤摸瓜逮捕門號登記人。"}, {"id": 89, "type": "假冒網拍買家下單騙個資", "question": "你在旋轉拍賣或蝦皮二手社團出售物品，買家發訊息抱怨：「我已經付款了，但系統顯示賣家未簽署【協議保障條款 / 誠信金協議】，我的訂單被凍結，請你立刻掃描這個客服 QR Code 聯繫客服辦理認證」。正確應對方式為何？", "options": ["A. 擔心得罪買家被投訴，立即掃描買家傳來的二維碼聯絡假客服", "B. 這是典型的「假買家假客服詐騙」，正規電商平台交易流程絕不會要求賣家透過外部連結或掃碼進行身分金流驗證，切勿理會並直接在平台檢舉封鎖該買家", "C. 依照假客服指示，使用網銀匯款認證身分", "D. 將自己的信用卡卡號拍照提供給買家以證明誠信"], "correct": 1, "explanation": "【核心解析：選項 B 正確】此為近期極其氾濫的假買家釣魚。歹徒偽造「金流未簽署」截圖誘導賣家點擊假客服連結，假客服隨後以「需轉帳認證帳戶」為由洗劫賣家存款。"}, {"id": 90, "type": "金融防詐終極精神", "question": "課程總結：「真正的財富，不是盲目追求市場最高報酬，而是讓自己在人生的任何階段，都有能力安心生活」。這段話給予全體學員最重要的金融智慧為何？", "options": ["A. 鼓勵大家徹底放棄所有理財投資，全部換成現金埋在後院", "B. 投資前不要只問「可以賺多少？」，更要嚴肅問自己「如果失敗了，我的生活會變成什麼樣子？」；保持敬畏、守住底線、冷靜查證，才是保護自己與家庭幸福的最高防線", "C. 只要追求保本，就可以隨意相信路邊無名借貸", "D. 只要有 AI 模型推薦，就可以忘記所有風險"], "correct": 1, "explanation": "【核心解析：選項 B 正確】會賺錢不一定會守住錢；懂投資更要懂風險。學會敬畏市場、守護家庭底線，並在任何誘惑面前堅持 S-T-O-P 查證，方為終身受益的真財富。"}, {"id": 91, "type": "假冒公益慈善捐款騙局", "question": "接到自稱先前曾捐款支持之慈善基金會電話：「因系統設定錯誤，將您原本單筆 500 元捐款設為每個月定期定額扣款 5,000 元，稍後會有郵局或銀行人員協助處理」。此時最正確的處置為何？", "options": ["A. 慈善團體很辛苦，直接同意改為每月扣款 5,000 元當作行善", "B. 這是知名公益團體資料庫遭駭客入侵後外洩名單引發的典型詐騙！立即掛斷電話，主動撥打該基金會官方電話確認，絕不依電話指示操作 ATM 或手機網銀", "C. 聽從電話轉接的「郵局主任」指示前往操作", "D. 在電話中提供完整信用卡號以供核銷"], "correct": 1, "explanation": "【核心解析：選項 B 正確】詐團駭入公益基金會竊取捐款者個資後，偽冒客服聲稱扣款錯誤。所有轉接「銀行/郵局客服人員協助解除設定」的電話必定是詐騙，應立即掛斷。"}, {"id": 92, "type": "假檢警誘導開啟螢幕共享", "question": "假警察在通訊軟體中要求你下載安裝 Zoom、TeamViewer 或 AnyDesk，並「開啟手機螢幕共享功能」，聲稱要全程監督你的網銀帳戶是否有洗錢黑金出入。若開啟螢幕共享，會引發何種災難？", "options": ["A. 能讓警察更清楚看見你的清白，加快結案速度", "B. 當你開啟網銀輸入帳號密碼與收取簡訊 OTP 時，所有機密資訊將被螢幕另一端的詐騙集團一覽無遺，存款將瞬間被洗劫轉出", "C. 螢幕共享只有投影功能，不可能被看到密碼輸入過程", "D. 只要通話結束後關閉程式就不會有任何影響"], "correct": 1, "explanation": "【核心解析：選項 B 正確】「螢幕共享」是高危險操作。詐團能即時窺探你輸入的銀行帳號、密碼與手機彈出的 OTP 驗證碼，瞬間完成轉帳。任何要求開啟螢幕共享的陌生人皆為詐騙！"}, {"id": 93, "type": "通訊軟體好友名單防護", "question": "在 LINE 的隱私設定中，下列哪一項設定能有效大幅減少被陌生詐騙集團自動加入群組或傳送垃圾訊息的騷擾？", "options": ["A. 將個人大頭貼換成風景照", "B. 關閉「允許利用電話號碼加入好友」與「允許被加入好友」，並開啟「阻擋訊息（阻擋非好友訊息）」功能", "C. 只要每天重開機一次即可完全杜絕", "D. 必須將手機字體調整至最大"], "correct": 1, "explanation": "【核心解析：選項 B 正確】關閉「透過電話號碼加入」與開啟「阻擋非好友訊息」，能封閉詐團用電話號碼隨機掃號加人的後門，從源頭濾除 90% 以上的陌生詐騙騷擾。"}, {"id": 94, "type": "境外假博弈平台代理招商", "question": "社群廣告招募「博弈俱樂部一級代理商，只需負責拉好友下載開桌，即可享有每日 10 萬元保底流水分潤，無任何經營風險」。此類招商背後的真實法律與財務陷阱為何？", "options": ["A. 屬於政府積極扶植的數位競技出海創業專案", "B. 參與未經許可的非法地下博弈推廣已涉嫌賭博罪及幫助洗錢罪；且假平台後期常以「業績未達標」沒收保證金或直接關站，代理人往往成為代罪羔羊遭親友控告", "C. 只要伺服器設在海外，在台灣就享有完全刑事豁免權", "D. 只要有簽署推廣合作意向書就是受保障的合規勞務"], "correct": 1, "explanation": "【核心解析：選項 B 正確】非法博弈平台招募代理多為拉人頭墊背。代理人拉攏身邊親友下注，不僅涉嫌刑法賭博與洗錢重罪，平台倒閉後更需面對親友求償與牢獄之災。"}, {"id": 95, "type": "假冒戶政事務所辦理委託", "question": "接獲自稱「台中市某區戶政事務所人員」來電，稱：「有自稱受您委託的男子持您的身分證及印鑑證明要申辦戶籍謄本與高額房產過戶，請問您有授權嗎？沒有的話請勿掛斷，我馬上幫您轉接分局警察隊偵辦」。這是何種套路的第一步？", "options": ["A. 戶政事務所主動保護民眾個資的便民通報", "B. 這是「假冒戶政/健保局 ➔ 轉接假警察 ➔ 轉接假檢察官」的標準連環套開場白，目的是用個資遭冒用的恐慌讓你慌亂受制，應立即掛斷電話並向戶政所官方電話求證", "C. 應馬上在電話中授權該人員扣押該名男子", "D. 趕快在電話中向對方重報一次自己的身分證字號與身家以求保護"], "correct": 1, "explanation": "【核心解析：選項 B 正確】政府公務機關絕無可能在電話中幫民眾「直接代轉接警察局」。凡是聲稱「身分遭冒用並主動幫你轉接檢警」者，100% 是詐騙集團的連環套劇本。"}, {"id": 96, "type": "假虛擬幣量化搬磚機器人", "question": "宣稱「首創全球無風險 AI 搬磚量化套利機器人，利用跨國交易所微小價差，每天自動搬磚套利 1.5%（年化 500%），隨存隨取」。此類項目的真實面貌為何？", "options": ["A. 當代頂尖金融工程創新的典範", "B. 典型包裝高科技外衣的「龐氏資金盤」，所謂的量化套利只是藉口，本質是拿後進投資人的本金發放給前人，一旦入金速度放緩，負責人立即捲款關網潛逃", "C. 只要有在 Telegram 成立萬人群組就具有真實造血功能", "D. 可以在合約中要求美國聯準會作為連帶保證人"], "correct": 1, "explanation": "【核心解析：選項 B 正確】跨國搬磚存在交易手續費、滑點與深度限制，根本不可能長期穩定提供每天 1.5% 無風險回報。這類項目均為龐氏資金盤，終局必定崩盤捲款。"}, {"id": 97, "type": "以假亂真的釣魚網址識別", "question": "歹徒常使用「同形異義字（IDN Homograph Attack）」偽冒官方知名網址。例如將英文字母「o」替換為數字「0」或希臘字母，視覺上極難分辨。面對此類威脅，最穩健的瀏覽防護習慣為何？", "options": ["A. 僅用肉眼仔細盯著網址看十秒鐘", "B. 凡是涉及網銀、交易或支付之重要網站，一律使用「官方正式 APP」或「自行手動輸入並加入瀏覽器我的最愛書籤」，絕不點擊任何外部簡訊或郵件中的不明跳轉連結", "C. 只要網址前方有綠色小鎖（HTTPS）就代表該網站絕對不可能是詐騙", "D. 只要網頁能支援繁體中文就證明是台灣合法網站"], "correct": 1, "explanation": "【核心解析：選項 B 正確】HTTPS 僅代表傳輸加密，詐騙網站也能輕易申請免費 SSL 憑證。防範偽冒釣魚網址的最佳習慣是透過「自存書籤」或「官方官方 APP」進入，不走任何外來連結。"}, {"id": 98, "type": "ATM 英文界面操作騙局", "question": "歹徒指示受害者到 ATM 前，謊稱「要進行銀行系統測試，請在螢幕上切換至【ENGLISH 英文界面】以啟動特約通道」。詐團要求切換成英文界面的真實目的為何？", "options": ["A. 英文界面的銀行加密等級比中文界面高", "B. 利用受害者不熟悉英文詞彙（如 Transfer 轉帳、Amount 金額）的心理恐慌與盲從，在受害人不自覺中誘導其按下確認鍵將全部存款轉出", "C. 英文界面免扣跨行轉帳手續費", "D. 台灣 ATM 系統規定跨國認證必須使用英文"], "correct": 1, "explanation": "【核心解析：選項 B 正確】騙徒教導切換英文界面，正是為了製造認知盲區。受害者看不懂「Transfer（轉帳）」等單字，只能照著騙徒指令按步驟操作，直到吐出交易明細表才發現存款全空。"}, {"id": 99, "type": "假冒健保卡遭盜用被停卡", "question": "電話錄音通知：「健保局提醒您，您的健保卡涉及違規冒領重大醫療補助，將於中午 12 點前正式強制停卡，如有疑問請按 9 轉接專人」。正確處置為何？", "options": ["A. 趕快按 9 轉接專人說明以避免生病無法就醫", "B. 衛生福利部中央健康保險署早已多次宣導「絕不會以電話語音通知民眾停卡或要求轉帳」，這是假冒公署詐騙，應立即掛斷電話並撥打健保諮詢專線 0800-030-598 查證", "C. 在電話中將家中長輩的重大傷病卡號碼全數告知以求銷案", "D. 聽從指示至超商購買 3,000 元遊戲點數解鎖健保卡"], "correct": 1, "explanation": "【核心解析：選項 B 正確】健保署絕對不會用電話語音通知「健保卡違規停卡」。任何提及「鎖卡、冒領補助並要求按 9 轉接」的電話，均為假檢警詐騙的第一步，直接掛斷即可。"}, {"id": 100, "type": "盛欣/盛碁網絡科技金融防詐誓言", "question": "完成本教育訓練後，盛欣網絡與盛碁網絡科技同仁在個人生活與職場專業中，應秉持的核心防禦信念為何？", "options": ["A. 只要自己小心即可，別人的家庭遭受詐騙與我無關", "B. 堅守「不輕信、不衝動、多查證」之 S-T-O-P 原則，主動守護自身與同仁家庭資產安全；懂投資更要敬畏風險，以冷靜判斷與強韌金融素養築起最穩固的人生防火牆！", "C. 只要報酬率高於 100%，值得冒險投入所有資產博一把", "D. 遇到任何投資機會，越少人知道越要悄悄去借錢買進"], "correct": 1, "explanation": "【核心解析：選項 B 正確】金融素養是守護幸福生活的最高堡壘。期許全體同仁將防詐智慧內化為直覺反應，守護自己、同仁與至親家庭的每一分血汗錢！"}];
 
@@ -1681,6 +2101,7 @@
             if (dateEl) dateEl.value = dateStr;
 
             initRandomQuiz();
+            resetTimer(600);
         });
 
         // 隨機抽取 10 題不重複題目 (Fisher-Yates Shuffle)
@@ -1696,6 +2117,7 @@
         // 初始化抽測 10 題
         function initRandomQuiz() {
             currentQuestions = getRandomSubarray(questionPool, 10);
+            resetTimer(600);
             renderQuiz();
         }
 
@@ -1709,6 +2131,7 @@
             if (board) board.style.display = 'none';
 
             currentQuestions = getRandomSubarray(questionPool, 10);
+            resetTimer(600);
             renderQuiz();
             window.scrollTo({ top: 380, behavior: 'smooth' });
         }
@@ -1791,7 +2214,7 @@
         }
 
         // 計分與成績批改，並生成信件抄送
-        function gradeQuiz() {
+        function gradeQuiz(isTimeUp = false) {
             const nameInput = document.getElementById('userName');
             const deptInput = document.getElementById('userDept');
             const emailInput = document.getElementById('userEmail');
@@ -1804,7 +2227,7 @@
             const userEmpId = empIdInput ? empIdInput.value.trim() : '';
             const examDate = dateInput ? dateInput.value.trim() : '';
 
-            if (!userName || !userDept || !userEmail) {
+            if (!isTimeUp && (!userName || !userDept || !userEmail)) {
                 alert("⚠️ 請先於測驗上方【考生報到與成績抄送登記】完整輸入您的「學員姓名」、「所屬單位/部門」及「電子信箱 (Email)」！");
                 const candidateSec = document.getElementById('candidateSection');
                 if (candidateSec) candidateSec.scrollIntoView({ behavior: 'smooth', block: 'center' });
@@ -1814,12 +2237,20 @@
                 return;
             }
 
-            // 簡易 Email 格式檢查
-            if (!userEmail.includes('@') || !userEmail.includes('.')) {
+            // 簡易 Email 格式檢查 (非超時狀態下必填)
+            if (!isTimeUp && (!userEmail.includes('@') || !userEmail.includes('.'))) {
                 alert("⚠️ 請輸入格式正確的電子信箱 (例如：user@company.com)！");
                 if (emailInput) emailInput.focus();
                 return;
             }
+
+            const finalUserName = userName || "學員(超時交卷)";
+            const finalUserDept = userDept || "未填寫部門";
+            const finalUserEmail = userEmail || "未填寫信箱";
+
+            // 計算作答耗時
+            const timeElapsed = totalSeconds - remainingSeconds;
+            const timeElapsedStr = `${Math.floor(timeElapsed / 60)} 分 ${timeElapsed % 60} 秒`;
 
             let score = 0;
             let answeredCount = 0;
@@ -1889,9 +2320,9 @@
             board.style.display = 'block';
             scoreValEl.innerText = score;
 
-            certNameEl.innerText = `🎓 學員姓名：${userName} 同學`;
-            certMetaEl.innerText = `所屬單位：${userDept} ${userEmpId ? '｜ 工號：' + userEmpId : ''} ｜ 完賽日期：${examDate}`;
-            memeCaptionEl.innerText = `「${userName}，我肯定你是有潛力的！」`;
+            certNameEl.innerText = `🎓 學員姓名：${finalUserName} 同學`;
+            certMetaEl.innerText = `所屬單位：${finalUserDept} ${userEmpId ? '｜ 工號：' + userEmpId : ''} ｜ 完賽日期：${examDate}`;
+            memeCaptionEl.innerText = `「${finalUserName}，我肯定你是有潛力的！」`;
 
             let gradeTitle = "";
             if (score === 100) {
@@ -1922,7 +2353,7 @@
 ` +
                                 `學員姓名：${userName}
 ` +
-                                `所屬單位：${userDept}
+                                `所屬單位：${finalUserDept}
 ` +
                                 `員工編號：${userEmpId || "無"}
 ` +
@@ -1949,7 +2380,7 @@
             // 更新畫面上的郵件通知訊息
             receiptEl.innerHTML = `已生成成績存檔報告！<br>` +
                                   `• 主受件信箱：<strong>Liao.Howard@gmail.com</strong>（培訓負責人）<br>` +
-                                  `• 抄送學員信箱：<strong>${userEmail}</strong><br>` +
+                                  `• 抄送學員信箱：<strong>${finalUserEmail}</strong><br>` +
                                   `（點擊下方藍色【一鍵寄送成績單郵件】按鈕可直接喚起郵件軟體確認發送）`;
 
             // 滾動至成績單位置
