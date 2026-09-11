@@ -1663,6 +1663,107 @@
             border: 1px solid var(--border-color);
         }
 
+    
+        /* 5.課後評量即時完賽跑馬燈專用樣式 */
+        .live-score-ticker-card {
+            background: linear-gradient(90deg, #1E1E1E 0%, #2E2822 50%, #1E1E1E 100%);
+            border: 1.8px solid var(--amber);
+            border-radius: 30px;
+            padding: 8px 16px;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 14px rgba(0, 0, 0, 0.18);
+            position: relative;
+        }
+
+        .ticker-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13.5px;
+            font-weight: 900;
+            color: #FFE680;
+            white-space: nowrap;
+            flex-shrink: 0;
+            border-right: 1.5px solid #555;
+            padding-right: 12px;
+        }
+
+        .live-pulse-dot {
+            width: 9px;
+            height: 9px;
+            background: #00E676;
+            border-radius: 50%;
+            display: inline-block;
+            box-shadow: 0 0 8px #00E676;
+            animation: pulseGlow 1.2s infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            from { opacity: 0.5; transform: scale(0.8); }
+            to { opacity: 1; transform: scale(1.2); }
+        }
+
+        .ticker-content-track {
+            flex: 1;
+            overflow: hidden;
+            position: relative;
+            mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+            -webkit-mask-image: linear-gradient(90deg, transparent 0%, black 4%, black 96%, transparent 100%);
+        }
+
+        .ticker-scroll-items {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            white-space: nowrap;
+            animation: marqueeScroll 45s linear infinite;
+            width: max-content;
+        }
+
+        .ticker-scroll-items:hover {
+            animation-play-state: paused;
+        }
+
+        @keyframes marqueeScroll {
+            0% { transform: translateX(0%); }
+            100% { transform: translateX(-50%); }
+        }
+
+        .ticker-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(242, 169, 59, 0.45);
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            color: #FDFBF7;
+            letter-spacing: 0.5px;
+            transition: transform 0.2s ease;
+        }
+
+        .ticker-pill:hover {
+            transform: scale(1.04);
+            border-color: #FFD700;
+        }
+
+        .ticker-pill.perfect {
+            border-color: #FFD700;
+            background: rgba(255, 215, 0, 0.18);
+            color: #FFE680;
+        }
+
+        .ticker-score {
+            font-weight: 900;
+            color: var(--yellow);
+        }
+
     </style>
 </head>
 <body>
@@ -2598,6 +2699,19 @@
                 <p class="lead">本系統建立百題深度案例題庫。請先詳閱測驗說明並於下方完成報到登記，確認開始後才會正式啟動 10 分鐘計時與試卷作答。</p>
             </div>
 
+            <!-- 即時完賽同仁榮譽跑馬燈 (實時滾動) -->
+            <div class="live-score-ticker-card">
+                <div class="ticker-label">
+                    <span class="live-pulse-dot"></span>
+                    <span>📢 即時完賽榜：</span>
+                </div>
+                <div class="ticker-content-track">
+                    <div class="ticker-scroll-items" id="tickerItemsTrack">
+                        <!-- JS 動態填入與無縫循環 -->
+                    </div>
+                </div>
+            </div>
+
             <!-- 測驗前重要須知與研讀指引卡 -->
             <!-- 測驗前重要須知與激勵區 (直接展示「我肯定你是有潛力的！」) -->
             <div class="quiz-instructions-card">
@@ -2856,6 +2970,63 @@
                 const mins = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
                 bannerEl.innerHTML = `⏳ 距離驗測截止尚餘：<strong>${days} 天 ${hours} 小時 ${mins} 分鐘</strong>`;
             }
+        }
+
+        
+        // ========================
+        // 即時完賽榮譽跑馬燈引擎
+        // ========================
+        const initialTickerData = [
+            { dept: "盛欣網絡·營運處", name: "陳*宇", score: 90, status: "合格", isPerfect: false, time: "3分鐘前" },
+            { dept: "盛碁科技·研發部", name: "林*豪", score: 100, status: "滿分通過", isPerfect: true, time: "5分鐘前" },
+            { dept: "盛欣網絡·財務處", name: "張*婷", score: 80, status: "合格", isPerfect: false, time: "8分鐘前" },
+            { dept: "盛碁科技·數位商務", name: "黃*萱", score: 90, status: "合格", isPerfect: false, time: "11分鐘前" },
+            { dept: "盛欣網絡·推廣組", name: "吳*銘", score: 80, status: "合格", isPerfect: false, time: "14分鐘前" },
+            { dept: "盛碁科技·技術支援", name: "廖*安", score: 100, status: "滿分通過", isPerfect: true, time: "18分鐘前" },
+            { dept: "盛欣網絡·行政處", name: "蔡*真", score: 70, status: "合格", isPerfect: false, time: "22分鐘前" },
+            { dept: "盛碁科技·風控審核", name: "許*瑋", score: 90, status: "合格", isPerfect: false, time: "25分鐘前" },
+            { dept: "盛欣網絡·客服中心", name: "謝*翔", score: 80, status: "合格", isPerfect: false, time: "29分鐘前" },
+            { dept: "盛碁科技·平台維運", name: "鄭*廷", score: 100, status: "滿分通過", isPerfect: true, time: "32分鐘前" },
+            { dept: "盛欣網絡·商務發展", name: "楊*涵", score: 90, status: "合格", isPerfect: false, time: "36分鐘前" }
+        ];
+
+        function renderMarqueeTicker() {
+            const track = document.getElementById('tickerItemsTrack');
+            if (!track) return;
+
+            // 雙倍無縫滾動
+            const doubleList = [...initialTickerData, ...initialTickerData];
+            let html = '';
+            doubleList.forEach(item => {
+                const icon = item.isPerfect ? "🏆" : (item.score >= 90 ? "🎉" : "⭐");
+                html += `
+                    <div class="ticker-pill ${item.isPerfect ? 'perfect' : ''}">
+                        <span>${icon}</span>
+                        <span>[${item.dept}] <strong>${item.name}</strong></span>
+                        <span class="ticker-score">${item.score}分</span>
+                        <span style="color:#A5D6A7; font-size:11.5px;">(${item.status})</span>
+                        <span style="color:#888; font-size:11px;">${item.time}</span>
+                    </div>
+                `;
+            });
+            track.innerHTML = html;
+        }
+
+        // 當有同仁即時交卷時，插入至跑馬燈最前方
+        function prependRealSubmissionToTicker(dept, name, score) {
+            const isPerfect = score === 100;
+            const status = score >= 70 ? (isPerfect ? "滿分通過" : "合格") : "未及格";
+            const maskedName = name.length > 1 ? name[0] + "*" + (name.length > 2 ? name.slice(-1) : "") : name;
+            const newItem = {
+                dept: dept || "盛欣/盛碁",
+                name: maskedName,
+                score: score,
+                status: status,
+                isPerfect: isPerfect,
+                time: "剛剛"
+            };
+            initialTickerData.unshift(newItem);
+            renderMarqueeTicker();
         }
 
         // 全量 100 題完整題庫
@@ -3273,6 +3444,7 @@
             if (dateEl) dateEl.value = dateStr;
 
             initRandomQuiz();
+            renderMarqueeTicker();
             initSDL();
             updateDeadlineBanner();
             setInterval(updateDeadlineBanner, 60000);
