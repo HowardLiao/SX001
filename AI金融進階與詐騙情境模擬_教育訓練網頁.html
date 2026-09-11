@@ -1085,151 +1085,209 @@
         }
 
     
-        /* 10分鐘倒數計時器與音效樣式 */
-        .quiz-timer-card {
-            background: linear-gradient(135deg, #FFFDF8 0%, #FFF5EB 100%);
-            border: 2.5px solid var(--tangerine);
-            border-radius: var(--radius-md);
-            padding: 20px 24px;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 14px rgba(233, 106, 40, 0.15);
+        /* 巨型圖形計時器與特大字體樣式 */
+        .giant-timer {
+            background: linear-gradient(135deg, #FFFDF8 0%, #FFF3E5 100%);
+            border: 3.5px solid var(--tangerine);
+            border-radius: 22px;
+            padding: 26px 30px;
+            margin-bottom: 28px;
+            box-shadow: 0 10px 28px rgba(233, 106, 40, 0.22);
             transition: all 0.3s ease;
         }
 
-        .quiz-timer-card.timer-warning {
-            border-color: #D32F2F;
-            background: #FFF0F0;
-            box-shadow: 0 0 16px rgba(211, 47, 47, 0.35);
-            animation: timerPulse 1s infinite alternate;
+        .giant-timer.timer-warning {
+            border-color: #D32F2F !important;
+            background: linear-gradient(135deg, #FFF5F5 0%, #FFEBEB 100%) !important;
+            box-shadow: 0 0 25px rgba(211, 47, 47, 0.45) !important;
+            animation: timerPulse 0.8s infinite alternate !important;
         }
 
-        @keyframes timerPulse {
-            from { transform: scale(1); }
-            to { transform: scale(1.015); }
-        }
-
-        .timer-top-row {
+        .timer-main-layout {
             display: flex;
             align-items: center;
-            justify-content: space-between;
+            gap: 32px;
             flex-wrap: wrap;
-            gap: 16px;
         }
 
-        .timer-display-group {
+        .timer-dial-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            flex-shrink: 0;
             display: flex;
             align-items: center;
-            gap: 14px;
+            justify-content: center;
+            filter: drop-shadow(0 6px 14px rgba(185, 76, 46, 0.2));
         }
 
-        .timer-icon {
-            font-size: 38px;
-            line-height: 1;
+        .timer-svg-dial {
+            display: block;
         }
 
-        .timer-title {
-            font-size: 14px;
-            font-weight: 800;
-            color: var(--text-light);
+        .timer-ring-progress {
+            transition: stroke-dashoffset 1s linear, stroke 0.3s ease;
+        }
+
+        .dial-center-label {
+            position: absolute;
+            bottom: 40px;
+            font-size: 13px;
+            font-weight: 900;
+            color: var(--rust);
+            letter-spacing: 0.5px;
+        }
+
+        .timer-info-pane {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .timer-badge-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
             margin-bottom: 2px;
         }
 
-        .timer-digits {
-            font-size: 36px;
+        .timer-status-badge {
+            background: #E8F5E9;
+            color: #2E7D32;
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 13px;
             font-weight: 900;
+            border: 1px solid #A5D6A7;
+        }
+
+        .timer-warning .timer-status-badge {
+            background: #FFEBEE;
+            color: #C62828;
+            border-color: #EF9A9A;
+        }
+
+        .timer-rule-tag {
+            background: #FFF2E8;
             color: var(--rust);
-            font-family: 'Nunito', monospace;
-            letter-spacing: 2px;
-            line-height: 1.1;
-        }
-
-        .timer-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            flex-wrap: wrap;
-        }
-
-        .timer-btn {
-            background: white;
-            border: 1.5px solid var(--border-color);
-            color: var(--text-main);
-            padding: 7px 14px;
+            padding: 4px 12px;
             border-radius: 20px;
             font-size: 13px;
             font-weight: 800;
+            border: 1px solid var(--border-color);
+        }
+
+        .timer-title-large {
+            font-size: 20px;
+            font-weight: 900;
+            color: var(--text-main);
+            letter-spacing: 0.5px;
+        }
+
+        /* 特大粗體秒數數字顯示 (Huge Digits) */
+        .timer-huge-digits {
+            font-size: 64px;
+            font-weight: 950;
+            color: var(--rust);
+            font-family: 'Nunito', monospace;
+            letter-spacing: 4px;
+            line-height: 1;
+            margin: 6px 0;
+            text-shadow: 3px 3px 0px rgba(233, 106, 40, 0.18);
+        }
+
+        .timer-warning .timer-huge-digits {
+            color: #D32F2F !important;
+            text-shadow: 3px 3px 0px rgba(211, 47, 47, 0.25) !important;
+        }
+
+        .timer-sub-hint {
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 8px;
+        }
+
+        .timer-controls-row {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn-lg {
+            background: white;
+            border: 2px solid var(--border-color);
+            color: var(--text-main);
+            padding: 9px 18px;
+            border-radius: 25px;
+            font-size: 14px;
+            font-weight: 900;
             cursor: pointer;
             transition: all 0.2s ease;
             font-family: inherit;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
 
-        .timer-btn:hover {
+        .timer-btn-lg:hover {
             border-color: var(--tangerine);
             color: var(--tangerine);
-            background: #FFFDF9;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(233, 106, 40, 0.2);
         }
 
-        .timer-sound-btn {
-            background: #FFF2E8;
-            border-color: var(--amber);
+        .timer-sound-btn-lg {
+            background: #FFF5EE;
+            border-color: var(--tangerine);
             color: var(--rust);
         }
 
-        .timer-progress-track {
-            height: 8px;
+        .timer-progress-track-lg {
+            height: 12px;
             background: #EEDBC8;
-            border-radius: 4px;
+            border-radius: 6px;
             overflow: hidden;
-            margin-top: 14px;
+            margin-top: 18px;
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.08);
         }
 
-        .timer-progress-bar {
+        .timer-progress-bar-lg {
             height: 100%;
-            background: linear-gradient(90deg, var(--amber) 0%, var(--tangerine) 100%);
+            background: linear-gradient(90deg, #F6C944 0%, var(--amber) 40%, var(--tangerine) 100%);
             transition: width 1s linear;
+            box-shadow: 0 0 10px rgba(233, 106, 40, 0.4);
         }
 
-        .timer-warning .timer-progress-bar {
-            background: #D32F2F;
+        .timer-warning .timer-progress-bar-lg {
+            background: #D32F2F !important;
+            box-shadow: 0 0 12px rgba(211, 47, 47, 0.6) !important;
         }
 
-        .timer-footer-hint {
-            font-size: 12px;
-            font-weight: 700;
-            color: var(--text-light);
-            margin-top: 8px;
+        /* 浮動大迷你計時器 */
+        .giant-mini {
+            padding: 12px 22px !important;
+            font-size: 20px !important;
+            border-radius: 35px !important;
+            border: 3px solid var(--amber) !important;
+            box-shadow: 0 10px 28px rgba(0, 0, 0, 0.35) !important;
         }
 
-        .sticky-mini-timer {
-            position: fixed;
-            bottom: 25px;
-            right: 25px;
-            background: rgba(36, 36, 36, 0.94);
-            color: white;
-            padding: 10px 18px;
-            border-radius: 30px;
-            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            z-index: 999;
-            font-family: 'Nunito', monospace;
-            font-size: 18px;
-            font-weight: 900;
-            border: 2px solid var(--amber);
-            backdrop-filter: blur(8px);
-            cursor: pointer;
-            transition: transform 0.2s ease;
+        .mini-digits-lg {
+            font-size: 24px;
+            font-weight: 950;
+            color: #FFE680;
+            letter-spacing: 2px;
         }
 
-        .sticky-mini-timer:hover {
-            transform: scale(1.05);
-        }
-
-        .sticky-mini-timer.warning {
-            border-color: #FF5252;
-            background: rgba(185, 46, 46, 0.95);
-            animation: timerPulse 0.8s infinite alternate;
+        @media (max-width: 680px) {
+            .timer-main-layout { flex-direction: column; text-align: center; }
+            .timer-dial-wrapper { margin: 0 auto; }
+            .timer-huge-digits { font-size: 50px; }
+            .timer-badge-row { justify-content: center; }
+            .timer-controls-row { justify-content: center; }
         }
 
     </style>
@@ -1660,40 +1718,80 @@
                 <p class="lead">本系統建立百題深度案例題庫。每次測驗隨機抽取 10 題，採實名登記制，限時 10 分鐘，完畢後即時計分並抄送報告至學員信箱與 Liao.Howard@gmail.com。</p>
             </div>
 
-            <!-- 10 分鐘倒數計時器面板 (含秒數滴答音效與到時鈴聲) -->
-            <div class="quiz-timer-card" id="timerWidget">
-                <div class="timer-top-row">
-                    <div class="timer-display-group">
-                        <span class="timer-icon" id="timerIcon">⏱️</span>
-                        <div>
-                            <div class="timer-title">課後學習評量倒數計時（限時 10 分鐘）</div>
-                            <div class="timer-digits" id="timerDisplay">10:00</div>
+            <!-- 10 分鐘巨型視覺化圖形計時器面板 (含圓盤指針/進度環/特大秒數與音效) -->
+            <div class="quiz-timer-card giant-timer" id="timerWidget">
+                <div class="timer-main-layout">
+                    <!-- 圓形動態視覺鐘錶圖 (SVG Graphic Dial) -->
+                    <div class="timer-dial-wrapper">
+                        <svg class="timer-svg-dial" width="160" height="160" viewBox="0 0 160 160">
+                            <!-- 外框陰影與底盤 -->
+                            <circle cx="80" cy="80" r="76" fill="#FFFDF8" stroke="#EADBC8" stroke-width="4"/>
+                            <circle cx="80" cy="80" r="66" fill="#FAF3EB"/>
+                            <!-- 12刻度標記 -->
+                            <g stroke="#B94C2E" stroke-width="2" stroke-linecap="round" opacity="0.4">
+                                <line x1="80" y1="18" x2="80" y2="24"/>
+                                <line x1="80" y1="142" x2="80" y2="136"/>
+                                <line x1="18" y1="80" x2="24" y2="80"/>
+                                <line x1="142" y1="80" x2="136" y2="80"/>
+                                <line x1="36" y1="36" x2="41" y2="41"/>
+                                <line x1="124" y1="124" x2="119" y2="119"/>
+                                <line x1="36" y1="124" x2="41" y2="119"/>
+                                <line x1="124" y1="36" x2="119" y2="41"/>
+                            </g>
+                            <!-- 倒數動態進度圓環 -->
+                            <circle class="timer-ring-bg" cx="80" cy="80" r="66" fill="none" stroke="#E0D2C2" stroke-width="8"/>
+                            <circle id="timerDialCircle" class="timer-ring-progress" cx="80" cy="80" r="66" fill="none" stroke="var(--tangerine)" stroke-width="8" stroke-dasharray="414.69" stroke-dashoffset="0" stroke-linecap="round" transform="rotate(-90 80 80)"/>
+                            <!-- 旋轉指針 (針尖指向剩餘秒數) -->
+                            <g id="timerPointerGroup" transform="rotate(0 80 80)">
+                                <line x1="80" y1="80" x2="80" y2="28" stroke="var(--rust)" stroke-width="3.5" stroke-linecap="round"/>
+                                <polygon points="80,22 76,32 84,32" fill="var(--rust)"/>
+                            </g>
+                            <!-- 中心軸心 -->
+                            <circle cx="80" cy="80" r="7" fill="var(--amber)"/>
+                            <circle cx="80" cy="80" r="3" fill="#FFF"/>
+                        </svg>
+                        <div class="dial-center-label" id="dialCenterLabel">10分</div>
+                    </div>
+
+                    <!-- 右側特大數字與狀態資訊 -->
+                    <div class="timer-info-pane">
+                        <div class="timer-badge-row">
+                            <span class="timer-status-badge" id="timerStatusBadge">🟢 測驗計時進行中</span>
+                            <span class="timer-rule-tag">限時 10 分鐘 ｜ 隨機 10 題</span>
+                        </div>
+                        <div class="timer-title-large">課後學習評量倒數計時</div>
+                        <!-- 特大數字顯示 -->
+                        <div class="timer-huge-digits" id="timerDisplay">10:00</div>
+                        <div class="timer-sub-hint" id="timerHint">
+                            🔔 每秒同步發出鐘錶滴答秒數聲，時間截止將響鈴並自動提交試卷結算！
+                        </div>
+
+                        <!-- 控制按鈕組 -->
+                        <div class="timer-controls-row">
+                            <button type="button" class="timer-btn-lg" id="btnToggleTimer" onclick="toggleTimer()">
+                                ⏸️ 暫停計時
+                            </button>
+                            <button type="button" class="timer-btn-lg" onclick="resetTimer(600)">
+                                🔄 重新計時 (10分鐘)
+                            </button>
+                            <button type="button" class="timer-btn-lg timer-sound-btn-lg" id="btnSoundToggle" onclick="toggleSound()">
+                                🔊 秒數滴答音效：開啟
+                            </button>
                         </div>
                     </div>
-                    <div class="timer-controls">
-                        <button type="button" class="timer-btn" id="btnToggleTimer" onclick="toggleTimer()">
-                            ⏸️ 暫停計時
-                        </button>
-                        <button type="button" class="timer-btn" onclick="resetTimer(600)">
-                            🔄 重新計時 (10分)
-                        </button>
-                        <button type="button" class="timer-btn timer-sound-btn" id="btnSoundToggle" onclick="toggleSound()">
-                            🔊 秒數音效：開啟
-                        </button>
-                    </div>
                 </div>
-                <div class="timer-progress-track">
-                    <div class="timer-progress-bar" id="timerProgressBar" style="width: 100%;"></div>
-                </div>
-                <div class="timer-footer-hint" id="timerHint">
-                    🔔 限時 10 分鐘：每秒播放秒數滴答音效提醒，時間截止將發出響鈴並自動結算送出！
+
+                <!-- 底部巨型彩色漸層進度條 -->
+                <div class="timer-progress-track-lg">
+                    <div class="timer-progress-bar-lg" id="timerProgressBar" style="width: 100%;"></div>
                 </div>
             </div>
 
-            <!-- 常駐浮動迷你倒數計時器 (滾動時隨侍在側) -->
-            <div class="sticky-mini-timer" id="stickyMiniTimer" style="display: none;" onclick="scrollTimerIntoView()" title="點擊回到計時器位置">
-                <span>⏱️ 測驗倒數：</span>
-                <span id="miniTimerTime">10:00</span>
+            <!-- 常駐浮動超大迷你計時器 (頁面滾動時常駐於右下角) -->
+            <div class="sticky-mini-timer giant-mini" id="stickyMiniTimer" style="display: none;" onclick="scrollTimerIntoView()" title="點擊直接跳至計時器位置">
+                <span class="mini-dial-icon">⏳</span>
+                <span class="mini-label">測驗剩餘時間：</span>
+                <span class="mini-digits-lg" id="miniTimerTime">10:00</span>
             </div>
 
             <!-- 考生資料填寫區 -->
@@ -1915,7 +2013,7 @@
             return `${m < 10 ? '0' : ''}${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // 更新計時器外觀
+// 更新計時器外觀與圖形錶盤 (SVG Ring + Rotating Hand)
         function updateTimerUI() {
             const timeStr = formatTime(remainingSeconds);
             const displayEl = document.getElementById('timerDisplay');
@@ -1924,22 +2022,49 @@
             const cardEl = document.getElementById('timerWidget');
             const miniEl = document.getElementById('stickyMiniTimer');
             const hintEl = document.getElementById('timerHint');
+            const badgeEl = document.getElementById('timerStatusBadge');
+            const dialCircle = document.getElementById('timerDialCircle');
+            const pointerGroup = document.getElementById('timerPointerGroup');
+            const centerLabel = document.getElementById('dialCenterLabel');
 
             if (displayEl) displayEl.innerText = timeStr;
             if (miniDisplayEl) miniDisplayEl.innerText = timeStr;
 
+            // 進度百分比
             const pct = Math.max(0, (remainingSeconds / totalSeconds) * 100);
             if (barEl) barEl.style.width = pct + '%';
 
-            // 最後 60 秒進入警戒狀態
+            // 更新圓形 SVG 進度環 (周長 2 * PI * 66 ≈ 414.69)
+            const circumference = 414.69;
+            if (dialCircle) {
+                const offset = circumference * (1 - remainingSeconds / totalSeconds);
+                dialCircle.style.strokeDashoffset = offset;
+            }
+
+            // 更新旋轉指針 (以 60 秒為一圈，每秒轉 6 度)
+            if (pointerGroup) {
+                const rotationDeg = ((600 - remainingSeconds) % 60) * 6;
+                pointerGroup.setAttribute('transform', `rotate(${rotationDeg} 80 80)`);
+            }
+
+            // 更新錶盤中間文字 (分)
+            if (centerLabel) {
+                centerLabel.innerText = `${Math.ceil(remainingSeconds / 60)}分`;
+            }
+
+            // 狀態與警報標籤
             if (remainingSeconds <= 60 && remainingSeconds > 0) {
                 if (cardEl) cardEl.classList.add('timer-warning');
                 if (miniEl) miniEl.classList.add('warning');
-                if (hintEl) hintEl.innerHTML = '<span style="color:#D32F2F; font-weight:900;">⚠️ 倒數最後警戒中！剩餘時間不足 1 分鐘，請把握時間作答！</span>';
+                if (badgeEl) badgeEl.innerText = '🚨 倒數最後1分鐘警戒！';
+                if (dialCircle) dialCircle.setAttribute('stroke', '#D32F2F');
+                if (hintEl) hintEl.innerHTML = '<span style="color:#D32F2F; font-weight:900; font-size:14px;">⚠️ 警告：測驗剩餘時間不足 1 分鐘！請儘速完成並提交試卷！</span>';
             } else if (remainingSeconds > 60) {
                 if (cardEl) cardEl.classList.remove('timer-warning');
                 if (miniEl) miniEl.classList.remove('warning');
-                if (hintEl) hintEl.innerHTML = '🔔 限時 10 分鐘：每秒播放秒數滴答音效提醒，時間截止將發出響鈴並自動結算送出！';
+                if (badgeEl) badgeEl.innerText = isTimerRunning ? '🟢 測驗計時進行中' : '⏸️ 計時已暫停';
+                if (dialCircle) dialCircle.setAttribute('stroke', 'var(--tangerine)');
+                if (hintEl) hintEl.innerHTML = '🔔 每秒同步發出鐘錶滴答秒數聲，時間截止將響鈴並自動提交試卷結算！';
             }
         }
 
